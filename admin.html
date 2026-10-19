@@ -347,8 +347,8 @@
             const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
             
-            if (json.success && json.data) {
-              setArticles(json.data.berita || []);
+            if (json.success && json.data && json.data.data) {
+            setArticles(json.data.data.berita || []);
             } else {
               throw new Error(json.error || 'Format data tidak dikenali');
             }
