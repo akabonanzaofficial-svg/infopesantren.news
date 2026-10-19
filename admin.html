@@ -50,7 +50,7 @@
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
           reader.onload = async (e) => {
-            const base64 = e.target.result.split(',')[1]; // Buang prefix data:image/...
+            const base64 = e.target.result.split(',')[1];
             const ext = file.name.split('.').pop();
             const filename = `img-${Date.now()}.${ext}`;
             
@@ -107,10 +107,10 @@
       // ================= KOMPONEN EDITOR (QUILL) =================
       function ArticleForm({ auth, onCancel, onSave }) {
         const [formData, setFormData] = useState({ title: '', slug: '', category: 'Pesantren', author: 'Admin', summary: '', image_url: '', featured: false, status: 'published' });
-        const [content, setContent] = useState('');
         const [saving, setSaving] = useState(false);
         const [previewMode, setPreviewMode] = useState(false);
         const [uploading, setUploading] = useState(false);
+        const [previewContent, setPreviewContent] = useState('');
         
         const quillRef = useRef(null);
         const quillInstance = useRef(null);
@@ -153,9 +153,6 @@
                 }
               }
             });
-            quillInstance.current.on('text-change', () => {
-              setContent(quillInstance.current.root.innerHTML);
-            });
           }
         }, [auth]);
 
@@ -180,16 +177,26 @@
           setFormData(prev => ({ ...prev, slug }));
         };
 
+        const handlePreview = () => {
+          // Ambil konten langsung dari Quill
+          const html = quillInstance.current ? quillInstance.current.root.innerHTML : '';
+          setPreviewContent(html);
+          setPreviewMode(true);
+        };
+
         const handleSubmit = async (e) => {
           if (e) e.preventDefault();
           setSaving(true);
+          
+          // PAKSA AMBIL DATA LANGSUNG DARI INSTANCE QUILL SAAT INI JUGA
+          const finalContent = quillInstance.current ? quillInstance.current.root.innerHTML : '';
           
           const payload = {
             id: 'b-' + Date.now(),
             slug: formData.slug || 'berita-' + Date.now(),
             title: formData.title,
             summary: formData.summary,
-            content: content, // HTML dari Quill
+            content: finalContent, 
             category: formData.category,
             author: formData.author,
             image_url: formData.image_url,
@@ -226,7 +233,7 @@
               React.createElement('span', null, new Date().toLocaleDateString('id-ID'))
             ),
             formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-64 object-cover rounded-xl mb-6' }),
-            React.createElement('div', { className: 'prose prose-lg max-w-none text-gray-700 leading-relaxed', dangerouslySetInnerHTML: { __html: content } }),
+            React.createElement('div', { className: 'prose prose-lg max-w-none text-gray-700 leading-relaxed', dangerouslySetInnerHTML: { __html: previewContent } }),
             
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
               React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : 'Publish Sekarang')
@@ -314,7 +321,7 @@
             // Tombol Aksi
             React.createElement('div', { className: 'flex justify-end gap-3 pt-4 border-t mt-4' },
               React.createElement('button', { type: 'button', onClick: onCancel, className: 'px-5 py-2 border rounded-lg hover:bg-gray-50 text-gray-600' }, 'Batal'),
-              React.createElement('button', { type: 'button', onClick: () => setPreviewMode(true), className: 'px-5 py-2 border-2 border-brand-600 text-brand-700 font-bold rounded-lg hover:bg-brand-50 flex items-center gap-2' },
+              React.createElement('button', { type: 'button', onClick: handlePreview, className: 'px-5 py-2 border-2 border-brand-600 text-brand-700 font-bold rounded-lg hover:bg-brand-50 flex items-center gap-2' },
                 React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' }), ' Preview'
               ),
               React.createElement('button', { type: 'submit', disabled: saving, className: 'px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg disabled:opacity-50 flex items-center gap-2' },
@@ -333,10 +340,10 @@
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
-                const fetchArticles = async () => {
+        const fetchArticles = async () => {
           setLoading(true);
           try {
-            // Kita ambil semua data, lalu ambil bagian 'berita' saja
+            // PERBAIKAN: Ambil semua data dari /api/content, bukan /api/content/berita
             const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
             
@@ -368,7 +375,7 @@
 
         return React.createElement('div', { className: 'flex min-h-screen' },
           // SIDEBAR KIRI
-          React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex flex-col hidden md:flex' },
+          React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex-col hidden md:flex' },
             React.createElement('div', { className: 'h-16 flex items-center justify-center border-b border-gray-800 bg-gray-950' },
               React.createElement('h1', { className: 'text-xl font-extrabold tracking-wider' }, 'Info', React.createElement('span', { className: 'text-brand-500' }, 'Pesantren'), React.createElement('span', { className: 'text-gold-500' }, '.admin'))
             ),
