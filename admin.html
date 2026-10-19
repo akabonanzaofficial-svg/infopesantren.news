@@ -333,13 +333,24 @@
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
-        const fetchArticles = async () => {
+                const fetchArticles = async () => {
           setLoading(true);
           try {
-            const res = await fetch(`${API_URL}/api/content/berita`);
+            // Kita ambil semua data, lalu ambil bagian 'berita' saja
+            const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
-            if (json.success) setArticles(json.data);
-          } catch (err) { alert('Gagal mengambil data: ' + err.message); } finally { setLoading(false); }
+            
+            if (json.success && json.data) {
+              setArticles(json.data.berita || []);
+            } else {
+              throw new Error(json.error || 'Format data tidak dikenali');
+            }
+          } catch (err) { 
+            console.error(err);
+            alert('Gagal mengambil data: ' + err.message); 
+          } finally { 
+            setLoading(false); 
+          }
         };
 
         useEffect(() => { fetchArticles(); }, []);
