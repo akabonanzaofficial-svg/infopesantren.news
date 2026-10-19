@@ -1,0 +1,2605 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InfoPesantren.online — Portal Informasi Pesantren Indonesia</title>
+    <meta
+      name="description"
+      content="InfoPesantren.online — Portal berita, program, khazanah, tokoh, dan agenda pesantren Indonesia."
+    />
+    <meta property="og:title" content="InfoPesantren.online" />
+    <meta property="og:description" content="Portal Informasi Pesantren Indonesia" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://infopesantren.online/" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23059669'/><path d='M30 70V30h25c11 0 18 7 18 17s-7 17-18 17H42v6h-12zm12-16h13c4 0 6-2 6-5s-2-5-6-5H42v10z' fill='%23fbbf24'/></svg>"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#ecfdf5',
+                100: '#d1fae5',
+                200: '#a7f3d0',
+                300: '#6ee7b7',
+                400: '#34d399',
+                500: '#10b981',
+                600: '#059669',
+                700: '#047857',
+                800: '#065f46',
+                900: '#064e3b',
+              },
+              gold: {
+                50: '#fffbeb',
+                100: '#fef3c7',
+                200: '#fde68a',
+                300: '#fcd34d',
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706',
+                700: '#b45309',
+                800: '#92400e',
+                900: '#78350f',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              serif: ['Merriweather', 'Georgia', 'serif'],
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+    <style>
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: #f8f9fa;
+        color: #1a1a2e;
+      }
+      .article-body {
+        font-family: 'Merriweather', Georgia, serif;
+        line-height: 1.8;
+      }
+      .article-body p { margin-bottom: 1rem; }
+      .article-body h2, .article-body h3 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        margin: 1.5rem 0 0.75rem;
+      }
+      .article-body h2 { font-size: 1.5rem; }
+      .article-body h3 { font-size: 1.25rem; }
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .line-clamp-4 {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .ornament-divider {
+        background-image: linear-gradient(to right, transparent, #fbbf24, transparent);
+        height: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+      const { useState, useEffect } = React;
+
+      // =====================================================================
+      // KONFIGURASI
+      // =====================================================================
+      const SITE = {
+        name: 'InfoPesantren',
+        domain: 'infopesantren.online',
+        tagline: 'Portal Informasi Pesantren Indonesia',
+      };
+
+      const NAV_ITEMS = [
+        { key: 'home', label: 'Beranda', path: '/' },
+        { key: 'berita', label: 'Berita', path: '/berita' },
+        { key: 'program', label: 'Program', path: '/program' },
+        { key: 'khazanah', label: 'Khazanah', path: '/khazanah' },
+        { key: 'tokoh', label: 'Tokoh', path: '/tokoh' },
+        { key: 'agenda', label: 'Agenda', path: '/agenda' },
+      ];
+
+      const KATEGORI_BERITA_COLORS = {
+        Pesantren: 'bg-brand-600',
+        Nasional: 'bg-blue-600',
+        Prestasi: 'bg-gold-600',
+        Kegiatan: 'bg-purple-600',
+        Beasiswa: 'bg-rose-600',
+      };
+
+      const FALLBACK_IMG =
+        'https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800';
+
+      // =====================================================================
+      // DATA FALLBACK (dipakai saat data.json tidak tersedia / file://)
+      // =====================================================================
+      const DATA_FALLBACK = {
+        meta: {
+          siteName: 'InfoPesantren',
+          tagline: 'Portal Informasi Pesantren Indonesia',
+          domain: 'infopesantren.online',
+          updatedAt: '2026-10-18T00:00:00Z',
+          version: '1.0.0',
+        },
+        berita: [
+          {
+            id: 'b-001',
+            slug: 'pesantren-al-hikmah-juara-mtq-nasional',
+            title: 'Pesantren Al-Hikmah Raih Juara 1 MTQ Nasional 2026',
+            summary:
+              'Santri Pesantren Al-Hikmah berhasil mengharumkan nama pesantren di kancah nasional dengan meraih juara pertama cabang tilawah MTQ Nasional 2026.',
+            content:
+              'Prestasi membanggakan kembali ditorehkan oleh santri Pesantren Al-Hikmah. Dalam ajang Musabaqah Tilawatil Quran (MTQ) Nasional 2026 yang digelar di Jakarta, santri bernama Ahmad Fauzi berhasil meraih juara pertama cabang tilawah dewasa.\n\nKompetisi yang diikuti oleh ribuan peserta dari seluruh Indonesia ini menjadi bukti kualitas pendidikan Al-Quran di pesantren. Pengasuh pesantren, KH. Maimun Zaid, menyampaikan rasa syukur dan bangga atas capaian santrinya.\n\n"Prestasi ini adalah buah dari kedisiplinan dan kesungguhan santri dalam menuntut ilmu. Semoga menjadi motivasi bagi santri lainnya," ujar beliau saat ditemui di pesantren.',
+            category: 'Prestasi',
+            author: 'Redaksi InfoPesantren',
+            image_url:
+              'https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800',
+            published_at: '2026-10-15T08:00:00Z',
+            views: 1240,
+            featured: true,
+            tags: ['MTQ', 'prestasi', 'nasional'],
+          },
+          {
+            id: 'b-002',
+            slug: 'program-beasiswa-santri-berprestasi-2027',
+            title: 'Pesantren Buka Beasiswa Santri Berprestasi 2027',
+            summary:
+              'Program beasiswa penuh bagi santri berprestasi akademik dan non-akademik dibuka mulai November 2026.',
+            content:
+              'Sejumlah pesantren di Jawa Timur membuka program beasiswa penuh bagi santri berprestasi untuk tahun ajaran 2027/2028. Beasiswa mencakup biaya pendidikan, asrama, dan kebutuhan sehari-hari.\n\nSyarat utama adalah hafal minimal 5 juz Al-Quran, memiliki prestasi akademik atau non-akademik minimal tingkat kabupaten, dan lolos seleksi wawancara.\n\nPendaftaran dibuka 1 November hingga 31 Desember 2026 melalui website resmi masing-masing pesantren.',
+            category: 'Beasiswa',
+            author: 'Tim Redaksi',
+            image_url:
+              'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&w=800',
+            published_at: '2026-10-14T10:30:00Z',
+            views: 856,
+            featured: true,
+            tags: ['beasiswa', 'santri'],
+          },
+          {
+            id: 'b-003',
+            slug: 'haul-masyayikh-2026-digelar-khidmat',
+            title: 'Haul Masyayikh 2026 Digelar Khidmat, Ribuan Santri Hadir',
+            summary:
+              'Haul akbar para masyayikh pesantren berlangsung khidmat dengan dihadiri ribuan santri dan alumni dari berbagai daerah.',
+            content:
+              'Haul akbar para masyayikh digelar dengan penuh khidmat di Pondok Pesantren Al-Hikmah. Ribuan santri, alumni, dan masyarakat sekitar hadir untuk mendoakan para ulama yang telah berjasa.\n\nAcara diisi dengan pembacaan tahlil, manaqib, dan mauidhoh hasanah dari para kiai sepuh. Kegiatan ini menjadi momentum untuk mengenang jasa para pendiri pesantren.',
+            category: 'Kegiatan',
+            author: 'Redaksi',
+            image_url:
+              'https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800',
+            published_at: '2026-10-12T14:00:00Z',
+            views: 2100,
+            featured: true,
+            tags: ['haul', 'kegiatan'],
+          },
+          {
+            id: 'b-004',
+            slug: 'santri-berprestasi-olimpiade-sains',
+            title: 'Santri Pesantren Raih Medali Emas Olimpiade Sains',
+            summary:
+              'Tiga santri berhasil membawa pulang medali emas dari Olimpiade Sains Nasional bidang Matematika dan Fisika.',
+            content:
+              'Tim olimpiade sains pesantren berhasil meraih 3 medali emas dalam Olimpiade Sains Nasional 2026. Prestasi ini membuktikan bahwa santri mampu bersaing di bidang sains modern tanpa meninggalkan tradisi keislaman.',
+            category: 'Prestasi',
+            author: 'Tim Redaksi',
+            image_url:
+              'https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&w=800',
+            published_at: '2026-10-10T09:00:00Z',
+            views: 1540,
+            featured: false,
+            tags: ['olimpiade', 'sains'],
+          },
+        ],
+        program: [
+          {
+            id: 'p-001',
+            slug: 'program-tahfidz-30-juz',
+            title: 'Program Tahfidz 30 Juz',
+            description:
+              "Program intensif menghafal Al-Quran 30 juz dengan bimbingan para hafidz bersanad. Dilengkapi dengan setoran harian, murojaah, dan praktik qira'ah.",
+            duration: '3 tahun',
+            schedule: "Setiap hari, ba'da Subuh & ba'da Isya",
+            image_url:
+              'https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800',
+            status: 'dibuka',
+            contact: '0812-3456-7890',
+            featured: true,
+          },
+          {
+            id: 'p-002',
+            slug: 'program-bahasa-arab-intensif',
+            title: 'Program Bahasa Arab Intensif',
+            description:
+              'Kursus bahasa Arab intensif 6 bulan untuk menguasai percakapan, membaca kitab kuning, dan menulis dalam bahasa Arab.',
+            duration: '6 bulan',
+            schedule: 'Senin–Kamis, 08.00–12.00',
+            image_url:
+              'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&w=800',
+            status: 'dibuka',
+            contact: '0812-3456-7891',
+            featured: true,
+          },
+          {
+            id: 'p-003',
+            slug: 'program-kajian-kitab-kuning',
+            title: 'Kajian Kitab Kuning',
+            description:
+              "Program khusus pendalaman kitab kuning klasik: Fathul Qarib, Alfiyah, dan Ihya Ulumuddin dengan metode sorogan & bandongan.",
+            duration: 'Berkesinambungan',
+            schedule: "Setiap malam, ba'da Maghrib",
+            image_url:
+              'https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800',
+            status: 'dibuka',
+            contact: '0812-3456-7892',
+            featured: true,
+          },
+        ],
+        khazanah: [
+          {
+            id: 'k-001',
+            slug: 'adab-menuntut-ilmu-imam-syafii',
+            title: "Adab Menuntut Ilmu Menurut Imam Syafi'i",
+            summary:
+              "Imam Syafi'i mengajarkan enam adab pokok dalam menuntut ilmu yang relevan sepanjang zaman.",
+            content:
+              'Imam Syafi\'i rahimahullah pernah berkata:\n\n"Wahai saudaraku, engkau tidak akan memperoleh ilmu kecuali dengan enam perkara: kecerdasan, kesungguhan, kesabaran, bekal, bimbingan guru, dan waktu yang lama."\n\nEnam adab ini menjadi fondasi penting bagi setiap penuntut ilmu, terutama santri di pesantren. Kecerdasan saja tidak cukup tanpa kesungguhan; kesungguhan tidak akan bertahan tanpa kesabaran; kesabaran butuh bekal; dan bimbingan guru menjadi kunci keberkahan ilmu.',
+            author: 'Ust. Ahmad Fahmi',
+            category: 'Adab',
+            image_url:
+              'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&w=800',
+            published_at: '2026-10-10T00:00:00Z',
+            views: 890,
+            featured: true,
+          },
+          {
+            id: 'k-002',
+            slug: 'keutamaan-menghafal-al-quran',
+            title: 'Keutamaan Menghafal Al-Quran bagi Santri',
+            summary:
+              'Menghafal Al-Quran bukan sekadar prestasi, tetapi jalan mulia menuju derajat yang tinggi di sisi Allah.',
+            content:
+              'Rasulullah ﷺ bersabda: "Sebaik-baik kalian adalah yang mempelajari Al-Quran dan mengajarkannya." (HR. Bukhari)\n\nMenghafal Al-Quran memiliki banyak keutamaan, di antaranya: pahala berlipat, syafaat di hari kiamat, dan derajat mulia bersama para malaikat. Bagi santri, hafalan Al-Quran adalah bekal utama untuk membentuk karakter Qurani.',
+            author: 'Ustadzah Fatimah',
+            category: 'Quran',
+            image_url:
+              'https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800',
+            published_at: '2026-10-08T00:00:00Z',
+            views: 650,
+            featured: true,
+          },
+          {
+            id: 'k-003',
+            slug: 'sejarah-pesantren-nusantara',
+            title: 'Sejarah Panjang Pesantren di Nusantara',
+            summary:
+              'Pesantren telah menjadi pilar pendidikan Islam di Nusantara sejak berabad-abad lalu.',
+            content:
+              'Pesantren sebagai lembaga pendidikan Islam di Nusantara diperkirakan telah ada sejak abad ke-15, seiring masuknya Islam ke tanah Jawa. Wali Songo menjadi tokoh sentral awal berdirinya pesantren-pesantren tertua.\n\nHingga kini, pesantren terus berkembang dan beradaptasi tanpa kehilangan identitasnya sebagai lembaga tafaqquh fid-din (pendalaman agama).',
+            author: 'Tim Sejarah',
+            category: 'Sejarah',
+            image_url:
+              'https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800',
+            published_at: '2026-10-05T00:00:00Z',
+            views: 1200,
+            featured: true,
+          },
+        ],
+        tokoh: [
+          {
+            id: 't-001',
+            slug: 'kh-maimun-zaid',
+            name: 'KH. Maimun Zaid',
+            title: 'Pengasuh Pesantren Al-Hikmah',
+            bio: 'Ulama kharismatik dan ahli fiqih yang telah mengabdi di dunia pesantren lebih dari 40 tahun.',
+            content:
+              'KH. Maimun Zaid lahir pada 8 Februari 1934 di Jombang, Jawa Timur. Beliau menimba ilmu di berbagai pesantren ternama, termasuk di Mekkah selama 12 tahun.\n\nSepulang dari Mekkah, beliau mendirikan Pesantren Al-Hikmah pada tahun 1975. Kini pesantren tersebut memiliki lebih dari 3.000 santri dari berbagai penjuru Nusantara.',
+            image_url:
+              'https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&w=800',
+            birth: '1934-02-08',
+            pesantren: 'Al-Hikmah',
+            expertise: ['Fiqih', 'Tafsir', 'Tasawuf'],
+            featured: true,
+          },
+          {
+            id: 't-002',
+            slug: 'nyai-hj-fatimah-zahra',
+            name: 'Nyai Hj. Fatimah Zahra',
+            title: 'Pengasuh Pondok Putri Al-Hikmah',
+            bio: 'Tokoh perempuan pesantren yang fokus pada pendidikan santri putri dan pemberdayaan ekonomi umat.',
+            content:
+              'Nyai Hj. Fatimah Zahra adalah putri KH. Maimun Zaid yang kini memimpin Pondok Putri Al-Hikmah. Beliau dikenal aktif dalam program pemberdayaan ekonomi santriwati melalui koperasi pesantren.',
+            image_url:
+              'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&w=800',
+            birth: '1972-06-15',
+            pesantren: 'Al-Hikmah Putri',
+            expertise: ['Pendidikan', 'Ekonomi Umat'],
+            featured: true,
+          },
+          {
+            id: 't-003',
+            slug: 'ustadz-ahmad-fauzi',
+            name: 'Ustadz Ahmad Fauzi',
+            title: 'Hafidz 30 Juz & Pembina Tahfidz',
+            bio: 'Alumni Pesantren Al-Hikmah yang kini menjadi pembina program tahfidz dan juara MTQ Nasional.',
+            content:
+              'Ustadz Ahmad Fauzi adalah alumni Pesantren Al-Hikmah yang berhasil meraih juara 1 MTQ Nasional 2026 cabang tilawah. Kini beliau mengabdi sebagai pembina program tahfidz di pesantren.',
+            image_url:
+              'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&w=800',
+            birth: '1995-03-20',
+            pesantren: 'Al-Hikmah',
+            expertise: ["Tahfidz", "Qira'ah", 'Tilawah'],
+            featured: true,
+          },
+          {
+            id: 't-004',
+            slug: 'kh-abdurrahman-wahid',
+            name: 'KH. Abdurrahman Wahid',
+            title: 'Ulama & Guru Bangsa',
+            bio: 'Tokoh ulama dan guru bangsa yang dikenal sebagai pembaharu pemikiran Islam di Indonesia.',
+            content:
+              'KH. Abdurrahman Wahid (Gus Dur) adalah tokoh ulama yang sangat berpengaruh di Indonesia. Beliau pernah menjabat sebagai Presiden RI ke-4 dan dikenal sebagai pembela kaum minoritas.',
+            image_url:
+              'https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&w=800',
+            birth: '1940-09-07',
+            pesantren: 'Tebuireng',
+            expertise: ['Pemikiran Islam', 'Politik', 'Kemanusiaan'],
+            featured: true,
+          },
+        ],
+        agenda: [
+          {
+            id: 'a-001',
+            slug: 'haul-masyayikh-2026',
+            title: 'Haul Masyayikh 2026',
+            description:
+              'Haul akbar para pendiri dan masyayikh pesantren, dilengkapi pembacaan tahlil, manaqib, dan mauidhoh hasanah dari para kiai sepuh.',
+            date_start: '2026-11-20T08:00:00Z',
+            date_end: '2026-11-21T17:00:00Z',
+            location: 'Pesantren Al-Hikmah, Jombang',
+            organizer: 'Yayasan Al-Hikmah',
+            image_url:
+              'https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800',
+            status: 'akan-datang',
+            featured: true,
+          },
+          {
+            id: 'a-002',
+            slug: 'seminar-sanitasi-pesantren',
+            title: 'Seminar Sanitasi & Kesehatan Pesantren',
+            description:
+              'Seminar nasional tentang pengelolaan sanitasi dan kesehatan lingkungan pesantren, menghadirkan pakar kesehatan dan pengasuh pesantren.',
+            date_start: '2026-12-05T09:00:00Z',
+            date_end: '2026-12-05T15:00:00Z',
+            location: 'Aula Pesantren Al-Hikmah, Jombang',
+            organizer: 'Kemenag & Yayasan Al-Hikmah',
+            image_url:
+              'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&w=800',
+            status: 'akan-datang',
+            featured: true,
+          },
+          {
+            id: 'a-003',
+            slug: 'wisuda-santri-2026',
+            title: 'Wisuda Santri Angkatan 2026',
+            description:
+              'Prosesi wisuda santri angkatan 2026 yang telah menyelesaikan pendidikan selama 6 tahun di pesantren.',
+            date_start: '2026-11-10T08:00:00Z',
+            date_end: '2026-11-10T13:00:00Z',
+            location: 'Lapangan Utama Pesantren',
+            organizer: 'Pesantren Al-Hikmah',
+            image_url:
+              'https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800',
+            status: 'akan-datang',
+            featured: true,
+          },
+        ],
+      };
+
+      // =====================================================================
+      // DATA FETCHER (data.json → fallback embedded)
+      // =====================================================================
+      let DATA_CACHE = null;
+      let DATA_PROMISE = null;
+
+      async function getData() {
+        if (DATA_CACHE) return DATA_CACHE;
+        if (DATA_PROMISE) return DATA_PROMISE;
+        DATA_PROMISE = (async () => {
+          try {
+            // Coba fetch data.json (hanya bekerja via http/https)
+            if (window.location.protocol === 'file:') {
+              throw new Error('file:// — pakai fallback embedded');
+            }
+            const res = await fetch('/data.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();
+            DATA_CACHE = {
+              meta: json.meta || {},
+              berita: json.berita || [],
+              program: json.program || [],
+              khazanah: json.khazanah || [],
+              tokoh: json.tokoh || [],
+              agenda: json.agenda || [],
+            };
+            console.info('[getData] memuat dari /data.json');
+            return DATA_CACHE;
+          } catch (err) {
+            console.warn('[getData] fallback ke data embedded:', err.message);
+            DATA_CACHE = DATA_FALLBACK;
+            return DATA_CACHE;
+          }
+        })();
+        return DATA_PROMISE;
+      }
+
+      // =====================================================================
+      // HELPER
+      // =====================================================================
+      function formatTanggal(iso, opts = {}) {
+        if (!iso) return '-';
+        try {
+          return new Date(iso).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            ...opts,
+          });
+        } catch {
+          return '-';
+        }
+      }
+
+      function formatTanggalWaktu(iso) {
+        return formatTanggal(iso, { hour: '2-digit', minute: '2-digit' });
+      }
+
+      function sanitizeHTML(html) {
+        if (!html) return '';
+        if (window.DOMPurify) return window.DOMPurify.sanitize(html);
+        return String(html).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      function paragraphs(html) {
+        if (!html) return '';
+        return String(html)
+          .split(/\n{2,}/)
+          .map((p) => '<p>' + p.replace(/\n/g, '<br/>') + '</p>')
+          .join('');
+      }
+
+      // =====================================================================
+      // ICON (FIXED)
+      // =====================================================================
+      function Icon({ name, className = 'w-5 h-5' }) {
+        useEffect(() => {
+          if (window.lucide) window.lucide.createIcons();
+        }, [name, className]);
+        return React.createElement('i', { 'data-lucide': name, className });
+      }
+
+      // =====================================================================
+      // ROUTER
+      // =====================================================================
+      function parsePath() {
+        let path = '/';
+        try {
+          path = window.location.pathname || '/';
+          // Untuk file:// — pakai hash jika ada
+          if (window.location.protocol === 'file:') {
+            const hash = window.location.hash.replace(/^#/, '');
+            if (hash) path = hash;
+          }
+        } catch {
+          path = '/';
+        }
+        const parts = path.split('/').filter(Boolean);
+        if (parts.length === 0) return { view: 'home', slug: null };
+        const first = parts[0];
+        const valid = ['berita', 'program', 'khazanah', 'tokoh', 'agenda'];
+        if (!valid.includes(first)) return { view: 'home', slug: null };
+        return { view: first, slug: parts[1] || null };
+      }
+
+      function navigate(path) {
+        try {
+          if (window.location.protocol === 'file:') {
+            // file:// — gunakan hash
+            window.location.hash = path;
+          } else {
+            if (window.location.pathname !== path) {
+              window.history.pushState({}, '', path);
+            }
+          }
+        } catch (e) {
+          console.warn('navigate error', e);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      }
+
+      // =====================================================================
+      // HEADER
+      // =====================================================================
+      function Header({ currentRoute, onSearch }) {
+        const [mobileOpen, setMobileOpen] = useState(false);
+        const [searchOpen, setSearchOpen] = useState(false);
+        const [query, setQuery] = useState('');
+        const activeKey = currentRoute.view;
+
+        function submitSearch(e) {
+          if (e.key === 'Enter' && query.trim()) {
+            onSearch(query.trim());
+            setSearchOpen(false);
+            setQuery('');
+          }
+        }
+
+        return React.createElement(
+          'header',
+          { className: 'bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm' },
+          React.createElement(
+            'div',
+            { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' },
+            React.createElement(
+              'div',
+              { className: 'flex items-center justify-between h-16' },
+              React.createElement(
+                'a',
+                {
+                  href: '/',
+                  onClick: (e) => {
+                    e.preventDefault();
+                    navigate('/');
+                  },
+                  className: 'flex items-center gap-3 cursor-pointer',
+                },
+                React.createElement(
+                  'div',
+                  {
+                    className:
+                      'bg-gradient-to-br from-brand-600 to-brand-800 p-2 rounded-lg shadow-md',
+                  },
+                  React.createElement(Icon, {
+                    name: 'book-open',
+                    className: 'w-6 h-6 text-gold-300',
+                  })
+                ),
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement(
+                    'h1',
+                    {
+                      className:
+                        'text-xl font-extrabold tracking-tight text-gray-900 leading-tight',
+                    },
+                    'Info',
+                    React.createElement('span', { className: 'text-brand-700' }, 'Pesantren'),
+                    React.createElement('span', { className: 'text-gold-500' }, '.online')
+                  ),
+                  React.createElement(
+                    'p',
+                    {
+                      className:
+                        'text-[10px] text-gray-500 tracking-widest uppercase font-medium',
+                    },
+                    SITE.tagline
+                  )
+                )
+              ),
+              React.createElement(
+                'nav',
+                { className: 'hidden md:flex items-center gap-1' },
+                NAV_ITEMS.map((item) =>
+                  React.createElement(
+                    'a',
+                    {
+                      key: item.key,
+                      href: item.path,
+                      onClick: (e) => {
+                        e.preventDefault();
+                        navigate(item.path);
+                      },
+                      className:
+                        'px-3 py-1.5 rounded-md text-sm font-medium transition-colors ' +
+                        (activeKey === item.key
+                          ? 'bg-brand-50 text-brand-700'
+                          : 'text-gray-600 hover:text-brand-700 hover:bg-brand-50'),
+                    },
+                    item.label
+                  )
+                )
+              ),
+              React.createElement(
+                'div',
+                { className: 'flex items-center gap-1' },
+                React.createElement(
+                  'button',
+                  {
+                    onClick: () => setSearchOpen(!searchOpen),
+                    'aria-label': 'Cari',
+                    className:
+                      'p-2 rounded-md text-gray-500 hover:text-brand-700 hover:bg-brand-50 transition-colors',
+                  },
+                  React.createElement(Icon, { name: 'search', className: 'w-5 h-5' })
+                ),
+                React.createElement(
+                  'button',
+                  {
+                    onClick: () => setMobileOpen(!mobileOpen),
+                    'aria-label': 'Menu',
+                    className:
+                      'md:hidden p-2 rounded-md text-gray-500 hover:text-brand-700 hover:bg-brand-50 transition-colors',
+                  },
+                  React.createElement(Icon, {
+                    name: mobileOpen ? 'x' : 'menu',
+                    className: 'w-5 h-5',
+                  })
+                )
+              )
+            )
+          ),
+          searchOpen &&
+            React.createElement(
+              'div',
+              { className: 'border-t border-gray-100 bg-brand-50 px-4 py-3' },
+              React.createElement(
+                'div',
+                { className: 'max-w-7xl mx-auto' },
+                React.createElement(
+                  'div',
+                  { className: 'relative' },
+                  React.createElement(Icon, {
+                    name: 'search',
+                    className:
+                      'absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400',
+                  }),
+                  React.createElement('input', {
+                    type: 'text',
+                    autoFocus: true,
+                    value: query,
+                    onChange: (e) => setQuery(e.target.value),
+                    onKeyDown: submitSearch,
+                    placeholder: 'Cari berita, program, khazanah, tokoh...',
+                    className:
+                      'w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
+                  })
+                )
+              )
+            ),
+          mobileOpen &&
+            React.createElement(
+              'div',
+              { className: 'md:hidden border-t border-gray-100 bg-white' },
+              React.createElement(
+                'div',
+                { className: 'px-4 py-3 space-y-1' },
+                NAV_ITEMS.map((item) =>
+                  React.createElement(
+                    'a',
+                    {
+                      key: item.key,
+                      href: item.path,
+                      onClick: (e) => {
+                        e.preventDefault();
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      },
+                      className:
+                        'block w-full text-left px-3 py-2 rounded-md text-sm font-medium ' +
+                        (activeKey === item.key
+                          ? 'bg-brand-50 text-brand-700'
+                          : 'text-gray-600 hover:bg-brand-50'),
+                    },
+                    item.label
+                  )
+                )
+              )
+            )
+        );
+      }
+
+      // =====================================================================
+      // FOOTER
+      // =====================================================================
+      function Footer() {
+        return React.createElement(
+          'footer',
+          { className: 'bg-gray-900 text-gray-300 mt-16' },
+          React.createElement('div', { className: 'ornament-divider' }),
+          React.createElement(
+            'div',
+            { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12' },
+            React.createElement(
+              'div',
+              { className: 'grid grid-cols-1 md:grid-cols-4 gap-8' },
+              React.createElement(
+                'div',
+                { className: 'md:col-span-2' },
+                React.createElement(
+                  'div',
+                  { className: 'flex items-center gap-3 mb-4' },
+                  React.createElement(
+                    'div',
+                    {
+                      className:
+                        'bg-gradient-to-br from-brand-600 to-brand-800 p-2 rounded-lg',
+                    },
+                    React.createElement(Icon, {
+                      name: 'book-open',
+                      className: 'w-6 h-6 text-gold-300',
+                    })
+                  ),
+                  React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                      'h4',
+                      { className: 'text-lg font-extrabold text-white' },
+                      'Info',
+                      React.createElement('span', { className: 'text-brand-400' }, 'Pesantren'),
+                      React.createElement('span', { className: 'text-gold-400' }, '.online')
+                    ),
+                    React.createElement(
+                      'p',
+                      { className: 'text-xs text-gray-400' },
+                      SITE.tagline
+                    )
+                  )
+                ),
+                React.createElement(
+                  'p',
+                  { className: 'text-sm text-gray-400 max-w-md leading-relaxed' },
+                  'Menyajikan informasi terkini seputar dunia pesantren: berita, program pendidikan, khazanah keislaman, profil tokoh, dan agenda kegiatan.'
+                )
+              ),
+              React.createElement(
+                'div',
+                null,
+                React.createElement(
+                  'h5',
+                  { className: 'text-sm font-bold text-white mb-4 uppercase tracking-wider' },
+                  'Menu'
+                ),
+                React.createElement(
+                  'ul',
+                  { className: 'space-y-2' },
+                  NAV_ITEMS.map((item) =>
+                    React.createElement(
+                      'li',
+                      { key: item.key },
+                      React.createElement(
+                        'a',
+                        {
+                          href: item.path,
+                          onClick: (e) => {
+                            e.preventDefault();
+                            navigate(item.path);
+                          },
+                          className: 'text-sm text-gray-400 hover:text-gold-400 transition-colors',
+                        },
+                        item.label
+                      )
+                    )
+                  )
+                )
+              ),
+              React.createElement(
+                'div',
+                null,
+                React.createElement(
+                  'h5',
+                  { className: 'text-sm font-bold text-white mb-4 uppercase tracking-wider' },
+                  'Kontak'
+                ),
+                React.createElement(
+                  'ul',
+                  { className: 'space-y-2 text-sm text-gray-400' },
+                  React.createElement(
+                    'li',
+                    { className: 'flex items-center gap-2' },
+                    React.createElement(Icon, { name: 'mail', className: 'w-4 h-4' }),
+                    'redaksi@infopesantren.online'
+                  ),
+                  React.createElement(
+                    'li',
+                    { className: 'flex items-center gap-2' },
+                    React.createElement(Icon, { name: 'globe', className: 'w-4 h-4' }),
+                    SITE.domain
+                  )
+                )
+              )
+            ),
+            React.createElement(
+              'div',
+              {
+                className:
+                  'border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-500',
+              },
+              React.createElement(
+                'p',
+                null,
+                '\u00A9 ' + new Date().getFullYear() + ' ' + SITE.name + '. Semua hak dilindungi.'
+              ),
+              React.createElement('p', null, 'Dibangun dengan ❤️ untuk pesantren Indonesia')
+            )
+          )
+        );
+      }
+
+      // =====================================================================
+      // KARTU
+      // =====================================================================
+      function BeritaCard({ item, variant = 'default', onClick }) {
+        const img = item.image_url || FALLBACK_IMG;
+        const tanggal = formatTanggal(item.published_at);
+
+        if (variant === 'compact') {
+          return React.createElement(
+            'div',
+            {
+              onClick,
+              className:
+                'group flex gap-3 p-3 rounded-lg bg-white hover:bg-brand-50 cursor-pointer transition-colors border-b border-gray-100 last:border-0',
+            },
+            React.createElement(
+              'div',
+              { className: 'w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200' },
+              React.createElement('img', {
+                src: img,
+                alt: item.title,
+                className:
+                  'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                loading: 'lazy',
+                onError: (e) => (e.target.src = FALLBACK_IMG),
+              })
+            ),
+            React.createElement(
+              'div',
+              { className: 'flex-1 min-w-0' },
+              React.createElement(
+                'span',
+                { className: 'text-[10px] font-semibold text-brand-700 uppercase tracking-wider' },
+                item.category || 'Berita'
+              ),
+              React.createElement(
+                'h4',
+                {
+                  className:
+                    'text-sm font-semibold text-gray-900 mt-0.5 line-clamp-2 leading-snug group-hover:text-brand-700 transition-colors',
+                },
+                item.title
+              ),
+              React.createElement(
+                'div',
+                { className: 'flex items-center gap-2 mt-1.5 text-[10px] text-gray-400' },
+                React.createElement('span', null, tanggal)
+              )
+            )
+          );
+        }
+
+        if (variant === 'horizontal') {
+          return React.createElement(
+            'div',
+            { onClick, className: 'group flex gap-4 cursor-pointer transition-colors' },
+            React.createElement(
+              'div',
+              { className: 'w-36 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200' },
+              React.createElement('img', {
+                src: img,
+                alt: item.title,
+                className:
+                  'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                loading: 'lazy',
+                onError: (e) => (e.target.src = FALLBACK_IMG),
+              })
+            ),
+            React.createElement(
+              'div',
+              { className: 'flex-1 min-w-0' },
+              React.createElement(
+                'span',
+                { className: 'text-[10px] font-semibold text-brand-700 uppercase tracking-wider' },
+                item.category || 'Berita'
+              ),
+              React.createElement(
+                'h3',
+                {
+                  className:
+                    'text-base font-semibold text-gray-900 mt-1 line-clamp-2 leading-snug group-hover:text-brand-700 transition-colors',
+                },
+                item.title
+              ),
+              React.createElement(
+                'p',
+                { className: 'text-sm text-gray-500 mt-1 line-clamp-2' },
+                item.summary
+              ),
+              React.createElement(
+                'div',
+                { className: 'flex items-center gap-3 mt-2 text-xs text-gray-400' },
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'clock', className: 'w-3 h-3' }),
+                  tanggal
+                ),
+                item.views != null &&
+                  React.createElement(
+                    'span',
+                    { className: 'flex items-center gap-1' },
+                    React.createElement(Icon, { name: 'eye', className: 'w-3 h-3' }),
+                    item.views
+                  )
+              )
+            )
+          );
+        }
+
+        return React.createElement(
+          'div',
+          {
+            onClick,
+            className:
+              'group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-brand-200 hover:shadow-lg cursor-pointer transition-all duration-300',
+          },
+          React.createElement(
+            'div',
+            { className: 'relative h-48 overflow-hidden bg-gray-200' },
+            React.createElement('img', {
+              src: img,
+              alt: item.title,
+              className:
+                'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+              loading: 'lazy',
+              onError: (e) => (e.target.src = FALLBACK_IMG),
+            }),
+            React.createElement(
+              'div',
+              { className: 'absolute top-3 left-3' },
+              React.createElement(
+                'span',
+                {
+                  className:
+                    'inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ' +
+                    (KATEGORI_BERITA_COLORS[item.category] || 'bg-brand-600'),
+                },
+                item.category || 'Berita'
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'p-4' },
+            React.createElement(
+              'h3',
+              {
+                className:
+                  'text-lg font-bold text-gray-900 leading-snug group-hover:text-brand-700 transition-colors line-clamp-2',
+              },
+              item.title
+            ),
+            React.createElement(
+              'p',
+              { className: 'text-sm text-gray-500 mt-2 line-clamp-2 leading-relaxed' },
+              item.summary
+            ),
+            React.createElement(
+              'div',
+              {
+                className:
+                  'flex items-center justify-between mt-4 pt-3 border-t border-gray-100',
+              },
+              React.createElement(
+                'div',
+                { className: 'flex items-center gap-3 text-xs text-gray-400' },
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'clock', className: 'w-3 h-3' }),
+                  tanggal
+                ),
+                item.views != null &&
+                  React.createElement(
+                    'span',
+                    { className: 'flex items-center gap-1' },
+                    React.createElement(Icon, { name: 'eye', className: 'w-3 h-3' }),
+                    item.views
+                  )
+              ),
+              React.createElement(
+                'span',
+                {
+                  className:
+                    'flex items-center gap-1 text-xs font-semibold text-brand-700 opacity-0 group-hover:opacity-100 transition-opacity',
+                },
+                'Baca',
+                React.createElement(Icon, { name: 'arrow-right', className: 'w-3 h-3' })
+              )
+            )
+          )
+        );
+      }
+
+      function ProgramCard({ item, onClick }) {
+        const img = item.image_url || FALLBACK_IMG;
+        const statusColor =
+          item.status === 'dibuka'
+            ? 'bg-brand-600'
+            : item.status === 'ditutup'
+            ? 'bg-rose-600'
+            : 'bg-gold-600';
+        return React.createElement(
+          'div',
+          {
+            onClick,
+            className:
+              'group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-brand-200 hover:shadow-lg cursor-pointer transition-all duration-300 flex flex-col',
+          },
+          React.createElement(
+            'div',
+            { className: 'relative h-40 overflow-hidden bg-gray-200' },
+            React.createElement('img', {
+              src: img,
+              alt: item.title,
+              className:
+                'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+              loading: 'lazy',
+              onError: (e) => (e.target.src = FALLBACK_IMG),
+            }),
+            item.status &&
+              React.createElement(
+                'span',
+                {
+                  className:
+                    'absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ' +
+                    statusColor,
+                },
+                item.status
+              )
+          ),
+          React.createElement(
+            'div',
+            { className: 'p-4 flex-1 flex flex-col' },
+            React.createElement(
+              'h3',
+              {
+                className:
+                  'text-base font-bold text-gray-900 leading-snug group-hover:text-brand-700 transition-colors line-clamp-2',
+              },
+              item.title
+            ),
+            React.createElement(
+              'p',
+              { className: 'text-sm text-gray-500 mt-2 line-clamp-2 leading-relaxed flex-1' },
+              item.description
+            ),
+            React.createElement(
+              'div',
+              {
+                className:
+                  'flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500',
+              },
+              item.duration &&
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'clock', className: 'w-3 h-3' }),
+                  item.duration
+                ),
+              item.schedule &&
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'calendar', className: 'w-3 h-3' }),
+                  item.schedule
+                )
+            )
+          )
+        );
+      }
+
+      function TokohCard({ item, onClick }) {
+        const img = item.image_url || FALLBACK_IMG;
+        return React.createElement(
+          'div',
+          {
+            onClick,
+            className:
+              'group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-brand-200 hover:shadow-lg cursor-pointer transition-all duration-300',
+          },
+          React.createElement(
+            'div',
+            { className: 'relative h-56 overflow-hidden bg-gray-200' },
+            React.createElement('img', {
+              src: img,
+              alt: item.name,
+              className:
+                'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+              loading: 'lazy',
+              onError: (e) => (e.target.src = FALLBACK_IMG),
+            }),
+            React.createElement('div', {
+              className:
+                'absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent',
+            }),
+            React.createElement(
+              'div',
+              { className: 'absolute bottom-0 left-0 right-0 p-4 text-white' },
+              React.createElement(
+                'h3',
+                { className: 'text-lg font-bold leading-tight' },
+                item.name
+              ),
+              React.createElement(
+                'p',
+                { className: 'text-xs text-gold-300 mt-0.5' },
+                item.title
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'p-4' },
+            React.createElement(
+              'p',
+              { className: 'text-sm text-gray-500 line-clamp-2 leading-relaxed' },
+              item.bio
+            ),
+            item.expertise &&
+              React.createElement(
+                'div',
+                { className: 'flex flex-wrap gap-1.5 mt-3' },
+                item.expertise.map((tag) =>
+                  React.createElement(
+                    'span',
+                    {
+                      key: tag,
+                      className:
+                        'text-[10px] px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 font-medium',
+                    },
+                    tag
+                  )
+                )
+              )
+          )
+        );
+      }
+
+      function AgendaCard({ item, onClick }) {
+        const d = item.date_start ? new Date(item.date_start) : null;
+        const day = d ? d.getDate() : '-';
+        const month = d
+          ? d.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase()
+          : '-';
+        const statusColor =
+          item.status === 'akan-datang'
+            ? 'bg-brand-600'
+            : item.status === 'berlangsung'
+            ? 'bg-gold-600'
+            : 'bg-gray-500';
+        return React.createElement(
+          'div',
+          {
+            onClick,
+            className:
+              'group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-brand-200 hover:shadow-lg cursor-pointer transition-all duration-300 flex',
+          },
+          React.createElement(
+            'div',
+            {
+              className:
+                'w-24 flex-shrink-0 bg-gradient-to-br from-brand-700 to-brand-900 text-white flex flex-col items-center justify-center p-2',
+            },
+            React.createElement('span', { className: 'text-2xl font-extrabold leading-none' }, day),
+            React.createElement(
+              'span',
+              { className: 'text-xs font-bold mt-1 text-gold-300 tracking-wider' },
+              month
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'flex-1 p-4 min-w-0' },
+            React.createElement(
+              'span',
+              {
+                className:
+                  'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white ' +
+                  statusColor,
+              },
+              item.status || 'agenda'
+            ),
+            React.createElement(
+              'h3',
+              {
+                className:
+                  'text-base font-bold text-gray-900 mt-1.5 leading-snug group-hover:text-brand-700 transition-colors line-clamp-2',
+              },
+              item.title
+            ),
+            React.createElement(
+              'div',
+              { className: 'flex items-center gap-3 mt-2 text-xs text-gray-500' },
+              item.location &&
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'map-pin', className: 'w-3 h-3' }),
+                  item.location
+                ),
+              item.organizer &&
+                React.createElement(
+                  'span',
+                  { className: 'flex items-center gap-1' },
+                  React.createElement(Icon, { name: 'users', className: 'w-3 h-3' }),
+                  item.organizer
+                )
+            )
+          )
+        );
+      }
+
+      // =====================================================================
+      // KOMPONEN PEMBANTU
+      // =====================================================================
+      function SectionTitle({ icon, title, action }) {
+        return React.createElement(
+          'div',
+          { className: 'flex items-center gap-2 mb-5' },
+          icon && React.createElement(Icon, { name: icon, className: 'w-5 h-5 text-brand-700' }),
+          React.createElement('h2', { className: 'text-xl font-bold text-gray-900' }, title),
+          React.createElement('div', { className: 'flex-1 h-px bg-gray-200' }),
+          action
+        );
+      }
+
+      function EmptyState({ icon = 'inbox', title = 'Belum ada data', desc }) {
+        return React.createElement(
+          'div',
+          { className: 'text-center py-16' },
+          React.createElement(Icon, {
+            name: icon,
+            className: 'w-12 h-12 text-gray-300 mx-auto mb-3',
+          }),
+          React.createElement('p', { className: 'text-gray-600 font-semibold' }, title),
+          desc && React.createElement('p', { className: 'text-sm text-gray-400 mt-1' }, desc)
+        );
+      }
+
+      function SkeletonGrid({ count = 6 }) {
+        return React.createElement(
+          'div',
+          { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' },
+          Array.from({ length: count }).map((_, i) =>
+            React.createElement('div', {
+              key: i,
+              className: 'h-72 bg-gray-200 rounded-xl animate-pulse',
+            })
+          )
+        );
+      }
+
+      function ErrorState({ onRetry }) {
+        return React.createElement(
+          'div',
+          { className: 'text-center py-16' },
+          React.createElement(Icon, {
+            name: 'alert-triangle',
+            className: 'w-12 h-12 text-rose-500 mx-auto mb-3',
+          }),
+          React.createElement('p', { className: 'text-gray-700 font-semibold' }, 'Gagal memuat data'),
+          React.createElement(
+            'p',
+            { className: 'text-sm text-gray-500 mt-1 mb-4' },
+            'Periksa koneksi Anda atau coba lagi.'
+          ),
+          React.createElement(
+            'button',
+            {
+              onClick: onRetry,
+              className:
+                'px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-semibold hover:bg-brand-700',
+            },
+            'Coba Lagi'
+          )
+        );
+      }
+
+      // =====================================================================
+      // HOME VIEW
+      // =====================================================================
+      function HomeView({ data }) {
+        const [activeFeatured, setActiveFeatured] = useState(0);
+        const featured = data.berita.filter((b) => b.featured).slice(0, 3);
+        const latestBerita = data.berita.filter((b) => !b.featured).slice(0, 4);
+        const trending = [...data.berita]
+          .sort((a, b) => (b.views || 0) - (a.views || 0))
+          .slice(0, 5);
+        const featuredProgram = data.program.filter((p) => p.featured).slice(0, 3);
+        const featuredTokoh = data.tokoh.filter((t) => t.featured).slice(0, 4);
+        const upcomingAgenda = [...data.agenda]
+          .filter((a) => a.status === 'akan-datang')
+          .slice(0, 3);
+        const latestKhazanah = data.khazanah.slice(0, 3);
+
+        useEffect(() => {
+          if (featured.length <= 1) return;
+          const interval = setInterval(() => {
+            setActiveFeatured((prev) => (prev + 1) % featured.length);
+          }, 6000);
+          return () => clearInterval(interval);
+        }, [featured.length]);
+
+        return React.createElement(
+          'div',
+          { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
+          // HERO
+          featured.length > 0 &&
+            React.createElement(
+              'div',
+              {
+                className:
+                  'relative mb-12 rounded-2xl overflow-hidden bg-gray-900 h-[400px] md:h-[500px] shadow-xl',
+              },
+              featured.map((article, index) =>
+                React.createElement(
+                  'div',
+                  {
+                    key: article.id,
+                    className:
+                      'absolute inset-0 transition-opacity duration-700 ' +
+                      (index === activeFeatured ? 'opacity-100' : 'opacity-0 pointer-events-none'),
+                  },
+                  React.createElement('img', {
+                    src: article.image_url || FALLBACK_IMG,
+                    alt: article.title,
+                    className: 'absolute inset-0 w-full h-full object-cover',
+                    onError: (e) => (e.target.src = FALLBACK_IMG),
+                  }),
+                  React.createElement('div', {
+                    className:
+                      'absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent',
+                  }),
+                  React.createElement(
+                    'div',
+                    { className: 'absolute bottom-0 left-0 right-0 p-6 md:p-10' },
+                    React.createElement(
+                      'span',
+                      {
+                        className:
+                          'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-gold-500 text-gray-900 mb-4',
+                      },
+                      article.category || 'Berita'
+                    ),
+                    React.createElement(
+                      'h2',
+                      {
+                        className:
+                          'text-2xl md:text-4xl font-bold text-white leading-tight mb-3 max-w-3xl cursor-pointer hover:text-gold-300 transition-colors',
+                        onClick: () => navigate('/berita/' + article.slug),
+                      },
+                      article.title
+                    ),
+                    React.createElement(
+                      'p',
+                      {
+                        className:
+                          'text-gray-300 text-sm md:text-base max-w-2xl line-clamp-2 mb-4',
+                      },
+                      article.summary
+                    ),
+                    React.createElement(
+                      'div',
+                      { className: 'flex items-center gap-4 text-sm text-gray-400' },
+                      React.createElement(
+                        'span',
+                        { className: 'flex items-center gap-1' },
+                        React.createElement(Icon, { name: 'clock', className: 'w-4 h-4' }),
+                        formatTanggal(article.published_at)
+                      ),
+                      article.views != null &&
+                        React.createElement(
+                          'span',
+                          { className: 'flex items-center gap-1' },
+                          React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' }),
+                          article.views + ' dilihat'
+                        )
+                    )
+                  )
+                )
+              ),
+              featured.length > 1 &&
+                React.createElement(
+                  React.Fragment,
+                  null,
+                  React.createElement(
+                    'button',
+                    {
+                      onClick: () =>
+                        setActiveFeatured((prev) => (prev - 1 + featured.length) % featured.length),
+                      'aria-label': 'Sebelumnya',
+                      className:
+                        'absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 hover:bg-black/60 text-white transition-colors',
+                    },
+                    React.createElement(Icon, { name: 'chevron-left', className: 'w-5 h-5' })
+                  ),
+                  React.createElement(
+                    'button',
+                    {
+                      onClick: () => setActiveFeatured((prev) => (prev + 1) % featured.length),
+                      'aria-label': 'Berikutnya',
+                      className:
+                        'absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 hover:bg-black/60 text-white transition-colors',
+                    },
+                    React.createElement(Icon, { name: 'chevron-right', className: 'w-5 h-5' })
+                  ),
+                  React.createElement(
+                    'div',
+                    { className: 'absolute bottom-4 right-6 flex gap-2' },
+                    featured.map((_, i) =>
+                      React.createElement('button', {
+                        key: i,
+                        onClick: () => setActiveFeatured(i),
+                        'aria-label': 'Slide ' + (i + 1),
+                        className:
+                          'w-2 h-2 rounded-full transition-all ' +
+                          (i === activeFeatured ? 'bg-gold-400 w-6' : 'bg-white/40'),
+                      })
+                    )
+                  )
+                )
+            ),
+          // GRID
+          React.createElement(
+            'div',
+            { className: 'grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12' },
+            React.createElement(
+              'div',
+              { className: 'lg:col-span-2 space-y-10' },
+              React.createElement(
+                'div',
+                null,
+                React.createElement(SectionTitle, {
+                  icon: 'newspaper',
+                  title: 'Berita Terbaru',
+                  action: React.createElement(
+                    'a',
+                    {
+                      href: '/berita',
+                      onClick: (e) => {
+                        e.preventDefault();
+                        navigate('/berita');
+                      },
+                      className: 'text-xs font-semibold text-brand-700 hover:text-brand-800',
+                    },
+                    'Lihat Semua →'
+                  ),
+                }),
+                latestBerita.length > 0
+                  ? React.createElement(
+                      'div',
+                      { className: 'grid grid-cols-1 md:grid-cols-2 gap-6' },
+                      latestBerita.map((article) =>
+                        React.createElement(BeritaCard, {
+                          key: article.id,
+                          item: article,
+                          onClick: () => navigate('/berita/' + article.slug),
+                        })
+                      )
+                    )
+                  : React.createElement(EmptyState, { title: 'Belum ada berita' })
+              ),
+              featuredProgram.length > 0 &&
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement(SectionTitle, {
+                    icon: 'graduation-cap',
+                    title: 'Program Unggulan',
+                    action: React.createElement(
+                      'a',
+                      {
+                        href: '/program',
+                        onClick: (e) => {
+                          e.preventDefault();
+                          navigate('/program');
+                        },
+                        className: 'text-xs font-semibold text-brand-700 hover:text-brand-800',
+                      },
+                      'Lihat Semua →'
+                    ),
+                  }),
+                  React.createElement(
+                    'div',
+                    { className: 'grid grid-cols-1 md:grid-cols-2 gap-6' },
+                    featuredProgram.map((p) =>
+                      React.createElement(ProgramCard, {
+                        key: p.id,
+                        item: p,
+                        onClick: () => navigate('/program/' + p.slug),
+                      })
+                    )
+                  )
+                )
+            ),
+            React.createElement(
+              'div',
+              { className: 'space-y-8' },
+              React.createElement(
+                'div',
+                null,
+                React.createElement(SectionTitle, { icon: 'trending-up', title: 'Trending' }),
+                React.createElement(
+                  'div',
+                  { className: 'bg-white rounded-xl border border-gray-100 p-2 shadow-sm' },
+                  trending.length > 0
+                    ? trending.map((article) =>
+                        React.createElement(BeritaCard, {
+                          key: article.id,
+                          item: article,
+                          variant: 'compact',
+                          onClick: () => navigate('/berita/' + article.slug),
+                        })
+                      )
+                    : React.createElement(EmptyState, { title: 'Belum ada trending' })
+                )
+              ),
+              upcomingAgenda.length > 0 &&
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement(SectionTitle, {
+                    icon: 'calendar-days',
+                    title: 'Agenda Terdekat',
+                  }),
+                  React.createElement(
+                    'div',
+                    { className: 'space-y-3' },
+                    upcomingAgenda.map((a) =>
+                      React.createElement(AgendaCard, {
+                        key: a.id,
+                        item: a,
+                        onClick: () => navigate('/agenda/' + a.slug),
+                      })
+                    )
+                  )
+                ),
+              latestKhazanah.length > 0 &&
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement(SectionTitle, { icon: 'book-marked', title: 'Khazanah' }),
+                  React.createElement(
+                    'div',
+                    {
+                      className:
+                        'bg-gradient-to-br from-brand-50 to-gold-50 rounded-xl border border-brand-100 p-4 space-y-3',
+                    },
+                    latestKhazanah.map((k) =>
+                      React.createElement(
+                        'div',
+                        {
+                          key: k.id,
+                          onClick: () => navigate('/khazanah/' + k.slug),
+                          className:
+                            'cursor-pointer group border-b border-brand-100 last:border-0 pb-3 last:pb-0',
+                        },
+                        React.createElement(
+                          'h4',
+                          {
+                            className:
+                              'text-sm font-semibold text-gray-800 group-hover:text-brand-700 line-clamp-2',
+                          },
+                          k.title
+                        ),
+                        React.createElement(
+                          'p',
+                          { className: 'text-[11px] text-gray-500 mt-1' },
+                          k.author || 'Redaksi'
+                        )
+                      )
+                    )
+                  )
+                )
+            )
+          ),
+          featuredTokoh.length > 0 &&
+            React.createElement(
+              'div',
+              { className: 'mb-12' },
+              React.createElement(SectionTitle, {
+                icon: 'user-round',
+                title: 'Tokoh Pilihan',
+                action: React.createElement(
+                  'a',
+                  {
+                    href: '/tokoh',
+                    onClick: (e) => {
+                      e.preventDefault();
+                      navigate('/tokoh');
+                    },
+                    className: 'text-xs font-semibold text-brand-700 hover:text-brand-800',
+                  },
+                  'Lihat Semua →'
+                ),
+              }),
+              React.createElement(
+                'div',
+                { className: 'grid grid-cols-2 md:grid-cols-4 gap-5' },
+                featuredTokoh.map((t) =>
+                  React.createElement(TokohCard, {
+                    key: t.id,
+                    item: t,
+                    onClick: () => navigate('/tokoh/' + t.slug),
+                  })
+                )
+              )
+            )
+        );
+      }
+
+      // =====================================================================
+      // LIST VIEW
+      // =====================================================================
+      function ListView({ type, data }) {
+        const config = {
+          berita: {
+            title: 'Berita',
+            desc: 'Kabar terkini seputar pesantren Indonesia',
+            icon: 'newspaper',
+          },
+          program: {
+            title: 'Program',
+            desc: 'Program pendidikan dan kegiatan pesantren',
+            icon: 'graduation-cap',
+          },
+          khazanah: {
+            title: 'Khazanah',
+            desc: 'Artikel keislaman, kitab, dan tafsir',
+            icon: 'book-marked',
+          },
+          tokoh: {
+            title: 'Tokoh',
+            desc: 'Profil kiai, ulama, dan santri berprestasi',
+            icon: 'user-round',
+          },
+          agenda: {
+            title: 'Agenda',
+            desc: 'Kalender kegiatan pesantren',
+            icon: 'calendar-days',
+          },
+        }[type];
+
+        const items = data[type] || [];
+
+        return React.createElement(
+          'div',
+          { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10' },
+          React.createElement(
+            'div',
+            { className: 'mb-8 pb-6 border-b-2 border-gold-400' },
+            React.createElement(
+              'div',
+              { className: 'flex items-center gap-3 mb-2' },
+              React.createElement(
+                'div',
+                { className: 'bg-brand-700 p-2 rounded-lg' },
+                React.createElement(Icon, {
+                  name: config.icon,
+                  className: 'w-5 h-5 text-gold-300',
+                })
+              ),
+              React.createElement(
+                'h1',
+                { className: 'text-3xl font-extrabold text-gray-900' },
+                config.title
+              )
+            ),
+            React.createElement('p', { className: 'text-gray-500' }, config.desc),
+            React.createElement(
+              'p',
+              { className: 'text-sm text-gray-400 mt-2' },
+              items.length + ' entri ditemukan'
+            )
+          ),
+          items.length === 0
+            ? React.createElement(EmptyState, {
+                icon: config.icon,
+                title: 'Belum ada ' + config.title.toLowerCase(),
+              })
+            : type === 'tokoh'
+            ? React.createElement(
+                'div',
+                { className: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5' },
+                items.map((t) =>
+                  React.createElement(TokohCard, {
+                    key: t.id,
+                    item: t,
+                    onClick: () => navigate('/tokoh/' + t.slug),
+                  })
+                )
+              )
+            : type === 'agenda'
+            ? React.createElement(
+                'div',
+                { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
+                items.map((a) =>
+                  React.createElement(AgendaCard, {
+                    key: a.id,
+                    item: a,
+                    onClick: () => navigate('/agenda/' + a.slug),
+                  })
+                )
+              )
+            : type === 'program'
+            ? React.createElement(
+                'div',
+                { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' },
+                items.map((p) =>
+                  React.createElement(ProgramCard, {
+                    key: p.id,
+                    item: p,
+                    onClick: () => navigate('/program/' + p.slug),
+                  })
+                )
+              )
+            : React.createElement(
+                'div',
+                { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' },
+                items.map((item) =>
+                  React.createElement(BeritaCard, {
+                    key: item.id,
+                    item,
+                    onClick: () => navigate('/' + type + '/' + item.slug),
+                  })
+                )
+              )
+        );
+      }
+
+      // =====================================================================
+      // DETAIL VIEW
+      // =====================================================================
+      function DetailView({ type, slug, data }) {
+        const collection = data[type] || [];
+        const item = collection.find((x) => x.slug === slug);
+
+        useEffect(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, [slug]);
+
+        if (!item) {
+          return React.createElement(
+            'div',
+            { className: 'max-w-3xl mx-auto px-4 py-20 text-center' },
+            React.createElement(Icon, {
+              name: 'file-question',
+              className: 'w-16 h-16 text-gray-300 mx-auto mb-4',
+            }),
+            React.createElement(
+              'h1',
+              { className: 'text-2xl font-bold text-gray-900 mb-2' },
+              'Konten tidak ditemukan'
+            ),
+            React.createElement(
+              'p',
+              { className: 'text-gray-500 mb-6' },
+              'Alamat yang Anda akses tidak tersedia atau sudah dihapus.'
+            ),
+            React.createElement(
+              'button',
+              {
+                onClick: () => navigate('/' + type),
+                className:
+                  'px-5 py-2.5 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700',
+              },
+              'Kembali ke ' + type
+            )
+          );
+        }
+
+        // Berita / Khazanah
+        if (type === 'berita' || type === 'khazanah') {
+          const related = collection.filter((x) => x.id !== item.id).slice(0, 3);
+          return React.createElement(
+            'div',
+            { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
+            React.createElement(
+              'button',
+              {
+                onClick: () => navigate('/' + type),
+                className:
+                  'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6 transition-colors',
+              },
+              React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }),
+              ' Kembali ke ' + type.charAt(0).toUpperCase() + type.slice(1)
+            ),
+            React.createElement(
+              'div',
+              { className: 'grid grid-cols-1 lg:grid-cols-3 gap-8' },
+              React.createElement(
+                'article',
+                { className: 'lg:col-span-2' },
+                React.createElement(
+                  'span',
+                  {
+                    className:
+                      'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-700 text-white mb-4',
+                  },
+                  item.category || type
+                ),
+                React.createElement(
+                  'h1',
+                  { className: 'text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4' },
+                  item.title
+                ),
+                React.createElement(
+                  'div',
+                  {
+                    className:
+                      'flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-6 border-b border-gray-200',
+                  },
+                  item.author &&
+                    React.createElement(
+                      'span',
+                      { className: 'font-semibold text-gray-700' },
+                      item.author
+                    ),
+                  item.published_at &&
+                    React.createElement(
+                      'span',
+                      { className: 'flex items-center gap-1' },
+                      React.createElement(Icon, { name: 'clock', className: 'w-4 h-4' }),
+                      formatTanggalWaktu(item.published_at)
+                    ),
+                  item.views != null &&
+                    React.createElement(
+                      'span',
+                      { className: 'flex items-center gap-1' },
+                      React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' }),
+                      item.views + ' dilihat'
+                    )
+                ),
+                item.image_url &&
+                  React.createElement(
+                    'div',
+                    { className: 'rounded-xl overflow-hidden mb-8 bg-gray-200 shadow' },
+                    React.createElement('img', {
+                      src: item.image_url,
+                      alt: item.title,
+                      className: 'w-full h-auto object-cover',
+                      onError: (e) => (e.target.src = FALLBACK_IMG),
+                    })
+                  ),
+                React.createElement('div', {
+                  className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4 mb-8',
+                  dangerouslySetInnerHTML: {
+                    __html: sanitizeHTML(paragraphs(item.content || '')),
+                  },
+                }),
+                React.createElement(
+                  'div',
+                  { className: 'flex items-center gap-3 pt-6 border-t border-gray-200' },
+                  React.createElement(
+                    'span',
+                    { className: 'text-sm font-semibold text-gray-600 mr-2' },
+                    'Bagikan:'
+                  ),
+                  React.createElement(
+                    'button',
+                    {
+                      onClick: () =>
+                        window.open(
+                          'https://www.facebook.com/sharer/sharer.php?u=' +
+                            encodeURIComponent(window.location.href),
+                          '_blank'
+                        ),
+                      className:
+                        'p-2 rounded-lg bg-gray-100 text-blue-600 hover:bg-gray-200',
+                      'aria-label': 'Bagikan ke Facebook',
+                    },
+                    React.createElement(Icon, { name: 'facebook', className: 'w-4 h-4' })
+                  ),
+                  React.createElement(
+                    'button',
+                    {
+                      onClick: () =>
+                        window.open(
+                          'https://twitter.com/intent/tweet?text=' +
+                            encodeURIComponent(item.title) +
+                            '&url=' +
+                            encodeURIComponent(window.location.href),
+                          '_blank'
+                        ),
+                      className:
+                        'p-2 rounded-lg bg-gray-100 text-sky-500 hover:bg-gray-200',
+                      'aria-label': 'Bagikan ke Twitter',
+                    },
+                    React.createElement(Icon, { name: 'twitter', className: 'w-4 h-4' })
+                  ),
+                  React.createElement(
+                    'button',
+                    {
+                      onClick: () => {
+                        navigator.clipboard.writeText(window.location.href);
+                        alert('Link disalin!');
+                      },
+                      className:
+                        'p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200',
+                      'aria-label': 'Salin link',
+                    },
+                    React.createElement(Icon, { name: 'link-2', className: 'w-4 h-4' })
+                  )
+                )
+              ),
+              React.createElement(
+                'aside',
+                { className: 'space-y-8' },
+                related.length > 0 &&
+                  React.createElement(
+                    'div',
+                    null,
+                    React.createElement(SectionTitle, { title: 'Terkait' }),
+                    React.createElement(
+                      'div',
+                      { className: 'space-y-4' },
+                      related.map((r) =>
+                        React.createElement(BeritaCard, {
+                          key: r.id,
+                          item: r,
+                          variant: 'horizontal',
+                          onClick: () => navigate('/' + type + '/' + r.slug),
+                        })
+                      )
+                    )
+                  )
+              )
+            )
+          );
+        }
+
+        // Program
+        if (type === 'program') {
+          return React.createElement(
+            'div',
+            { className: 'max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
+            React.createElement(
+              'button',
+              {
+                onClick: () => navigate('/program'),
+                className:
+                  'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6',
+              },
+              React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }),
+              ' Kembali ke Program'
+            ),
+            React.createElement(
+              'div',
+              { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
+              item.image_url &&
+                React.createElement('img', {
+                  src: item.image_url,
+                  alt: item.title,
+                  className: 'w-full h-72 object-cover',
+                  onError: (e) => (e.target.src = FALLBACK_IMG),
+                }),
+              React.createElement(
+                'div',
+                { className: 'p-6 md:p-10' },
+                item.status &&
+                  React.createElement(
+                    'span',
+                    {
+                      className:
+                        'inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-3 ' +
+                        (item.status === 'dibuka'
+                          ? 'bg-brand-600'
+                          : item.status === 'ditutup'
+                          ? 'bg-rose-600'
+                          : 'bg-gold-600'),
+                    },
+                    item.status
+                  ),
+                React.createElement(
+                  'h1',
+                  { className: 'text-3xl font-bold text-gray-900 mb-4' },
+                  item.title
+                ),
+                React.createElement(
+                  'div',
+                  {
+                    className:
+                      'grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 pb-6 border-b border-gray-200',
+                  },
+                  item.duration &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Durasi'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'clock',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        item.duration
+                      )
+                    ),
+                  item.schedule &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Jadwal'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'calendar',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        item.schedule
+                      )
+                    ),
+                  item.contact &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Kontak'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'phone',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        item.contact
+                      )
+                    )
+                ),
+                React.createElement('div', {
+                  className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4',
+                  dangerouslySetInnerHTML: {
+                    __html: sanitizeHTML(paragraphs(item.description || '')),
+                  },
+                })
+              )
+            )
+          );
+        }
+
+        // Tokoh
+        if (type === 'tokoh') {
+          return React.createElement(
+            'div',
+            { className: 'max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
+            React.createElement(
+              'button',
+              {
+                onClick: () => navigate('/tokoh'),
+                className:
+                  'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6',
+              },
+              React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }),
+              ' Kembali ke Tokoh'
+            ),
+            React.createElement(
+              'div',
+              { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
+              React.createElement(
+                'div',
+                { className: 'md:flex' },
+                item.image_url &&
+                  React.createElement(
+                    'div',
+                    { className: 'md:w-64 flex-shrink-0' },
+                    React.createElement('img', {
+                      src: item.image_url,
+                      alt: item.name,
+                      className: 'w-full h-64 md:h-full object-cover',
+                      onError: (e) => (e.target.src = FALLBACK_IMG),
+                    })
+                  ),
+                React.createElement(
+                  'div',
+                  { className: 'p-6 md:p-8 flex-1' },
+                  React.createElement(
+                    'h1',
+                    { className: 'text-3xl font-extrabold text-gray-900 mb-1' },
+                    item.name
+                  ),
+                  React.createElement(
+                    'p',
+                    { className: 'text-gold-600 font-semibold mb-4' },
+                    item.title
+                  ),
+                  item.pesantren &&
+                    React.createElement(
+                      'p',
+                      { className: 'text-sm text-gray-500 mb-4 flex items-center gap-1' },
+                      React.createElement(Icon, { name: 'building-2', className: 'w-4 h-4' }),
+                      item.pesantren
+                    ),
+                  item.expertise &&
+                    React.createElement(
+                      'div',
+                      { className: 'flex flex-wrap gap-1.5 mb-4' },
+                      item.expertise.map((tag) =>
+                        React.createElement(
+                          'span',
+                          {
+                            key: tag,
+                            className:
+                              'text-xs px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium',
+                          },
+                          tag
+                        )
+                      )
+                    ),
+                  item.bio &&
+                    React.createElement(
+                      'p',
+                      { className: 'text-gray-700 leading-relaxed mb-3' },
+                      item.bio
+                    ),
+                  item.content &&
+                    React.createElement('div', {
+                      className: 'article-body text-gray-700 leading-relaxed',
+                      dangerouslySetInnerHTML: {
+                        __html: sanitizeHTML(paragraphs(item.content)),
+                      },
+                    })
+                )
+              )
+            )
+          );
+        }
+
+        // Agenda
+        if (type === 'agenda') {
+          return React.createElement(
+            'div',
+            { className: 'max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
+            React.createElement(
+              'button',
+              {
+                onClick: () => navigate('/agenda'),
+                className:
+                  'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6',
+              },
+              React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }),
+              ' Kembali ke Agenda'
+            ),
+            React.createElement(
+              'div',
+              { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
+              item.image_url &&
+                React.createElement('img', {
+                  src: item.image_url,
+                  alt: item.title,
+                  className: 'w-full h-72 object-cover',
+                  onError: (e) => (e.target.src = FALLBACK_IMG),
+                }),
+              React.createElement(
+                'div',
+                { className: 'p-6 md:p-10' },
+                item.status &&
+                  React.createElement(
+                    'span',
+                    {
+                      className:
+                        'inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-3 ' +
+                        (item.status === 'akan-datang'
+                          ? 'bg-brand-600'
+                          : item.status === 'berlangsung'
+                          ? 'bg-gold-600'
+                          : 'bg-gray-500'),
+                    },
+                    item.status
+                  ),
+                React.createElement(
+                  'h1',
+                  { className: 'text-3xl font-bold text-gray-900 mb-4' },
+                  item.title
+                ),
+                React.createElement(
+                  'div',
+                  {
+                    className:
+                      'grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 pb-6 border-b border-gray-200',
+                  },
+                  item.date_start &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Mulai'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'calendar',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        formatTanggalWaktu(item.date_start)
+                      )
+                    ),
+                  item.date_end &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Selesai'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'calendar',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        formatTanggalWaktu(item.date_end)
+                      )
+                    ),
+                  item.location &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Lokasi'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'map-pin',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        item.location
+                      )
+                    ),
+                  item.organizer &&
+                    React.createElement(
+                      'div',
+                      null,
+                      React.createElement(
+                        'p',
+                        { className: 'text-xs text-gray-500 uppercase font-semibold' },
+                        'Penyelenggara'
+                      ),
+                      React.createElement(
+                        'p',
+                        {
+                          className:
+                            'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1',
+                        },
+                        React.createElement(Icon, {
+                          name: 'users',
+                          className: 'w-4 h-4 text-brand-600',
+                        }),
+                        item.organizer
+                      )
+                    )
+                ),
+                React.createElement('div', {
+                  className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4',
+                  dangerouslySetInnerHTML: {
+                    __html: sanitizeHTML(paragraphs(item.description || '')),
+                  },
+                })
+              )
+            )
+          );
+        }
+
+        return null;
+      }
+
+      // =====================================================================
+      // SEARCH VIEW
+      // =====================================================================
+      function SearchView({ query }) {
+        const [results, setResults] = useState([]);
+        const [loading, setLoading] = useState(true);
+
+        useEffect(() => {
+          let mounted = true;
+          setLoading(true);
+          getData()
+            .then((data) => {
+              if (!mounted) return;
+              const q = query.toLowerCase();
+              const combined = [
+                ...data.berita.map((x) => ({ ...x, _type: 'berita' })),
+                ...data.program.map((x) => ({ ...x, _type: 'program' })),
+                ...data.khazanah.map((x) => ({ ...x, _type: 'khazanah' })),
+                ...data.tokoh.map((x) => ({ ...x, _type: 'tokoh' })),
+                ...data.agenda.map((x) => ({ ...x, _type: 'agenda' })),
+              ];
+              const filtered = combined.filter((item) => {
+                const hay = [
+                  item.title,
+                  item.name,
+                  item.summary,
+                  item.description,
+                  item.bio,
+                  item.category,
+                  item.author,
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+                  .toLowerCase();
+                return hay.includes(q);
+              });
+              setResults(filtered);
+              setLoading(false);
+            })
+            .catch(() => setLoading(false));
+          return () => {
+            mounted = false;
+          };
+        }, [query]);
+
+        return React.createElement(
+          'div',
+          { className: 'max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10' },
+          React.createElement(
+            'h1',
+            { className: 'text-2xl font-bold text-gray-900 mb-2' },
+            'Hasil Pencarian'
+          ),
+          React.createElement(
+            'p',
+            { className: 'text-gray-500 mb-8' },
+            'Kata kunci: ',
+            React.createElement('strong', { className: 'text-brand-700' }, '"' + query + '"'),
+            ' — ',
+            loading ? 'memuat...' : results.length + ' hasil'
+          ),
+          loading
+            ? React.createElement(SkeletonGrid, { count: 3 })
+            : results.length === 0
+            ? React.createElement(EmptyState, {
+                icon: 'search-x',
+                title: 'Tidak ada hasil',
+                desc: 'Coba kata kunci lain.',
+              })
+            : React.createElement(
+                'div',
+                { className: 'space-y-4' },
+                results.map((item, i) =>
+                  React.createElement(
+                    'div',
+                    {
+                      key: i,
+                      onClick: () => navigate('/' + item._type + '/' + item.slug),
+                      className:
+                        'bg-white rounded-xl border border-gray-100 p-5 hover:border-brand-200 hover:shadow cursor-pointer transition-all',
+                    },
+                    React.createElement(
+                      'span',
+                      {
+                        className:
+                          'inline-block text-[10px] font-bold uppercase tracking-wider text-brand-700 bg-brand-50 px-2 py-0.5 rounded mb-2',
+                      },
+                      item._type
+                    ),
+                    React.createElement(
+                      'h3',
+                      {
+                        className:
+                          'text-lg font-bold text-gray-900 mb-1 hover:text-brand-700',
+                      },
+                      item.title || item.name
+                    ),
+                    React.createElement(
+                      'p',
+                      { className: 'text-sm text-gray-500 line-clamp-2' },
+                      item.summary || item.description || item.bio
+                    )
+                  )
+                )
+              )
+        );
+      }
+
+      // =====================================================================
+      // APP
+      // =====================================================================
+      function App() {
+        const [route, setRoute] = useState(parsePath());
+        const [data, setData] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        const [searchQuery, setSearchQuery] = useState(null);
+
+        useEffect(() => {
+          function onPop() {
+            setRoute(parsePath());
+            setSearchQuery(null);
+          }
+          window.addEventListener('popstate', onPop);
+          window.addEventListener('hashchange', onPop);
+          return () => {
+            window.removeEventListener('popstate', onPop);
+            window.removeEventListener('hashchange', onPop);
+          };
+        }, []);
+
+        useEffect(() => {
+          let mounted = true;
+          setLoading(true);
+          getData()
+            .then((d) => {
+              if (mounted) {
+                setData(d);
+                setLoading(false);
+              }
+            })
+            .catch((err) => {
+              if (mounted) {
+                setError(err);
+                setLoading(false);
+              }
+            });
+          return () => {
+            mounted = false;
+          };
+        }, []);
+
+        function handleSearch(q) {
+          setSearchQuery(q);
+          window.scrollTo({ top: 0 });
+        }
+
+        function retry() {
+          setError(null);
+          setLoading(true);
+          getData()
+            .then((d) => {
+              setData(d);
+              setLoading(false);
+            })
+            .catch((e) => {
+              setError(e);
+              setLoading(false);
+            });
+        }
+
+        useEffect(() => {
+          if (searchQuery) {
+            document.title = 'Cari "' + searchQuery + '" — ' + SITE.name;
+            return;
+          }
+          const { view, slug } = route;
+          if (view === 'home') {
+            document.title = SITE.name + '.online — ' + SITE.tagline;
+          } else {
+            let title = view.charAt(0).toUpperCase() + view.slice(1);
+            if (slug && data) {
+              const item = (data[view] || []).find((x) => x.slug === slug);
+              if (item) title = item.title || item.name;
+            }
+            document.title = title + ' — ' + SITE.name;
+          }
+        }, [route, data, searchQuery]);
+
+        let content;
+        if (loading) {
+          content = React.createElement(
+            'div',
+            { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12' },
+            React.createElement(
+              'div',
+              { className: 'animate-pulse space-y-8' },
+              React.createElement('div', { className: 'h-96 bg-gray-200 rounded-2xl' }),
+              React.createElement(SkeletonGrid, { count: 3 })
+            )
+          );
+        } else if (error) {
+          content = React.createElement(ErrorState, { onRetry: retry });
+        } else if (searchQuery) {
+          content = React.createElement(SearchView, { query: searchQuery });
+        } else if (route.view === 'home') {
+          content = React.createElement(HomeView, { data });
+        } else if (route.slug) {
+          content = React.createElement(DetailView, {
+            type: route.view,
+            slug: route.slug,
+            data,
+          });
+        } else {
+          content = React.createElement(ListView, { type: route.view, data });
+        }
+
+        return React.createElement(
+          'div',
+          { className: 'min-h-screen bg-gray-50 flex flex-col' },
+          React.createElement(Header, { currentRoute: route, onSearch: handleSearch }),
+          React.createElement('main', { className: 'flex-1' }, content),
+          React.createElement(Footer, null)
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(App));
+    </script>
+  </body>
+</html>
