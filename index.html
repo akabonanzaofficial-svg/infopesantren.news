@@ -498,11 +498,10 @@
       }
 
       function paragraphs(html) {
-        if (!html) return '';
-        return String(html)
-          .split(/\n{2,}/)
-          .map((p) => '<p>' + p.replace(/\n/g, '<br/>') + '</p>')
-          .join('');
+      if (!html) return '';
+      // Jika konten sudah berupa HTML (dari Quill), kita langsung kembalikan.
+      // Fungsi sanitizeHTML() di bawahnya akan membersihkannya dari script berbahaya.
+      return html;
       }
 
       // =====================================================================
