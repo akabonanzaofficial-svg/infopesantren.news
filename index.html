@@ -491,17 +491,23 @@
         return formatTanggal(iso, { hour: '2-digit', minute: '2-digit' });
       }
 
-      function sanitizeHTML(html) {
+            function sanitizeHTML(html) {
         if (!html) return '';
-        if (window.DOMPurify) return window.DOMPurify.sanitize(html);
-        return String(html).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        // Izinkan tag HTML standar dari Quill (termasuk gambar, heading, list, dll)
+        if (window.DOMPurify) {
+          return window.DOMPurify.sanitize(html, {
+            ADD_TAGS: ['iframe'], 
+            ADD_ATTR: ['target', 'allowfullscreen', 'frameborder']
+          });
+        }
+        return String(html);
       }
 
       function paragraphs(html) {
-      if (!html) return '';
-      // Jika konten sudah berupa HTML (dari Quill), kita langsung kembalikan.
-      // Fungsi sanitizeHTML() di bawahnya akan membersihkannya dari script berbahaya.
-      return html;
+        if (!html) return '';
+        // Karena admin sudah menggunakan Quill (menghasilkan HTML), kita tidak perlu
+        // mengubah \n menjadi <p> lagi. Cukup kembalikan HTML aslinya.
+        return html;
       }
 
       // =====================================================================
