@@ -28,6 +28,8 @@
       .ql-editor { min-height: 250px; font-family: 'Merriweather', serif; font-size: 16px; }
       .ql-container { border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
       .ql-toolbar { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; background: #f9fafb; }
+      /* Mencegah halaman scroll ke samping di HP */
+      html, body { overflow-x: hidden; }
     </style>
   </head>
   <body>
@@ -116,7 +118,6 @@
         const quillRef = useRef(null);
         const quillInstance = useRef(null);
 
-        // Inisialisasi Quill
         useEffect(() => {
           if (quillRef.current && !quillInstance.current) {
             quillInstance.current = new Quill(quillRef.current, {
@@ -155,7 +156,6 @@
               }
             });
 
-            // Jika mode edit, isi Quill dengan konten lama
             if (initialData && initialData.content) {
               quillInstance.current.clipboard.dangerouslyPasteHTML(initialData.content);
             }
@@ -211,41 +211,38 @@
               body: JSON.stringify(payload)
             });
             const json = await res.json();
-            if (json.success) { alert(isEdit ? 'Berita berhasil diperbarui!' : 'Berita berhasil disimpan!'); onSave(); } 
+            if (json.success) { alert(isEdit ? 'Berita diperbarui!' : 'Berita disimpan!'); onSave(); } 
             else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); } finally { setSaving(false); }
         };
 
-        // --- TAMPILAN PREVIEW ---
         if (previewMode) {
-          return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-10 max-w-4xl mx-auto' },
-            React.createElement('div', { className: 'flex justify-between items-center mb-6 pb-4 border-b' },
+          return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-10 max-w-4xl mx-auto' },
+            React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-4 border-b gap-4' },
               React.createElement('h2', { className: 'text-lg font-bold text-gray-500 uppercase tracking-widest' }, 'Preview Artikel'),
-              React.createElement('button', { onClick: () => setPreviewMode(false), className: 'text-sm font-medium text-brand-600 hover:text-brand-800' }, '← Kembali Edit')
+              React.createElement('button', { onClick: () => setPreviewMode(false), className: 'text-sm font-medium text-brand-600 hover:text-brand-800 bg-brand-50 px-4 py-2 rounded-lg' }, '← Kembali Edit')
             ),
             React.createElement('span', { className: 'bg-brand-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase' }, formData.category),
-            React.createElement('h1', { className: 'text-3xl font-bold text-gray-900 mt-4 mb-2' }, formData.title),
+            React.createElement('h1', { className: 'text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-2' }, formData.title),
             React.createElement('div', { className: 'flex gap-4 text-sm text-gray-500 mb-6 border-b pb-4' },
               React.createElement('span', null, formData.author),
               React.createElement('span', null, new Date().toLocaleDateString('id-ID'))
             ),
-            formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-64 object-cover rounded-xl mb-6' }),
-            React.createElement('div', { className: 'prose prose-lg max-w-none text-gray-700 leading-relaxed', dangerouslySetInnerHTML: { __html: previewContent } }),
+            formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-48 md:h-64 object-cover rounded-xl mb-6' }),
+            React.createElement('div', { className: 'prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed overflow-x-hidden', dangerouslySetInnerHTML: { __html: previewContent } }),
             
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
-              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
+              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
             )
           );
         }
 
-        // --- TAMPILAN FORM ---
-        return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-6' },
+        return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 pb-20 md:pb-6' },
           React.createElement('div', { className: 'flex justify-between items-center mb-6 pb-4 border-b' },
-            React.createElement('h2', { className: 'text-xl font-bold text-gray-800' }, isEdit ? 'Edit Berita' : 'Tulis Berita Baru'),
-            React.createElement('button', { type: 'button', onClick: onCancel, className: 'text-sm text-gray-500 hover:text-gray-800' }, 'Batal')
+            React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? 'Edit Berita' : 'Tulis Berita Baru'),
+            React.createElement('button', { type: 'button', onClick: onCancel, className: 'text-sm text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1 rounded' }, 'Batal')
           ),
           React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-5' },
-            // Judul & Slug
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Berita'),
@@ -256,7 +253,6 @@
                 React.createElement('input', { name: 'slug', required: true, value: formData.slug, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md bg-gray-50', placeholder: 'judul-berita' })
               )
             ),
-            // Kategori & Penulis
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori'),
@@ -269,22 +265,19 @@
                 React.createElement('input', { name: 'author', value: formData.author, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' })
               )
             ),
-            // Ringkasan
             React.createElement('div', null,
               React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan (Summary)'),
               React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan singkat...' })
             ),
 
-            // Konten Utama (Quill)
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Konten Artikel (Gunakan toolbar untuk format)'),
-              React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300' },
-                React.createElement('div', { ref: quillRef })
+              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Konten Artikel'),
+              React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden' },
+                React.createElement('div', { ref: quillRef, className: 'text-base' })
               ),
               uploading && React.createElement('p', { className: 'text-xs text-brand-600 mt-1 animate-pulse' }, 'Sedang mengunggah gambar...')
             ),
 
-            // Gambar Sampul
             React.createElement('div', { className: 'border p-4 rounded-lg bg-gray-50' },
               React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Sampul (Utama)'),
               React.createElement('div', { className: 'flex flex-col md:flex-row gap-4' },
@@ -300,8 +293,7 @@
               formData.image_url && React.createElement('img', { src: formData.image_url, className: 'h-20 mt-2 rounded object-cover border' })
             ),
 
-            // Pengaturan
-            React.createElement('div', { className: 'flex gap-6 items-center pt-2' },
+            React.createElement('div', { className: 'flex flex-col md:flex-row gap-4 md:gap-6 md:items-center pt-2' },
               React.createElement('label', { className: 'flex items-center gap-2 text-sm' },
                 React.createElement('input', { type: 'checkbox', name: 'featured', checked: formData.featured, onChange: handleChange, className: 'w-4 h-4 text-brand-600 rounded' }),
                 'Jadikan Berita Utama (Featured)'
@@ -315,13 +307,12 @@
               )
             ),
 
-            // Tombol Aksi
-            React.createElement('div', { className: 'flex justify-end gap-3 pt-4 border-t mt-4' },
-              React.createElement('button', { type: 'button', onClick: onCancel, className: 'px-5 py-2 border rounded-lg hover:bg-gray-50 text-gray-600' }, 'Batal'),
-              React.createElement('button', { type: 'button', onClick: handlePreview, className: 'px-5 py-2 border-2 border-brand-600 text-brand-700 font-bold rounded-lg hover:bg-brand-50 flex items-center gap-2' },
+            React.createElement('div', { className: 'flex flex-col md:flex-row justify-end gap-3 pt-4 border-t mt-4' },
+              React.createElement('button', { type: 'button', onClick: onCancel, className: 'w-full md:w-auto px-5 py-2 border rounded-lg hover:bg-gray-50 text-gray-600 order-2 md:order-1' }, 'Batal'),
+              React.createElement('button', { type: 'button', onClick: handlePreview, className: 'w-full md:w-auto px-5 py-2 border-2 border-brand-600 text-brand-700 font-bold rounded-lg hover:bg-brand-50 flex items-center justify-center gap-2 order-1 md:order-2' },
                 React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' }), ' Preview'
               ),
-              React.createElement('button', { type: 'submit', disabled: saving, className: 'px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg disabled:opacity-50 flex items-center gap-2' },
+              React.createElement('button', { type: 'submit', disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg disabled:opacity-50 flex items-center justify-center gap-2 order-3' },
                 saving ? 'Menyimpan...' : React.createElement(React.Fragment, null, React.createElement(Icon, { name: 'save', className: 'w-4 h-4' }), isEdit ? ' Simpan Perubahan' : ' Simpan & Publish')
               )
             )
@@ -331,7 +322,7 @@
 
       // ================= KOMPONEN DASHBOARD =================
       function Dashboard({ auth, onLogout }) {
-        const [view, setView] = useState('list'); // 'list' | 'create' | 'edit'
+        const [view, setView] = useState('list'); 
         const [editData, setEditData] = useState(null);
         const [articles, setArticles] = useState([]);
         const [loading, setLoading] = useState(true);
@@ -361,25 +352,18 @@
           try {
             const res = await fetch(`${API_URL}/api/berita/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
-            if (json.success) { alert('Berita berhasil dihapus'); fetchArticles(); } else { alert('Gagal: ' + json.error); }
+            if (json.success) { alert('Berita dihapus'); fetchArticles(); } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
         };
 
-        const handleEditClick = (article) => {
-          setEditData(article);
-          setView('edit');
-        };
-
-        const handleCreateClick = () => {
-          setEditData(null);
-          setView('create');
-        };
-
+        const handleEditClick = (article) => { setEditData(article); setView('edit'); };
+        const handleCreateClick = () => { setEditData(null); setView('create'); };
         const onSaveSuccess = () => { setView('list'); setEditData(null); fetchArticles(); };
 
-        return React.createElement('div', { className: 'flex min-h-screen' },
-          // SIDEBAR KIRI
-          React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex-col hidden md:flex' },
+        return React.createElement('div', { className: 'flex min-h-screen pb-16 md:pb-0' },
+          
+          // ================= SIDEBAR KIRI (DESKTOP) =================
+          React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex-col hidden md:flex fixed h-full z-10' },
             React.createElement('div', { className: 'h-16 flex items-center justify-center border-b border-gray-800 bg-gray-950' },
               React.createElement('h1', { className: 'text-xl font-extrabold tracking-wider' }, 'Info', React.createElement('span', { className: 'text-brand-500' }, 'Pesantren'), React.createElement('span', { className: 'text-gold-500' }, '.admin'))
             ),
@@ -401,45 +385,66 @@
             )
           ),
 
-          // KONTEN KANAN
-          React.createElement('main', { className: 'flex-1 flex flex-col h-screen overflow-hidden' },
-            // Topbar mobile
-            React.createElement('header', { className: 'bg-white shadow-sm h-16 flex items-center px-4 md:hidden justify-between' },
-              React.createElement('span', { className: 'font-bold' }, 'Admin Panel'),
-              React.createElement('button', { onClick: onLogout, className: 'text-red-600 text-sm font-bold' }, 'Logout')
+          // ================= KONTEN KANAN =================
+          React.createElement('main', { className: 'flex-1 flex flex-col min-h-screen md:ml-64 bg-gray-50' },
+            // Topbar (Hanya Mobile)
+            React.createElement('header', { className: 'bg-white shadow-sm h-16 flex items-center px-4 md:hidden justify-between sticky top-0 z-20' },
+              React.createElement('span', { className: 'font-bold text-gray-800' }, 'InfoPesantren.admin'),
+              React.createElement('span', { className: 'text-xs text-gray-500' }, auth.username)
             ),
             
-            React.createElement('div', { className: 'flex-1 overflow-y-auto p-4 md:p-8' },
+            React.createElement('div', { className: 'flex-1 p-4 md:p-8' },
               view === 'list' ? 
                 React.createElement('div', null,
                   React.createElement('div', { className: 'flex justify-between items-center mb-6' },
                     React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, 'Daftar Berita'),
-                    React.createElement('button', { onClick: handleCreateClick, className: 'bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2' },
+                    React.createElement('button', { onClick: handleCreateClick, className: 'hidden md:flex bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg font-medium items-center gap-2' },
                       React.createElement(Icon, { name: 'plus', className: 'w-4 h-4' }), ' Tambah Baru'
                     )
                   ),
-                  loading ? React.createElement('div', null, 'Memuat data...') :
-                  React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border overflow-hidden' },
-                    React.createElement('table', { className: 'w-full text-left' },
-                      React.createElement('thead', { className: 'bg-gray-50 border-b' },
-                        React.createElement('tr', null,
-                          React.createElement('th', { className: 'p-4 text-sm' }, 'Judul'),
-                          React.createElement('th', { className: 'p-4 text-sm' }, 'Kategori'),
-                          React.createElement('th', { className: 'p-4 text-sm' }, 'Status'),
-                          React.createElement('th', { className: 'p-4 text-sm text-right' }, 'Aksi')
-                        )
-                      ),
-                      React.createElement('tbody', null,
-                        articles.map(article => 
-                          React.createElement('tr', { key: article.id, className: 'border-b hover:bg-gray-50' },
-                            React.createElement('td', { className: 'p-4 text-sm font-medium' }, article.title),
-                            React.createElement('td', { className: 'p-4 text-sm' }, article.category),
-                            React.createElement('td', { className: 'p-4 text-sm' }, React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-xs' }, article.status)),
-                            React.createElement('td', { className: 'p-4 text-right flex justify-end gap-3' },
-                              React.createElement('button', { onClick: () => handleEditClick(article), className: 'text-blue-600 hover:text-blue-800 p-1' }, React.createElement(Icon, { name: 'edit', className: 'w-4 h-4' })),
-                              React.createElement('a', { href: `/berita/${article.slug}`, target: '_blank', className: 'text-gray-500 hover:text-gray-700 p-1' }, React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' })),
-                              React.createElement('button', { onClick: () => handleDelete(article.id), className: 'text-red-500 hover:text-red-700 p-1' }, React.createElement(Icon, { name: 'trash-2', className: 'w-4 h-4' }))
+                  loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
+                  React.createElement(React.Fragment, null,
+                    // 1. TAMPILAN TABEL (DESKTOP)
+                    React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border overflow-hidden hidden md:block' },
+                      React.createElement('table', { className: 'w-full text-left' },
+                        React.createElement('thead', { className: 'bg-gray-50 border-b' },
+                          React.createElement('tr', null,
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Judul'),
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Kategori'),
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Status'),
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold text-right' }, 'Aksi')
+                          )
+                        ),
+                        React.createElement('tbody', null,
+                          articles.map(article => 
+                            React.createElement('tr', { key: article.id, className: 'border-b hover:bg-gray-50' },
+                              React.createElement('td', { className: 'p-4 text-sm font-medium' }, article.title),
+                              React.createElement('td', { className: 'p-4 text-sm' }, article.category),
+                              React.createElement('td', { className: 'p-4 text-sm' }, React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-xs' }, article.status)),
+                              React.createElement('td', { className: 'p-4 text-right flex justify-end gap-3' },
+                                React.createElement('button', { onClick: () => handleEditClick(article), className: 'text-blue-600 hover:text-blue-800 p-1' }, React.createElement(Icon, { name: 'edit', className: 'w-4 h-4' })),
+                                React.createElement('a', { href: `/berita/${article.slug}`, target: '_blank', className: 'text-gray-500 hover:text-gray-700 p-1' }, React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' })),
+                                React.createElement('button', { onClick: () => handleDelete(article.id), className: 'text-red-500 hover:text-red-700 p-1' }, React.createElement(Icon, { name: 'trash-2', className: 'w-4 h-4' }))
+                              )
                             )
+                          )
+                        )
+                      )
+                    ),
+
+                    // 2. TAMPILAN KARTU (MOBILE)
+                    React.createElement('div', { className: 'md:hidden space-y-4' },
+                      articles.map(article => 
+                        React.createElement('div', { key: article.id, className: 'bg-white p-4 rounded-xl shadow-sm border border-gray-200' },
+                          React.createElement('div', { className: 'flex justify-between items-start mb-2' },
+                            React.createElement('h3', { className: 'font-bold text-gray-900 text-sm leading-snug w-2/3' }, article.title),
+                            React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] uppercase font-bold' }, article.status)
+                          ),
+                          React.createElement('p', { className: 'text-xs text-gray-500 mb-4' }, article.category),
+                          React.createElement('div', { className: 'flex justify-end gap-2 pt-3 border-t border-gray-100' },
+                            React.createElement('button', { onClick: () => handleEditClick(article), className: 'flex items-center gap-1 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'edit', className: 'w-3 h-3' }), 'Edit'),
+                            React.createElement('a', { href: `/berita/${article.slug}`, target: '_blank', className: 'flex items-center gap-1 text-xs font-medium text-gray-600 bg-gray-100 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'eye', className: 'w-3 h-3' }), 'Lihat'),
+                            React.createElement('button', { onClick: () => handleDelete(article.id), className: 'flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'trash-2', className: 'w-3 h-3' }), 'Hapus')
                           )
                         )
                       )
@@ -453,6 +458,26 @@
                   onCancel: () => setView('list'), 
                   onSave: onSaveSuccess 
                 })
+            )
+          ),
+
+          // ================= BOTTOM NAVIGATION (KHUSUS MOBILE) =================
+          React.createElement('nav', { className: 'md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50 px-2 pb-safe' },
+            React.createElement('button', { onClick: () => setView('list'), className: `flex flex-col items-center justify-center w-full h-full space-y-1 ${view === 'list' ? 'text-brand-600' : 'text-gray-500'}` },
+              React.createElement(Icon, { name: 'list', className: 'w-6 h-6' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Daftar')
+            ),
+            React.createElement('button', { onClick: handleCreateClick, className: `flex flex-col items-center justify-center w-full h-full space-y-1 ${view === 'create' ? 'text-brand-600' : 'text-gray-500'}` },
+              React.createElement(Icon, { name: 'plus-circle', className: 'w-6 h-6' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Tambah')
+            ),
+            React.createElement('a', { href: '/', target: '_blank', className: 'flex flex-col items-center justify-center w-full h-full space-y-1 text-gray-500 hover:text-brand-600' },
+              React.createElement(Icon, { name: 'globe', className: 'w-6 h-6' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Web')
+            ),
+            React.createElement('button', { onClick: onLogout, className: 'flex flex-col items-center justify-center w-full h-full space-y-1 text-gray-500 hover:text-red-600' },
+              React.createElement(Icon, { name: 'log-out', className: 'w-6 h-6' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Keluar')
             )
           )
         );
