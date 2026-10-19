@@ -8,6 +8,21 @@
   },
   "berita": [
     {
+      "id": "b-1792392025859",
+      "slug": "berita-1792392025859",
+      "title": "Pesantren Mandiri",
+      "summary": "Pesantren adalah lembaga yang membangun generasi muslim Indonesia",
+      "content": "",
+      "category": "Pesantren",
+      "author": "Admin",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1792392005306.jpeg",
+      "featured": true,
+      "status": "published",
+      "published_at": "2026-10-19T06:40:25.859Z",
+      "views": 0,
+      "tags": []
+    },
+    {
       "id": "b-001",
       "slug": "pesantren-al-hikmah-juara-mtq-nasional",
       "title": "Pesantren Al-Hikmah Raih Juara 1 MTQ Nasional 2026",
@@ -20,7 +35,11 @@
       "views": 1240,
       "featured": true,
       "status": "published",
-      "tags": ["MTQ", "prestasi", "nasional"]
+      "tags": [
+        "MTQ",
+        "prestasi",
+        "nasional"
+      ]
     },
     {
       "id": "b-002",
@@ -35,7 +54,10 @@
       "views": 856,
       "featured": true,
       "status": "published",
-      "tags": ["beasiswa", "santri"]
+      "tags": [
+        "beasiswa",
+        "santri"
+      ]
     },
     {
       "id": "b-003",
@@ -50,7 +72,10 @@
       "views": 2100,
       "featured": true,
       "status": "published",
-      "tags": ["haul", "kegiatan"]
+      "tags": [
+        "haul",
+        "kegiatan"
+      ]
     },
     {
       "id": "b-004",
@@ -65,7 +90,10 @@
       "views": 1540,
       "featured": false,
       "status": "published",
-      "tags": ["olimpiade", "sains"]
+      "tags": [
+        "olimpiade",
+        "sains"
+      ]
     },
     {
       "id": "b-005",
@@ -80,7 +108,10 @@
       "views": 720,
       "featured": false,
       "status": "published",
-      "tags": ["sosial", "khitanan"]
+      "tags": [
+        "sosial",
+        "khitanan"
+      ]
     },
     {
       "id": "b-006",
@@ -95,7 +126,10 @@
       "views": 1890,
       "featured": false,
       "status": "published",
-      "tags": ["kemenag", "digitalisasi"]
+      "tags": [
+        "kemenag",
+        "digitalisasi"
+      ]
     },
     {
       "id": "b-007",
@@ -110,7 +144,10 @@
       "views": 1320,
       "featured": false,
       "status": "published",
-      "tags": ["teknologi", "inovasi"]
+      "tags": [
+        "teknologi",
+        "inovasi"
+      ]
     },
     {
       "id": "b-008",
@@ -125,7 +162,10 @@
       "views": 640,
       "featured": false,
       "status": "published",
-      "tags": ["wirausaha", "santri"]
+      "tags": [
+        "wirausaha",
+        "santri"
+      ]
     },
     {
       "id": "b-009",
@@ -140,7 +180,10 @@
       "views": 980,
       "featured": false,
       "status": "published",
-      "tags": ["robotik", "teknologi"]
+      "tags": [
+        "robotik",
+        "teknologi"
+      ]
     },
     {
       "id": "b-010",
@@ -155,7 +198,10 @@
       "views": 1100,
       "featured": false,
       "status": "published",
-      "tags": ["beasiswa", "internasional"]
+      "tags": [
+        "beasiswa",
+        "internasional"
+      ]
     }
   ],
   "program": [
@@ -317,7 +363,11 @@
       "image_url": "https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&w=800",
       "birth": "1934-02-08",
       "pesantren": "Al-Hikmah",
-      "expertise": ["Fiqih", "Tafsir", "Tasawuf"],
+      "expertise": [
+        "Fiqih",
+        "Tafsir",
+        "Tasawuf"
+      ],
       "featured": true,
       "status": "published"
     },
@@ -331,7 +381,10 @@
       "image_url": "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&w=800",
       "birth": "1972-06-15",
       "pesantren": "Al-Hikmah Putri",
-      "expertise": ["Pendidikan", "Ekonomi Umat"],
+      "expertise": [
+        "Pendidikan",
+        "Ekonomi Umat"
+      ],
       "featured": true,
       "status": "published"
     },
@@ -345,7 +398,11 @@
       "image_url": "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&w=800",
       "birth": "1995-03-20",
       "pesantren": "Al-Hikmah",
-      "expertise": ["Tahfidz", "Qira'ah", "Tilawah"],
+      "expertise": [
+        "Tahfidz",
+        "Qira'ah",
+        "Tilawah"
+      ],
       "featured": true,
       "status": "published"
     },
@@ -359,7 +416,11 @@
       "image_url": "https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&w=800",
       "birth": "1940-09-07",
       "pesantren": "Tebuireng",
-      "expertise": ["Pemikiran Islam", "Politik", "Kemanusiaan"],
+      "expertise": [
+        "Pemikiran Islam",
+        "Politik",
+        "Kemanusiaan"
+      ],
       "featured": true,
       "status": "published"
     },
@@ -373,7 +434,11 @@
       "image_url": "https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&w=800",
       "birth": "1871-02-14",
       "pesantren": "Tebuireng",
-      "expertise": ["Fiqih", "Hadits", "Tasawuf"],
+      "expertise": [
+        "Fiqih",
+        "Hadits",
+        "Tasawuf"
+      ],
       "featured": false,
       "status": "published"
     },
@@ -387,7 +452,10 @@
       "image_url": "https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&w=800",
       "birth": "1914-06-01",
       "pesantren": "Tebuireng",
-      "expertise": ["Pendidikan", "Politik"],
+      "expertise": [
+        "Pendidikan",
+        "Politik"
+      ],
       "featured": false,
       "status": "published"
     }
