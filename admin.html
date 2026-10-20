@@ -5,21 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin — InfoPesantren.online</title>
     
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = { theme: { extend: { colors: { brand: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669', 700: '#047857' }, gold: { 500: '#f59e0b' } } } } }
     </script>
     
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- React -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
-    <!-- Quill Editor -->
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
@@ -38,19 +33,25 @@
       const { useState, useEffect, useRef } = React;
       const API_URL = 'https://infopesantren-api.akabonanza-official.workers.dev';
 
+      const SECTIONS = [
+        { id: 'berita', label: 'Berita' },
+        { id: 'program', label: 'Program' },
+        { id: 'khazanah', label: 'Khazanah' },
+        { id: 'tokoh', label: 'Tokoh' },
+        { id: 'agenda', label: 'Agenda' }
+      ];
+
       function Icon({ name, className = 'w-5 h-5' }) {
         useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
         return React.createElement('i', { 'data-lucide': name, className });
       }
 
-      // Helper untuk format tanggal input datetime-local (YYYY-MM-DDThh:mm)
       const formatForInput = (dateObj) => {
         const d = new Date(dateObj);
         const pad = (num) => String(num).padStart(2, '0');
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
       };
 
-      // ================= HELPER UPLOAD GAMBAR =================
       const uploadImage = async (file, auth) => {
         if (file.size > 2 * 1024 * 1024) throw new Error('Ukuran gambar melebihi 2MB.');
         const reader = new FileReader();
@@ -74,7 +75,6 @@
         });
       };
 
-      // ================= KOMPONEN LOGIN =================
       function Login({ onLogin }) {
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
@@ -109,15 +109,22 @@
         );
       }
 
-      // ================= KOMPONEN EDITOR (QUILL) =================
       function ArticleForm({ auth, initialData, onCancel, onSave }) {
         const isEdit = !!initialData;
         const [formData, setFormData] = useState({ 
-          title: '', slug: '', category: 'Pesantren', author: 'Admin', summary: '', image_url: '', featured: false, status: 'published',
-          // Default tanggal: sekarang (jika baru), atau tanggal dari artikel (jika edit)
-          published_at: formatForInput(initialData?.published_at || new Date()),
-          ...(initialData || {})
+          section: initialData?.section || 'berita',
+          title: initialData?.title || initialData?.name || '', 
+          slug: initialData?.slug || '', 
+          category: initialData?.category || 'Umum', 
+          author: initialData?.author || 'Admin', 
+          summary: initialData?.summary || initialData?.description || initialData?.bio || '', 
+          image_url: initialData?.image_url || '', 
+          featured: initialData?.featured || false, 
+          status: initialData?.status || 'published',
+          published_at: formatForInput(initialData?.published_at || initialData?.date_start || new Date()),
+          views: initialData?.views || 0,
         });
+        
         const [saving, setSaving] = useState(false);
         const [previewMode, setPreviewMode] = useState(false);
         const [uploading, setUploading] = useState(false);
@@ -130,16 +137,10 @@
           if (quillRef.current && !quillInstance.current) {
             quillInstance.current = new Quill(quillRef.current, {
               theme: 'snow',
-              placeholder: 'Tulis isi berita di sini...',
+              placeholder: 'Tulis isi artikel di sini...',
               modules: {
                 toolbar: {
-                  container: [
-                    [{ 'header': [2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'blockquote'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                  ],
+                  container: [ [{ 'header': [2, 3, false] }], ['bold', 'italic', 'underline', 'blockquote'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['link', 'image'], ['clean'] ],
                   handlers: {
                     image: () => {
                       const input = document.createElement('input');
@@ -164,8 +165,8 @@
               }
             });
 
-            if (initialData && initialData.content) {
-              quillInstance.current.clipboard.dangerouslyPasteHTML(initialData.content);
+            if (initialData && (initialData.content || initialData.description)) {
+              quillInstance.current.clipboard.dangerouslyPasteHTML(initialData.content || initialData.description);
             }
           }
         }, [auth, initialData]);
@@ -202,18 +203,31 @@
           setSaving(true);
           
           const finalContent = quillInstance.current ? quillInstance.current.root.innerHTML : '';
-          
-          // Konversi tanggal lokal (dari input) menjadi standar ISO UTC
           const isoDate = new Date(formData.published_at).toISOString();
 
+          // PAYLOAD UNIVERSAL: Mengisi semua kemungkinan field agar aman di semua halaman
           const payload = {
-            ...formData,
-            content: finalContent, 
-            published_at: isoDate, // Gunakan tanggal hasil input
+            id: formData.id || 'art-' + Date.now(),
+            slug: formData.slug || 'artikel-' + Date.now(),
+            title: formData.title,
+            name: formData.title, // Untuk Tokoh
+            summary: formData.summary,
+            bio: formData.summary, // Untuk Tokoh
+            description: formData.summary, // Untuk Program/Agenda
+            content: finalContent,
+            category: formData.category,
+            author: formData.author,
+            image_url: formData.image_url,
+            featured: formData.featured,
+            status: formData.status,
+            published_at: isoDate,
+            date_start: isoDate, // Untuk Agenda
+            views: formData.views,
+            section: formData.section // Digunakan Worker untuk routing
           };
 
           try {
-            const url = isEdit ? `${API_URL}/api/berita/${formData.id}` : `${API_URL}/api/berita`;
+            const url = isEdit ? `${API_URL}/api/article/${formData.section}/${formData.id}` : `${API_URL}/api/article`;
             const method = isEdit ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
@@ -222,7 +236,7 @@
               body: JSON.stringify(payload)
             });
             const json = await res.json();
-            if (json.success) { alert(isEdit ? 'Berita diperbarui!' : 'Berita disimpan!'); onSave(); } 
+            if (json.success) { alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); onSave(); } 
             else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); } finally { setSaving(false); }
         };
@@ -233,7 +247,7 @@
               React.createElement('h2', { className: 'text-lg font-bold text-gray-500 uppercase tracking-widest' }, 'Preview Artikel'),
               React.createElement('button', { onClick: () => setPreviewMode(false), className: 'text-sm font-medium text-brand-600 hover:text-brand-800 bg-brand-50 px-4 py-2 rounded-lg' }, '← Kembali Edit')
             ),
-            React.createElement('span', { className: 'bg-brand-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase' }, formData.category),
+            React.createElement('span', { className: 'bg-brand-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase' }, formData.section),
             React.createElement('h1', { className: 'text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-2' }, formData.title),
             React.createElement('div', { className: 'flex gap-4 text-sm text-gray-500 mb-6 border-b pb-4' },
               React.createElement('span', null, formData.author),
@@ -241,7 +255,6 @@
             ),
             formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-48 md:h-64 object-cover rounded-xl mb-6' }),
             React.createElement('div', { className: 'prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed overflow-x-hidden', dangerouslySetInnerHTML: { __html: previewContent } }),
-            
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
               React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
             )
@@ -250,46 +263,54 @@
 
         return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 pb-20 md:pb-6' },
           React.createElement('div', { className: 'flex justify-between items-center mb-6 pb-4 border-b' },
-            React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? 'Edit Berita' : 'Tulis Berita Baru'),
+            React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? 'Edit Artikel' : 'Tulis Artikel Baru'),
             React.createElement('button', { type: 'button', onClick: onCancel, className: 'text-sm text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1 rounded' }, 'Batal')
           ),
           React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-5' },
+            
+            // TIPE KONTEN & KATEGORI
+            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-brand-50 p-4 rounded-lg border border-brand-100' },
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-bold text-brand-800 mb-1' }, 'Tipe Konten (Tampil di Halaman)'),
+                React.createElement('select', { name: 'section', value: formData.section, onChange: handleChange, className: 'w-full px-3 py-2 border border-brand-300 rounded-md font-semibold text-brand-700' },
+                  SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, s.label))
+                )
+              ),
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori / Label (Opsional)'),
+                React.createElement('input', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Misal: Prestasi, Fiqih, dll' })
+              )
+            ),
+
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Berita'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul / Nama'),
                 React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Masukkan judul...' })
               ),
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1 flex justify-between' }, 'Slug URL', React.createElement('button', { type: 'button', onClick: generateSlug, className: 'text-brand-600 text-xs' }, 'Generate otomatis')),
-                React.createElement('input', { name: 'slug', required: true, value: formData.slug, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md bg-gray-50', placeholder: 'judul-berita' })
+                React.createElement('input', { name: 'slug', required: true, value: formData.slug, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md bg-gray-50', placeholder: 'judul-artikel' })
               )
             ),
 
-            // TANGGAL TERBIT, KATEGORI, PENULIS
-            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4' },
+            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Tanggal & Waktu Terbit'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Tanggal Terbit / Mulai'),
                 React.createElement('input', { type: 'datetime-local', name: 'published_at', required: true, value: formData.published_at, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               ),
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori'),
-                React.createElement('select', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' },
-                  ['Pesantren', 'Nasional', 'Prestasi', 'Kegiatan', 'Beasiswa'].map(c => React.createElement('option', { key: c, value: c }, c))
-                )
-              ),
-              React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis / Penginput'),
                 React.createElement('input', { name: 'author', value: formData.author, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               )
             ),
 
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan (Summary)'),
-              React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan singkat...' })
+              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat (Summary/Bio)'),
+              React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan yang akan tampil di halaman depan...' })
             ),
 
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Konten Artikel'),
+              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap Artikel'),
               React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden' },
                 React.createElement('div', { ref: quillRef, className: 'text-base' })
               ),
@@ -297,7 +318,7 @@
             ),
 
             React.createElement('div', { className: 'border p-4 rounded-lg bg-gray-50' },
-              React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Sampul (Utama)'),
+              React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Utama / Banner'),
               React.createElement('div', { className: 'flex flex-col md:flex-row gap-4' },
                 React.createElement('div', { className: 'flex-1' },
                   React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Opsi A: URL Gambar'),
@@ -314,7 +335,7 @@
             React.createElement('div', { className: 'flex flex-col md:flex-row gap-4 md:gap-6 md:items-center pt-2' },
               React.createElement('label', { className: 'flex items-center gap-2 text-sm' },
                 React.createElement('input', { type: 'checkbox', name: 'featured', checked: formData.featured, onChange: handleChange, className: 'w-4 h-4 text-brand-600 rounded' }),
-                'Jadikan Berita Utama (Featured)'
+                'Jadikan Sorotan Utama (Featured)'
               ),
               React.createElement('label', { className: 'flex items-center gap-2 text-sm' },
                 'Status: ',
@@ -338,7 +359,6 @@
         );
       }
 
-      // ================= KOMPONEN DASHBOARD =================
       function Dashboard({ auth, onLogout }) {
         const [view, setView] = useState('list'); 
         const [editData, setEditData] = useState(null);
@@ -353,9 +373,18 @@
             const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
             if (json.success && json.data && json.data.data) {
-              // Urutkan berdasarkan tanggal terbaru
-              const sorted = (json.data.data.berita || []).sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-              setArticles(sorted);
+              const d = json.data.data;
+              // Gabungkan semua tipe konten menjadi satu daftar
+              const merged = [
+                ...(d.berita || []).map(x => ({...x, _section: 'berita'})),
+                ...(d.program || []).map(x => ({...x, _section: 'program'})),
+                ...(d.khazanah || []).map(x => ({...x, _section: 'khazanah'})),
+                ...(d.tokoh || []).map(x => ({...x, _section: 'tokoh'})),
+                ...(d.agenda || []).map(x => ({...x, _section: 'agenda'}))
+              ];
+              // Urutkan berdasarkan tanggal
+              merged.sort((a, b) => new Date(b.published_at || b.date_start || 0) - new Date(a.published_at || a.date_start || 0));
+              setArticles(merged);
             }
           } catch (err) { 
             console.error(err);
@@ -367,12 +396,12 @@
 
         useEffect(() => { fetchArticles(); }, []);
 
-        const handleDelete = async (id) => {
-          if (!confirm('Yakin ingin menghapus berita ini?')) return;
+        const handleDelete = async (id, section) => {
+          if (!confirm('Yakin ingin menghapus artikel ini?')) return;
           try {
-            const res = await fetch(`${API_URL}/api/berita/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
+            const res = await fetch(`${API_URL}/api/article/${section}/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
-            if (json.success) { alert('Berita dihapus'); fetchArticles(); } else { alert('Gagal: ' + json.error); }
+            if (json.success) { alert('Artikel dihapus'); fetchArticles(); } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
         };
 
@@ -380,27 +409,25 @@
         const handleCreateClick = () => { setEditData(null); setView('create'); };
         const onSaveSuccess = () => { setView('list'); setEditData(null); fetchArticles(); };
 
-        // Format tampilan tanggal di tabel
         const displayDate = (isoString) => {
           if (!isoString) return '-';
-          return new Date(isoString).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+          return new Date(isoString).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
         };
 
         return React.createElement('div', { className: 'flex min-h-screen pb-16 md:pb-0' },
           
-          // SIDEBAR KIRI (DESKTOP)
           React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex-col hidden md:flex fixed h-full z-10' },
             React.createElement('div', { className: 'h-16 flex items-center justify-center border-b border-gray-800 bg-gray-950' },
               React.createElement('h1', { className: 'text-xl font-extrabold tracking-wider' }, 'Info', React.createElement('span', { className: 'text-brand-500' }, 'Pesantren'), React.createElement('span', { className: 'text-gold-500' }, '.admin'))
             ),
             React.createElement('nav', { className: 'flex-1 p-4 space-y-2' },
               React.createElement('button', { onClick: () => setView('list'), className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${view === 'list' ? 'bg-brand-600 text-white' : 'hover:bg-gray-800 text-gray-300'}` },
-                React.createElement(Icon, { name: 'list', className: 'w-5 h-5' }), ' Daftar Berita'
+                React.createElement(Icon, { name: 'layout-list', className: 'w-5 h-5' }), ' Semua Artikel'
               ),
               React.createElement('button', { onClick: handleCreateClick, className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${view === 'create' ? 'bg-brand-600 text-white' : 'hover:bg-gray-800 text-gray-300'}` },
-                React.createElement(Icon, { name: 'plus-square', className: 'w-5 h-5' }), ' Tambah Berita'
+                React.createElement(Icon, { name: 'plus-square', className: 'w-5 h-5' }), ' Tulis Baru'
               ),
-              React.createElement('a', { href: '/', target: '_blank', className: 'w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-gray-300 transition-colors mt-8 border-t border-gray-800 pt-4' },
+              React.createElement('a', { href: 'https://infopesantren.online', target: '_blank', className: 'w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-gray-300 transition-colors mt-8 border-t border-gray-800 pt-4' },
                 React.createElement(Icon, { name: 'external-link', className: 'w-5 h-5' }), ' Kunjungi Web'
               )
             ),
@@ -411,9 +438,7 @@
             )
           ),
 
-          // KONTEN KANAN
           React.createElement('main', { className: 'flex-1 flex flex-col min-h-screen md:ml-64 bg-gray-50' },
-            // Topbar (Hanya Mobile)
             React.createElement('header', { className: 'bg-white shadow-sm h-16 flex items-center px-4 md:hidden justify-between sticky top-0 z-20' },
               React.createElement('span', { className: 'font-bold text-gray-800' }, 'InfoPesantren.admin'),
               React.createElement('span', { className: 'text-xs text-gray-500' }, auth.username)
@@ -423,20 +448,20 @@
               view === 'list' ? 
                 React.createElement('div', null,
                   React.createElement('div', { className: 'flex justify-between items-center mb-6' },
-                    React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, 'Daftar Berita'),
+                    React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, 'Semua Artikel'),
                     React.createElement('button', { onClick: handleCreateClick, className: 'hidden md:flex bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg font-medium items-center gap-2' },
-                      React.createElement(Icon, { name: 'plus', className: 'w-4 h-4' }), ' Tambah Baru'
+                      React.createElement(Icon, { name: 'plus', className: 'w-4 h-4' }), ' Tulis Baru'
                     )
                   ),
                   loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
                   React.createElement(React.Fragment, null,
-                    // 1. TAMPILAN TABEL (DESKTOP)
+                    // TABEL DESKTOP
                     React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border overflow-hidden hidden md:block' },
                       React.createElement('table', { className: 'w-full text-left' },
                         React.createElement('thead', { className: 'bg-gray-50 border-b' },
                           React.createElement('tr', null,
-                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Judul'),
-                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Tanggal Terbit'),
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Judul & Tipe'),
+                            React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Tanggal'),
                             React.createElement('th', { className: 'p-4 text-sm font-semibold' }, 'Status'),
                             React.createElement('th', { className: 'p-4 text-sm font-semibold text-right' }, 'Aksi')
                           )
@@ -445,15 +470,14 @@
                           articles.map(article => 
                             React.createElement('tr', { key: article.id, className: 'border-b hover:bg-gray-50' },
                               React.createElement('td', { className: 'p-4 text-sm font-medium' },
-                                React.createElement('div', null, article.title),
-                                React.createElement('div', { className: 'text-xs text-gray-500 mt-1' }, article.category)
+                                React.createElement('div', null, article.title || article.name),
+                                React.createElement('div', { className: 'text-xs text-brand-600 mt-1 font-bold uppercase' }, article._section)
                               ),
-                              React.createElement('td', { className: 'p-4 text-sm text-gray-600' }, displayDate(article.published_at)),
+                              React.createElement('td', { className: 'p-4 text-sm text-gray-600' }, displayDate(article.published_at || article.date_start)),
                               React.createElement('td', { className: 'p-4 text-sm' }, React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-xs' }, article.status)),
                               React.createElement('td', { className: 'p-4 text-right flex justify-end gap-3' },
                                 React.createElement('button', { onClick: () => handleEditClick(article), className: 'text-blue-600 hover:text-blue-800 p-1' }, React.createElement(Icon, { name: 'edit', className: 'w-4 h-4' })),
-                                React.createElement('a', { href: `https://infopesantren.online/berita/${article.slug}`, target: '_blank', className: 'text-gray-500 hover:text-gray-700 p-1' }, React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' })),
-                                React.createElement('button', { onClick: () => handleDelete(article.id), className: 'text-red-500 hover:text-red-700 p-1' }, React.createElement(Icon, { name: 'trash-2', className: 'w-4 h-4' }))
+                                React.createElement('button', { onClick: () => handleDelete(article.id, article._section), className: 'text-red-500 hover:text-red-700 p-1' }, React.createElement(Icon, { name: 'trash-2', className: 'w-4 h-4' }))
                               )
                             )
                           )
@@ -461,22 +485,23 @@
                       )
                     ),
 
-                    // 2. TAMPILAN KARTU (MOBILE)
+                    // KARTU MOBILE
                     React.createElement('div', { className: 'md:hidden space-y-4' },
                       articles.map(article => 
                         React.createElement('div', { key: article.id, className: 'bg-white p-4 rounded-xl shadow-sm border border-gray-200' },
                           React.createElement('div', { className: 'flex justify-between items-start mb-2' },
-                            React.createElement('h3', { className: 'font-bold text-gray-900 text-sm leading-snug w-2/3' }, article.title),
+                            React.createElement('div', null,
+                              React.createElement('span', { className: 'bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-[10px] uppercase font-bold mb-1 inline-block' }, article._section),
+                              React.createElement('h3', { className: 'font-bold text-gray-900 text-sm leading-snug' }, article.title || article.name)
+                            ),
                             React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] uppercase font-bold' }, article.status)
                           ),
-                          React.createElement('p', { className: 'text-xs text-gray-500 mb-1' }, article.category),
-                          React.createElement('p', { className: 'text-[10px] text-gray-400 mb-4 flex items-center gap-1' },
-                            React.createElement(Icon, { name: 'clock', className: 'w-3 h-3' }), displayDate(article.published_at)
+                          React.createElement('p', { className: 'text-[10px] text-gray-400 mb-4 mt-2 flex items-center gap-1' },
+                            React.createElement(Icon, { name: 'calendar', className: 'w-3 h-3' }), displayDate(article.published_at || article.date_start)
                           ),
                           React.createElement('div', { className: 'flex justify-end gap-2 pt-3 border-t border-gray-100' },
                             React.createElement('button', { onClick: () => handleEditClick(article), className: 'flex items-center gap-1 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'edit', className: 'w-3 h-3' }), 'Edit'),
-                            React.createElement('a', { href: `https://infopesantren.online/berita/${article.slug}`, target: '_blank', className: 'flex items-center gap-1 text-xs font-medium text-gray-600 bg-gray-100 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'eye', className: 'w-3 h-3' }), 'Lihat'),
-                            React.createElement('button', { onClick: () => handleDelete(article.id), className: 'flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'trash-2', className: 'w-3 h-3' }), 'Hapus')
+                            React.createElement('button', { onClick: () => handleDelete(article.id, article._section), className: 'flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-3 py-1.5 rounded-md' }, React.createElement(Icon, { name: 'trash-2', className: 'w-3 h-3' }), 'Hapus')
                           )
                         )
                       )
@@ -493,15 +518,14 @@
             )
           ),
 
-          // BOTTOM NAVIGATION (KHUSUS MOBILE)
           React.createElement('nav', { className: 'md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50 px-2 pb-safe' },
             React.createElement('button', { onClick: () => setView('list'), className: `flex flex-col items-center justify-center w-full h-full space-y-1 ${view === 'list' ? 'text-brand-600' : 'text-gray-500'}` },
-              React.createElement(Icon, { name: 'list', className: 'w-6 h-6' }),
-              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Daftar')
+              React.createElement(Icon, { name: 'layout-list', className: 'w-6 h-6' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Artikel')
             ),
             React.createElement('button', { onClick: handleCreateClick, className: `flex flex-col items-center justify-center w-full h-full space-y-1 ${view === 'create' ? 'text-brand-600' : 'text-gray-500'}` },
               React.createElement(Icon, { name: 'plus-circle', className: 'w-6 h-6' }),
-              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Tambah')
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Tulis')
             ),
             React.createElement('a', { href: 'https://infopesantren.online', target: '_blank', className: 'flex flex-col items-center justify-center w-full h-full space-y-1 text-gray-500 hover:text-brand-600' },
               React.createElement(Icon, { name: 'globe', className: 'w-6 h-6' }),
@@ -515,7 +539,6 @@
         );
       }
 
-      // ================= APP =================
       function App() {
         const [auth, setAuth] = useState(null);
         useEffect(() => {
