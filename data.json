@@ -464,24 +464,6 @@
   ],
   "tokoh": [
     {
-      "id": "t-004",
-      "slug": "kh-abdurrahman-wahid",
-      "name": "KH. Abdurrahman Wahid",
-      "title": "Ulama & Guru Bangsa",
-      "bio": "Tokoh ulama dan guru bangsa yang dikenal sebagai pembaharu pemikiran Islam di Indonesia.",
-      "content": "KH. Abdurrahman Wahid (Gus Dur) adalah tokoh ulama yang sangat berpengaruh di Indonesia. Beliau pernah menjabat sebagai Presiden RI ke-4 dan dikenal sebagai pembela kaum minoritas.",
-      "image_url": "https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&w=800",
-      "birth": "1940-09-07",
-      "pesantren": "Tebuireng",
-      "expertise": [
-        "Pemikiran Islam",
-        "Politik",
-        "Kemanusiaan"
-      ],
-      "featured": true,
-      "status": "published"
-    },
-    {
       "id": "t-005",
       "slug": "kh-hasyim-asyari",
       "name": "KH. Hasyim Asy'ari",
