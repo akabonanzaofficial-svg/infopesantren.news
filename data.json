@@ -240,24 +240,6 @@
         "teknologi",
         "inovasi"
       ]
-    },
-    {
-      "id": "b-008",
-      "slug": "pesantren-buka-kelas-wirausaha",
-      "title": "Pesantren Buka Kelas Wirausaha untuk Santri Senior",
-      "summary": "Program baru pesantren membekali santri senior dengan keterampilan wirausaha agar mandiri setelah lulus.",
-      "content": "Pondok Pesantren Al-Hikmah membuka kelas wirausaha khusus untuk santri senior. Program ini mengajarkan dasar-dasar bisnis, manajemen keuangan, dan praktik langsung berjualan di koperasi pesantren.\n\nTujuannya agar santri tidak hanya menguasai ilmu agama, tetapi juga siap mandiri secara ekonomi setelah lulus.",
-      "category": "Pesantren",
-      "author": "Redaksi",
-      "image_url": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&w=800",
-      "published_at": "2026-10-02T08:00:00Z",
-      "views": 640,
-      "featured": false,
-      "status": "published",
-      "tags": [
-        "wirausaha",
-        "santri"
-      ]
     }
   ],
   "program": [
