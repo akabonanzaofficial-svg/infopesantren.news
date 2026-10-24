@@ -464,24 +464,6 @@
   ],
   "tokoh": [
     {
-      "id": "t-003",
-      "slug": "ustadz-ahmad-fauzi",
-      "name": "Ustadz Ahmad Fauzi",
-      "title": "Hafidz 30 Juz & Pembina Tahfidz",
-      "bio": "Alumni Pesantren Al-Hikmah yang kini menjadi pembina program tahfidz dan juara MTQ Nasional.",
-      "content": "Ustadz Ahmad Fauzi adalah alumni Pesantren Al-Hikmah yang berhasil meraih juara 1 MTQ Nasional 2026 cabang tilawah. Kini beliau mengabdi sebagai pembina program tahfidz di pesantren.",
-      "image_url": "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&w=800",
-      "birth": "1995-03-20",
-      "pesantren": "Al-Hikmah",
-      "expertise": [
-        "Tahfidz",
-        "Qira'ah",
-        "Tilawah"
-      ],
-      "featured": true,
-      "status": "published"
-    },
-    {
       "id": "t-004",
       "slug": "kh-abdurrahman-wahid",
       "name": "KH. Abdurrahman Wahid",
