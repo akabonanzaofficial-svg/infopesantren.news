@@ -462,26 +462,7 @@
       "status": "published"
     }
   ],
-  "tokoh": [
-    {
-      "id": "t-005",
-      "slug": "kh-hasyim-asyari",
-      "name": "KH. Hasyim Asy'ari",
-      "title": "Pendiri Nahdlatul Ulama",
-      "bio": "Ulama besar pendiri Nahdlatul Ulama dan Pesantren Tebuireng, dijuluki Hadratus Syaikh.",
-      "content": "KH. Hasyim Asy'ari adalah pendiri Nahdlatul Ulama (NU) dan Pesantren Tebuireng. Beliau dijuluki Hadratus Syaikh karena kedalaman ilmunya.\n\nBeliau berperan besar dalam melawan penjajah melalui Resolusi Jihad 22 Oktober 1945 yang menjadi cikal bakal Hari Santri Nasional.",
-      "image_url": "https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&w=800",
-      "birth": "1871-02-14",
-      "pesantren": "Tebuireng",
-      "expertise": [
-        "Fiqih",
-        "Hadits",
-        "Tasawuf"
-      ],
-      "featured": false,
-      "status": "published"
-    }
-  ],
+  "tokoh": [],
   "agenda": [
     {
       "id": "a-001",
