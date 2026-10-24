@@ -464,23 +464,6 @@
   ],
   "tokoh": [
     {
-      "id": "t-002",
-      "slug": "nyai-hj-fatimah-zahra",
-      "name": "Nyai Hj. Fatimah Zahra",
-      "title": "Pengasuh Pondok Putri Al-Hikmah",
-      "bio": "Tokoh perempuan pesantren yang fokus pada pendidikan santri putri dan pemberdayaan ekonomi umat.",
-      "content": "Nyai Hj. Fatimah Zahra adalah putri KH. Maimun Zaid yang kini memimpin Pondok Putri Al-Hikmah. Beliau dikenal aktif dalam program pemberdayaan ekonomi santriwati melalui koperasi pesantren.",
-      "image_url": "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&w=800",
-      "birth": "1972-06-15",
-      "pesantren": "Al-Hikmah Putri",
-      "expertise": [
-        "Pendidikan",
-        "Ekonomi Umat"
-      ],
-      "featured": true,
-      "status": "published"
-    },
-    {
       "id": "t-003",
       "slug": "ustadz-ahmad-fauzi",
       "name": "Ustadz Ahmad Fauzi",
