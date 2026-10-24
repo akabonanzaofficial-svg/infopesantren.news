@@ -533,23 +533,6 @@
       ],
       "featured": false,
       "status": "published"
-    },
-    {
-      "id": "t-006",
-      "slug": "kh-wahid-hasyim",
-      "name": "KH. Wahid Hasyim",
-      "title": "Menteri Agama RI Pertama",
-      "bio": "Ulama muda yang menjadi Menteri Agama pertama Indonesia dan berjasa dalam pendidikan pesantren.",
-      "content": "KH. Wahid Hasyim adalah putra KH. Hasyim Asy'ari yang menjadi Menteri Agama RI pertama. Beliau berjasa besar dalam modernisasi pendidikan pesantren dan pendirian Sekolah Tinggi Islam (cikal bakal UIN).",
-      "image_url": "https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&w=800",
-      "birth": "1914-06-01",
-      "pesantren": "Tebuireng",
-      "expertise": [
-        "Pendidikan",
-        "Politik"
-      ],
-      "featured": false,
-      "status": "published"
     }
   ],
   "agenda": [
