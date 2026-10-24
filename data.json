@@ -464,24 +464,6 @@
   ],
   "tokoh": [
     {
-      "id": "t-001",
-      "slug": "kh-maimun-zaid",
-      "name": "KH. Maimun Zaid",
-      "title": "Pengasuh Pesantren Al-Hikmah",
-      "bio": "Ulama kharismatik dan ahli fiqih yang telah mengabdi di dunia pesantren lebih dari 40 tahun.",
-      "content": "KH. Maimun Zaid lahir pada 8 Februari 1934 di Jombang, Jawa Timur. Beliau menimba ilmu di berbagai pesantren ternama, termasuk di Mekkah selama 12 tahun.\n\nSepulang dari Mekkah, beliau mendirikan Pesantren Al-Hikmah pada tahun 1975. Kini pesantren tersebut memiliki lebih dari 3.000 santri dari berbagai penjuru Nusantara.",
-      "image_url": "https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&w=800",
-      "birth": "1934-02-08",
-      "pesantren": "Al-Hikmah",
-      "expertise": [
-        "Fiqih",
-        "Tafsir",
-        "Tasawuf"
-      ],
-      "featured": true,
-      "status": "published"
-    },
-    {
       "id": "t-002",
       "slug": "nyai-hj-fatimah-zahra",
       "name": "Nyai Hj. Fatimah Zahra",
