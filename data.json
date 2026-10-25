@@ -478,18 +478,6 @@
       "views": 0
     },
     {
-      "id": "p-001",
-      "slug": "program-tahfidz-30-juz",
-      "title": "Program Tahfidz 30 Juz",
-      "description": "Program intensif menghafal Al-Quran 30 juz dengan bimbingan para hafidz bersanad. Dilengkapi dengan setoran harian, murojaah, dan praktik qira'ah.",
-      "duration": "3 tahun",
-      "schedule": "Setiap hari, ba'da Subuh & ba'da Isya",
-      "image_url": "https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800",
-      "status": "dibuka",
-      "contact": "0812-3456-7890",
-      "featured": true
-    },
-    {
       "id": "p-002",
       "slug": "program-bahasa-arab-intensif",
       "title": "Program Bahasa Arab Intensif",
