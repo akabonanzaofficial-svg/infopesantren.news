@@ -1,28 +1,11 @@
 {
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "crons": [
     {
       "path": "/api/generate-sitemap",
       "schedule": "0 1 * * *"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,POST,PUT,DELETE" },
-        { "key": "Access-Control-Allow-Headers", "value": "x-cron-secret, Content-Type" }
-      ]
     }
   ]
 }
