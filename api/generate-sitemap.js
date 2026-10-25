@@ -1,18 +1,7 @@
 // api/generate-sitemap.js
 export default async function handler(req, res) {
-  // 1. Verifikasi Keamanan (Menangani Bug Header Vercel)
-  let authHeader = req.headers.authorization;
-  
-  // Vercel terkadang menyembunyikan header Authorization di Production
-  if (!authHeader && req.headers['x-vercel-sc-headers']) {
-    try {
-      const scHeaders = JSON.parse(req.headers['x-vercel-sc-headers']);
-      authHeader = scHeaders.Authorization;
-    } catch (e) {
-      console.error('Gagal parse x-vercel-sc-headers:', e);
-    }
-  }
-
+  // 1. Verifikasi Keamanan menggunakan header kustom (menghindari bug Vercel)
+  const authHeader = req.headers['x-cron-secret'];
   const cronSecret = process.env.CRON_SECRET;
   
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
