@@ -126,9 +126,16 @@
         return String(html);
       }
 
-      function paragraphs(html) {
+            function paragraphs(html) {
         if (!html) return '';
-        return html;
+        let cleaned = html;
+        // 1. Hapus paragraf kosong yang dihasilkan oleh tombol Enter di Quill (<p><br></p>)
+        cleaned = cleaned.replace(/<p><br\s*\/?><\/p>/gi, '');
+        cleaned = cleaned.replace(/<p>&nbsp;<\/p>/gi, '');
+        // 2. Hapus baris baru berlebih (<br><br>)
+        cleaned = cleaned.replace(/(<br\s*\/?>\s*){2,}/gi, '<br>');
+        
+        return cleaned;
       }
 
       function Icon({ name, className = 'w-5 h-5' }) {
