@@ -215,7 +215,7 @@
           const finalContent = quillInstance.current ? quillInstance.current.root.innerHTML : '';
           const isoDate = new Date(formData.published_at).toISOString();
 
-                    const payload = {
+          const payload = {
             id: formData.id || 'art-' + Date.now(),
             slug: formData.slug || 'artikel-' + Date.now(),
             title: formData.title,
@@ -232,7 +232,7 @@
             published_at: isoDate,
             date_start: isoDate,
             views: formData.views,
-            _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section // TAMBAHKAN INI
+            _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section
           };
 
           try {
@@ -245,10 +245,7 @@
               body: JSON.stringify({ ...payload, section: formData.section })
             });
             const json = await res.json();
-            if (json.success) { 
-              alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); 
-              onSave(); 
-            } 
+            if (json.success) { alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); onSave(); } 
             else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); } finally { setSaving(false); }
         };
@@ -364,56 +361,64 @@
 
       function Dashboard({ auth, onLogout }) {
         const [view, setView] = useState('list'); 
-        const [activeSection, setActiveSection] = useState('berita'); // Default menu
+        const [activeSection, setActiveSection] = useState('berita');
         const [editData, setEditData] = useState(null);
         const [articles, setArticles] = useState([]);
+        const [submissions, setSubmissions] = useState([]); // State untuk kiriman masuk
         const [loading, setLoading] = useState(true);
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
-        const fetchArticles = async () => {
+        const fetchData = async () => {
           setLoading(true);
           try {
             const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
             if (json.success && json.data && json.data.data) {
               const d = json.data.data;
-              // Ambil data HANYA untuk section yang sedang aktif
-              const sectionData = d[activeSection] || [];
               
-              // Beri _section dan urutkan berdasarkan tanggal (terbaru di atas)
+              // Ambil data untuk section yang aktif
+              const sectionData = d[activeSection] || [];
               const formatted = sectionData.map(x => ({...x, _section: activeSection}));
               formatted.sort((a, b) => new Date(b.published_at || b.date_start || 0) - new Date(a.published_at || a.date_start || 0));
-              
               setArticles(formatted);
+
+              // Ambil data kiriman masuk
+              const subs = d.submissions || [];
+              setSubmissions(subs);
             }
           } catch (err) { 
-            console.error(err);
-            alert('Gagal mengambil data: ' + err.message); 
-          } finally { 
-            setLoading(false); 
-          }
+            console.error(err); alert('Gagal mengambil data: ' + err.message); 
+          } finally { setLoading(false); }
         };
 
-        // Panggil fetch setiap kali menu kiri (activeSection) berubah
-        useEffect(() => { fetchArticles(); }, [activeSection]);
+        useEffect(() => { fetchData(); }, [activeSection]);
 
         const handleDelete = async (id, section) => {
           if (!confirm('Yakin ingin menghapus artikel ini?')) return;
           try {
             const res = await fetch(`${API_URL}/api/article/${section}/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
-            if (json.success) { alert('Artikel dihapus'); fetchArticles(); } else { alert('Gagal: ' + json.error); }
+            if (json.success) { alert('Artikel dihapus'); fetchData(); } else { alert('Gagal: ' + json.error); }
+          } catch (err) { alert(err.message); }
+        };
+
+        const handleModerate = async (id, action, section = '') => {
+          if (!confirm(`Yakin ingin ${action === 'publish' ? 'mempublikasikan' : 'mengarsipkan'} tulisan ini?`)) return;
+          try {
+            const res = await fetch(`${API_URL}/api/moderate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': getAuthHeader() },
+              body: JSON.stringify({ id, action, targetSection: section })
+            });
+            const json = await res.json();
+            if (json.success) { alert('Berhasil!'); fetchData(); } else { alert(json.error); }
           } catch (err) { alert(err.message); }
         };
 
         const handleEditClick = (article) => { setEditData(article); setView('edit'); };
         const handleCreateClick = () => { setEditData(null); setView('create'); };
-        
-        // FUNGSI BARU: Reload halaman setelah simpan agar React tidak crash
-        const onSaveSuccess = () => { 
-          window.location.reload(); 
-        };
+        const onSaveSuccess = () => { window.location.reload(); };
 
         const displayDate = (isoString) => {
           if (!isoString) return '-';
@@ -422,18 +427,30 @@
 
         return React.createElement('div', { className: 'flex min-h-screen pb-16 md:pb-0' },
           
-          // SIDEBAR KIRI
+          // SIDEBAR
           React.createElement('aside', { className: 'w-64 bg-gray-900 text-white flex-col hidden md:flex fixed h-full z-10' },
             React.createElement('div', { className: 'h-16 flex items-center justify-center border-b border-gray-800 bg-gray-950' },
               React.createElement('h1', { className: 'text-xl font-extrabold tracking-wider' }, 'Info', React.createElement('span', { className: 'text-brand-500' }, 'Pesantren'), React.createElement('span', { className: 'text-gold-500' }, '.admin'))
             ),
             React.createElement('nav', { className: 'flex-1 p-4 space-y-1 overflow-y-auto' },
-              // Menu Tulis Baru
+              
+              // MENU KIRIMAN MASUK
+              React.createElement('button', { 
+                onClick: () => { setView('submissions'); }, 
+                className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` 
+              },
+                React.createElement('div', { className: 'flex items-center gap-3' },
+                  React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5 text-gold-400' }),
+                  React.createElement('span', { className: 'font-bold' }, 'Kiriman Masuk')
+                ),
+                submissions.length > 0 && React.createElement('span', { className: 'bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full' }, submissions.length)
+              ),
+
               React.createElement('button', { onClick: handleCreateClick, className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 ${view === 'create' ? 'bg-brand-600 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-200'}` },
                 React.createElement(Icon, { name: 'plus-circle', className: 'w-5 h-5' }), ' Tulis Artikel Baru'
               ),
+              
               React.createElement('div', { className: 'text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 mt-6 px-2' }, 'Kategori Konten'),
-              // Loop menu kategori
               SECTIONS.map(sec => 
                 React.createElement('button', { 
                   key: sec.id, 
@@ -454,14 +471,58 @@
             )
           ),
 
-          // KONTEN KANAN
+          // KONTEN UTAMA
           React.createElement('main', { className: 'flex-1 flex flex-col min-h-screen md:ml-64 bg-gray-50' },
             React.createElement('header', { className: 'bg-white shadow-sm h-16 flex items-center px-4 md:hidden justify-between sticky top-0 z-20' },
               React.createElement('span', { className: 'font-bold text-gray-800' }, 'Admin Panel'),
-              React.createElement('span', { className: 'text-xs text-gray-500' }, auth.username)
+              React.createElement('button', { onClick: onLogout, className: 'text-red-600 text-sm font-bold' }, 'Logout')
             ),
             
             React.createElement('div', { className: 'flex-1 p-4 md:p-8' },
+              
+              // TAMPILAN: KIRIMAN MASUK
+              view === 'submissions' ? React.createElement('div', null,
+                React.createElement('h2', { className: 'text-2xl font-bold text-gray-800 mb-6' }, 'Kiriman Masuk (Perlu Ditinjau)'),
+                loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
+                submissions.length === 0 ? React.createElement('div', { className: 'text-center py-10 text-gray-500 bg-white rounded-xl border' }, 'Belum ada kiriman baru.') :
+                React.createElement('div', { className: 'space-y-4' },
+                  submissions.map(sub => 
+                    React.createElement('div', { key: sub.id, className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-5' },
+                      React.createElement('div', { className: 'flex justify-between items-start mb-2' },
+                        React.createElement('div', null,
+                          React.createElement('span', { className: 'bg-gold-100 text-gold-700 px-2 py-0.5 rounded text-[10px] uppercase font-bold mb-1 inline-block' }, sub.category),
+                          React.createElement('h3', { className: 'font-bold text-gray-900 text-lg leading-snug' }, sub.title)
+                        ),
+                        React.createElement('span', { className: 'text-xs text-gray-500' }, displayDate(sub.submitted_at))
+                      ),
+                      React.createElement('div', { className: 'flex items-center gap-2 text-sm text-gray-600 mb-4 bg-gray-50 p-2 rounded' },
+                        React.createElement(Icon, { name: 'user', className: 'w-4 h-4' }), React.createElement('span', null, sub.author_name),
+                        React.createElement(Icon, { name: 'phone', className: 'w-4 h-4 ml-2' }), React.createElement('span', null, sub.author_contact)
+                      ),
+                      React.createElement('p', { className: 'text-sm text-gray-500 mb-4 line-clamp-3' }, sub.summary),
+                      
+                      // Tombol Aksi Moderasi
+                      React.createElement('div', { className: 'flex flex-col md:flex-row justify-end gap-2 pt-3 border-t' },
+                        // Pilih kategori tujuan publish
+                        React.createElement('select', { 
+                          id: `section-${sub.id}`,
+                          className: 'border rounded-md px-2 py-1.5 text-sm md:mr-2',
+                          defaultValue: 'berita'
+                        }, SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, 'Tayang di: ' + s.label))),
+                        
+                        React.createElement('button', { onClick: () => handleModerate(sub.id, 'publish', document.getElementById(`section-${sub.id}`).value), className: 'flex items-center justify-center gap-1 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 px-4 py-1.5 rounded-md' },
+                          React.createElement(Icon, { name: 'check', className: 'w-4 h-4' }), ' Publish'
+                        ),
+                        React.createElement('button', { onClick: () => handleModerate(sub.id, 'archive'), className: 'flex items-center justify-center gap-1 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 px-4 py-1.5 rounded-md' },
+                          React.createElement(Icon, { name: 'archive', className: 'w-4 h-4' }), ' Arsipkan'
+                        )
+                      )
+                    )
+                  )
+                )
+              ) :
+              
+              // TAMPILAN: LIST & FORM EDIT ARTIKEL
               view === 'list' ? 
                 React.createElement('div', null,
                   React.createElement('div', { className: 'flex justify-between items-center mb-6' },
@@ -473,7 +534,7 @@
                   loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
                   articles.length === 0 ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Belum ada artikel di kategori ini.') :
                   React.createElement(React.Fragment, null,
-                    // TAMPILAN TABEL (DESKTOP)
+                    // TABEL DESKTOP
                     React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border overflow-hidden hidden md:block' },
                       React.createElement('table', { className: 'w-full text-left' },
                         React.createElement('thead', { className: 'bg-gray-50 border-b' },
@@ -502,8 +563,7 @@
                         )
                       )
                     ),
-
-                    // TAMPILAN KARTU (MOBILE)
+                    // KARTU MOBILE
                     React.createElement('div', { className: 'md:hidden space-y-4' },
                       articles.map(article => 
                         React.createElement('div', { key: article.id, className: 'bg-white p-4 rounded-xl shadow-sm border border-gray-200' },
@@ -527,21 +587,22 @@
                   )
                 )
               : 
-                React.createElement(ArticleForm, { 
-                  auth, 
-                  initialData: view === 'edit' ? editData : null, 
-                  onCancel: () => setView('list'), 
-                  onSave: onSaveSuccess 
-                })
+                React.createElement(ArticleForm, { auth, initialData: view === 'edit' ? editData : null, onCancel: () => setView('list'), onSave: onSaveSuccess })
             )
           ),
-
+          
           // MENU BAWAH (MOBILE)
           React.createElement('nav', { className: 'md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex overflow-x-auto items-center h-16 z-50 px-2 pb-safe' },
+            React.createElement('button', { onClick: () => setView('submissions'), className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'submissions' ? 'text-brand-600' : 'text-gray-500'}` },
+              React.createElement('div', { className: 'relative' },
+                React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5' }),
+                submissions.length > 0 && React.createElement('span', { className: 'absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-bold px-1 rounded-full' }, submissions.length)
+              ),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Kiriman')
+            ),
             SECTIONS.map(sec => 
               React.createElement('button', { 
-                key: sec.id, 
-                onClick: () => { setActiveSection(sec.id); setView('list'); }, 
+                key: sec.id, onClick: () => { setActiveSection(sec.id); setView('list'); }, 
                 className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'list' && activeSection === sec.id ? 'text-brand-600' : 'text-gray-500'}` 
               },
                 React.createElement(Icon, { name: sec.icon, className: 'w-5 h-5' }),
