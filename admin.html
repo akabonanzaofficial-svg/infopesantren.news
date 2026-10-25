@@ -359,6 +359,101 @@
         );
       }
 
+      function StatsView({ auth, statsData, statsLoading, statsDays, setStatsDays, fetchStats }) {
+        return React.createElement('div', { className: 'space-y-6' },
+          // Header & Filter
+          React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center gap-4' },
+            React.createElement('div', null,
+              React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, 'Statistik Website'),
+              React.createElement('p', { className: 'text-sm text-gray-500' }, 'Data kunjungan dari Cloudflare Web Analytics')
+            ),
+            React.createElement('div', { className: 'flex gap-2 bg-white p-1 rounded-lg border shadow-sm' },
+              [7, 30].map(d => 
+                React.createElement('button', {
+                  key: d,
+                  onClick: () => { setStatsDays(d); fetchStats(d); },
+                  className: `px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${statsDays === d ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`
+                }, d + ' Hari Terakhir')
+              )
+            )
+          ),
+
+          statsLoading ? React.createElement('div', { className: 'text-center py-20 text-gray-500' }, 'Memuat data statistik...') :
+          !statsData ? React.createElement('div', { className: 'text-center py-20 text-gray-500 bg-white rounded-xl border' }, 'Data tidak tersedia. Pastikan beacon terpasang dan API Token valid.') :
+          React.createElement(React.Fragment, null,
+            // Kartu Ringkasan
+            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
+              React.createElement('div', { className: 'bg-white p-6 rounded-xl shadow-sm border border-gray-200' },
+                React.createElement('div', { className: 'flex items-center gap-3 text-brand-600 mb-2' },
+                  React.createElement(Icon, { name: 'eye', className: 'w-5 h-5' }),
+                  React.createElement('span', { className: 'font-semibold text-sm uppercase tracking-wider' }, 'Total Page Views')
+                ),
+                React.createElement('div', { className: 'text-4xl font-extrabold text-gray-900' }, statsData.totalViews.toLocaleString('id-ID')),
+                React.createElement('p', { className: 'text-xs text-gray-500 mt-1' }, 'Dalam ' + statsDays + ' hari terakhir')
+              ),
+              React.createElement('div', { className: 'bg-white p-6 rounded-xl shadow-sm border border-gray-200' },
+                React.createElement('div', { className: 'flex items-center gap-3 text-gold-600 mb-2' },
+                  React.createElement(Icon, { name: 'trending-up', className: 'w-5 h-5' }),
+                  React.createElement('span', { className: 'font-semibold text-sm uppercase tracking-wider' }, 'Rata-rata Harian')
+                ),
+                React.createElement('div', { className: 'text-4xl font-extrabold text-gray-900' }, statsData.daily.length > 0 ? Math.round(statsData.totalViews / statsData.daily.length).toLocaleString('id-ID') : 0),
+                React.createElement('p', { className: 'text-xs text-gray-500 mt-1' }, 'Kunjungan per hari')
+              )
+            ),
+
+            // Grafik Harian (CSS Bars)
+            React.createElement('div', { className: 'bg-white p-6 rounded-xl shadow-sm border border-gray-200' },
+              React.createElement('h3', { className: 'font-bold text-gray-800 mb-6 flex items-center gap-2' }, React.createElement(Icon, { name: 'bar-chart-2', className: 'w-5 h-5 text-gray-400' }), 'Tren Kunjungan Harian'),
+              React.createElement('div', { className: 'h-48 flex items-end gap-2 md:gap-4' },
+                statsData.daily.map((d, i) => {
+                  const max = Math.max(...statsData.daily.map(x => x.views));
+                  const height = max > 0 ? (d.views / max) * 100 : 0;
+                  const dateObj = new Date(d.date);
+                  return React.createElement('div', { key: i, className: 'flex-1 flex flex-col items-center group relative' },
+                    // Tooltip
+                    React.createElement('div', { className: 'absolute -top-8 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10' }, d.views + ' views'),
+                    // Bar
+                    React.createElement('div', { 
+                      className: 'w-full bg-brand-500 hover:bg-brand-600 rounded-t-sm transition-all',
+                      style: { height: Math.max(height, 2) + '%' } 
+                    }),
+                    // Label Tanggal
+                    React.createElement('span', { className: 'text-[10px] text-gray-400 mt-2 block' }, dateObj.getDate() + '/' + (dateObj.getMonth() + 1))
+                  );
+                })
+              )
+            ),
+
+            // Tabel Artikel Terpopuler
+            React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden' },
+              React.createElement('div', { className: 'p-4 border-b bg-gray-50' },
+                React.createElement('h3', { className: 'font-bold text-gray-800 flex items-center gap-2' }, React.createElement(Icon, { name: 'award', className: 'w-5 h-5 text-gold-500' }), '10 Halaman Terpopuler')
+              ),
+              React.createElement('table', { className: 'w-full text-left' },
+                React.createElement('thead', { className: 'bg-white border-b' },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: 'p-4 text-sm font-semibold text-gray-600 w-16' }, 'No'),
+                    React.createElement('th', { className: 'p-4 text-sm font-semibold text-gray-600' }, 'Halaman URL'),
+                    React.createElement('th', { className: 'p-4 text-sm font-semibold text-gray-600 text-right w-32' }, 'Views')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  statsData.topPages.map((page, i) => 
+                    React.createElement('tr', { key: i, className: 'border-b hover:bg-gray-50 last:border-0' },
+                      React.createElement('td', { className: 'p-4 text-sm text-gray-500' }, i + 1),
+                      React.createElement('td', { className: 'p-4 text-sm font-medium text-gray-800 truncate max-w-[200px] md:max-w-md' }, 
+                        React.createElement('a', { href: 'https://infopesantren.online' + page.path, target: '_blank', className: 'hover:text-brand-600 hover:underline' }, page.path)
+                      ),
+                      React.createElement('td', { className: 'p-4 text-sm font-bold text-brand-700 text-right' }, page.views.toLocaleString('id-ID'))
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
       function Dashboard({ auth, onLogout }) {
         const [view, setView] = useState('list'); 
         const [activeSection, setActiveSection] = useState('berita');
@@ -367,6 +462,11 @@
         const [submissions, setSubmissions] = useState([]); 
         const [loading, setLoading] = useState(true);
         const [previewSub, setPreviewSub] = useState(null);
+
+        // State Statistik
+        const [statsData, setStatsData] = useState(null);
+        const [statsLoading, setStatsLoading] = useState(false);
+        const [statsDays, setStatsDays] = useState(7);
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
@@ -384,6 +484,18 @@
               setSubmissions(d.submissions || []);
             }
           } catch (err) { console.error(err); alert('Gagal mengambil data: ' + err.message); } finally { setLoading(false); }
+        };
+
+        const fetchStats = async (days) => {
+          setStatsLoading(true);
+          try {
+            const res = await fetch(`${API_URL}/api/stats?days=${days}`, {
+              headers: { 'Authorization': getAuthHeader() }
+            });
+            const json = await res.json();
+            if (json.success) setStatsData(json.data);
+            else alert('Gagal memuat statistik: ' + json.error);
+          } catch (err) { alert(err.message); } finally { setStatsLoading(false); }
         };
 
         useEffect(() => { fetchData(); }, [activeSection]);
@@ -427,16 +539,31 @@
               React.createElement('h1', { className: 'text-xl font-extrabold tracking-wider' }, 'Info', React.createElement('span', { className: 'text-brand-500' }, 'Pesantren'), React.createElement('span', { className: 'text-gold-500' }, '.admin'))
             ),
             React.createElement('nav', { className: 'flex-1 p-4 space-y-1 overflow-y-auto' },
-              React.createElement('button', { onClick: () => { setView('submissions'); }, className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` },
+              
+              // MENU STATISTIK
+              React.createElement('button', { 
+                onClick: () => { setView('stats'); fetchStats(statsDays); }, 
+                className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'stats' ? 'text-white ring-2 ring-brand-500' : 'text-gray-300'}` 
+              },
+                React.createElement(Icon, { name: 'bar-chart-3', className: 'w-5 h-5 text-brand-400' }), 
+                React.createElement('span', { className: 'font-bold' }, 'Statistik')
+              ),
+
+              React.createElement('button', { 
+                onClick: () => { setView('submissions'); }, 
+                className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` 
+              },
                 React.createElement('div', { className: 'flex items-center gap-3' },
                   React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5 text-gold-400' }),
                   React.createElement('span', { className: 'font-bold' }, 'Kiriman Masuk')
                 ),
                 submissions.length > 0 && React.createElement('span', { className: 'bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full' }, submissions.length)
               ),
+
               React.createElement('button', { onClick: handleCreateClick, className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 ${view === 'create' ? 'bg-brand-600 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-200'}` },
                 React.createElement(Icon, { name: 'plus-circle', className: 'w-5 h-5' }), ' Tulis Artikel Baru'
               ),
+              
               React.createElement('div', { className: 'text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 mt-6 px-2' }, 'Kategori Konten'),
               SECTIONS.map(sec => 
                 React.createElement('button', { key: sec.id, onClick: () => { setActiveSection(sec.id); setView('list'); }, className: `w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${view === 'list' && activeSection === sec.id ? 'bg-brand-600 text-white' : 'hover:bg-gray-800 text-gray-400'}` },
@@ -461,6 +588,11 @@
             ),
             
             React.createElement('div', { className: 'flex-1 p-4 md:p-8' },
+              
+              // TAMPILAN STATISTIK
+              view === 'stats' ? React.createElement(StatsView, { auth, statsData, statsLoading, statsDays, setStatsDays, fetchStats }) :
+
+              // TAMPILAN KIRIMAN MASUK
               view === 'submissions' ? React.createElement('div', null,
                 React.createElement('h2', { className: 'text-2xl font-bold text-gray-800 mb-6' }, 'Kiriman Masuk (Perlu Ditinjau)'),
                 loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
@@ -504,6 +636,7 @@
                 )
               ) :
               
+              // TAMPILAN LIST
               view === 'list' ? 
                 React.createElement('div', null,
                   React.createElement('div', { className: 'flex justify-between items-center mb-6' },
@@ -594,6 +727,10 @@
           ),
 
           React.createElement('nav', { className: 'md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex overflow-x-auto items-center h-16 z-50 px-2 pb-safe' },
+            React.createElement('button', { onClick: () => { setView('stats'); fetchStats(statsDays); }, className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'stats' ? 'text-brand-600' : 'text-gray-500'}` },
+              React.createElement(Icon, { name: 'bar-chart-3', className: 'w-5 h-5' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Statistik')
+            ),
             React.createElement('button', { onClick: () => setView('submissions'), className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'submissions' ? 'text-brand-600' : 'text-gray-500'}` },
               React.createElement('div', { className: 'relative' },
                 React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5' }),
