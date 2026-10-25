@@ -79,10 +79,9 @@
                             const base64 = e.target.result.split(',')[1];
                             const filename = `sub-img-${Date.now()}.${file.name.split('.').pop()}`;
                             try {
-                              // Gunakan endpoint upload Worker (tanpa auth karena ini kiriman publik)
-                              const res = await fetch(`${API_URL}/api/upload`, {
+                              const res = await fetch(`${API_URL}/api/upload-public`, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:rahasia123') }, // Menggunakan kredensial admin default untuk upload sementara
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ filename, base64 })
                               });
                               const json = await res.json();
@@ -119,9 +118,9 @@
               const base64 = e.target.result.split(',')[1];
               const filename = `sub-cover-${Date.now()}.${file.name.split('.').pop()}`;
               try {
-                const res = await fetch(`${API_URL}/api/upload`, {
+                const res = await fetch(`${API_URL}/api/upload-public`, {
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:rahasia123') }, // Upload publik
+                  headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ filename, base64 })
                 });
                 const json = await res.json();
@@ -178,7 +177,6 @@
             ),
             
             React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-6' },
-              // Data Penulis
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200' },
                 React.createElement('div', null,
                   React.createElement('label', { className: 'block text-sm font-bold mb-1' }, 'Nama Lengkap'),
@@ -190,7 +188,6 @@
                 )
               ),
 
-              // Detail Artikel
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4' },
                 React.createElement('div', { className: 'md:col-span-2' },
                   React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Tulisan'),
