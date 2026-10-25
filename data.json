@@ -595,7 +595,27 @@
       "status": "published"
     }
   ],
-  "tokoh": [],
+  "tokoh": [
+    {
+      "id": "art-1792938716522",
+      "slug": "mengenal-perjalanan-hidup-imam-al-ghazali",
+      "title": "Mengenal Perjalanan Hidup Imam Al Ghazali",
+      "name": "Mengenal Perjalanan Hidup Imam Al Ghazali",
+      "summary": "Abu Hamid Muhammad bin Muhammad Al Ghazali (Imam Al Ghazali) lahir di Thus, Khurasan, pada tahun 450 Hijriah. Ulama besar ini tumbuh dalam lingkungan keluarga sederhana yang menjunjung tinggi ilmu pengetahuan dan nilai-nilai agama.",
+      "bio": "Abu Hamid Muhammad bin Muhammad Al Ghazali (Imam Al Ghazali) lahir di Thus, Khurasan, pada tahun 450 Hijriah. Ulama besar ini tumbuh dalam lingkungan keluarga sederhana yang menjunjung tinggi ilmu pengetahuan dan nilai-nilai agama.",
+      "description": "Abu Hamid Muhammad bin Muhammad Al Ghazali (Imam Al Ghazali) lahir di Thus, Khurasan, pada tahun 450 Hijriah. Ulama besar ini tumbuh dalam lingkungan keluarga sederhana yang menjunjung tinggi ilmu pengetahuan dan nilai-nilai agama.",
+      "content": "<p>Abu Hamid Muhammad bin Muhammad Al Ghazali (Imam Al Ghazali) lahir di Thus, Khurasan, pada tahun 450 Hijriah. Ulama besar ini tumbuh dalam lingkungan keluarga sederhana yang menjunjung tinggi ilmu pengetahuan dan nilai-nilai agama.</p><p><br></p><p>Ayah Imam Al Ghazali bekerja sebagai pemintal wol dan seorang sufi yang saleh. Sebelum wafat, sang ayah menitipkan kedua anaknya kepada seorang teman sufi agar mereka mendapat pendidikan layak.</p><p><br></p><p>Imam Al Ghazali memulai pendidikan dasarnya di Thus dengan mempelajari ilmu fikih dari ulama setempat. Ia kemudian merantau ke Jurjan dan Nishapur untuk memperdalam pengetahuannya di bawah bimbingan Imam al-Haramayn al-Juwayni.</p><p><br></p><p>Imam Al Ghazali menunjukkan kecerdasan luar biasa hingga menarik perhatian Perdana Menteri Bani Seljuk, Nizam al-Mulk. Nizam al-Mulk mengangkat Imam Al Ghazali sebagai profesor di Madrasah Nizhamiyah di Baghdad pada tahun 484 Hijriah.</p><p><br></p><p>\"Kekuasaan dan agama adalah saudara kembar,\" kata Al-Ghazali, menggarisbawahi hubungan erat antara pemimpin dan moralitas agama dalam kitabnya.</p><p><br></p><p>Di Baghdad, Imam Al Ghazali mengajar ratusan murid dan menulis berbagai karya besar di bidang fikih, teologi, serta filsafat. Posisi bergengsi ini tidak membuatnya bertahan selamanya di tengah kemewahan istana dan dunia akademik.</p><p><br></p><p>Ia mengalami krisis spiritual yang membuatnya meninggalkan jabatan profesor pada tahun 488 Hijriah. Imam Al Ghazali memilih mengasingkan diri, berkelana, serta menjalani kehidupan tasawuf selama lebih dari sepuluh tahun.</p><p><br></p><p>Pengembaraan spiritual ini melahirkan karya monumentalnya berjudul Ihya' Ulum al-Din. Imam Al Ghazali akhirnya kembali ke Thus pada akhir hayatnya dan mendirikan madrasah kecil sebelum wafat pada tahun 505 Hijriah.</p>",
+      "category": "Umum",
+      "author": "Admin",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1792938702403.png",
+      "featured": false,
+      "status": "published",
+      "published_at": "2026-10-25T14:29:00.000Z",
+      "date_start": "2026-10-25T14:29:00.000Z",
+      "views": 0,
+      "_old_section": "tokoh"
+    }
+  ],
   "agenda": [
     {
       "id": "a-001",
