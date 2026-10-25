@@ -1,80 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Halaman Utama & Kategori -->
   <url>
     <loc>https://infopesantren.online/</loc>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://infopesantren.online/berita</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://infopesantren.online/program</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://infopesantren.online/khazanah</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://infopesantren.online/tokoh</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://infopesantren.online/agenda</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
-
-  <!-- Artikel Berita -->
-  <url><loc>https://infopesantren.online/berita/menag-nasaruddin-umar-sarung-dan-peci-bukan-sekadar-busana-tetapi-identitas-bangsa</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dampingi-ponpes-al-musthafawiyah-bogor-kembangkan-integrated-farming-dan-akses-pembiayaan-syariah</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-selenggarakan-tot-phbs-bersama-pimpinan-dan-pengasuh-pesantren-di-pasuruan-sinergikan-pesantren-dengan-water-org-aqua-dan-sarihusada</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/rangkaian-hari-santri-nasional-sep-dan-danone-indonesia-luncurkan-tot-phbs-skala-nasional</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sinergi-ekosistem-pesantren-dan-mitra-gelar-tot-phbs-untuk-pimpinan-ponpes-pasuruan</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-perkokoh-jaringan-ekonomi-pesantren-di-banyuwangi-ponpes-sunan-kalijogo-srono</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-gandeng-water-org-dan-mitra-strategis-sosialisasikan-pembiayaan-air-dan-sanitasi-untuk-25-pesantren-di-mojokerto</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/serikat-ekonomi-pesantren-gelar-pelatihan-pemasaran-digital-di-banyuwangi</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/serikat-ekonomi-pesantren-mengunjungi-pabrik-aqua-banyuwangi</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-water-org-bahas-pembiayaan-air-sanitasi-di-ponpes-nurul-ummah-yogyakarta</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-water-org-jajaki-kolaborasi-pesantren-bantul-yogyakarta</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/dorong-legalitas-pasar-luas-unit-bisnis-air-ponpes-nawwir-quluubanaa-wonosobo-jawa-tengah</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-water-org-jajaki-potensi-ekonomi-sanitasi-di-ponpes-safiinatunnaja-wonosobo</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-water-org-kunjungi-ponpes-fatkhul-mu-in-ali-masykur-wonosobo-untuk-dorong-kemandirian-ekonomi</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-water-org-tutup-rangkaian-kunjungan-wonosobo-dengan-fokus-sumber-mata-air-di-ponpes-al-madina</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sinergi-strategis-sep-dan-lp2-muhammadiyah-diy-perkuat-ekonomi-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dorong-kebangkitan-ekonomi-pesantren-50-pesantren-bandung-raya-ikuti-pelatihan-bisnis</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/hari-santri-2026-kemenag-siapkan-lima-program-strategis-untuk-masa-depan-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/pesan-hari-santri-2026-prabowo-serukan-kekompakan-untuk-indonesia-yang-kuat</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/pembentukan-ditjen-pesantren-jadi-bukti-perhatian-pemerintah</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/pemerintah-dorong-santri-perluas-kiprah-tanpa-tinggalkan-tradisi-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/artikel-1792673972889</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/hari-santri-nasional-perjalanan-serikat-ekonomi-pesantren-mendorong-kemandirian-ekonomi-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dan-danone-indonesia-gelar-festival-akses-air-bersih-sanitasi-di-pasuruan</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/sep-dorong-ponpes-ad-dzikri-kembangkan-agro-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/berita/haul-masyayikh-2026-digelar-khidmat</loc><priority>0.6</priority></url>
-
-  <!-- Artikel Program -->
-  <url><loc>https://infopesantren.online/program/pendaftaran-ppg-daljab-guru-madrasah-2026-dibuka-hingga-27-oktober-ini-syarat-dan-cara-daftarnya</loc><priority>0.6</priority></url>
-
-  <!-- Artikel Khazanah -->
-  <url><loc>https://infopesantren.online/khazanah/khazanah-islam-filosofi-sarung-dan-peci-warisan-budaya-islam-nusantara</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/khazanah/menelusuri-jejak-7-pesantren-tertua-di-indonesia-warisan-keilmuan-islam-yang-bertahan-berabad-abad</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/khazanah/baghdad-kota-ilmu-yang-pernah-menerangi-dunia</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/khazanah/keutamaan-menghafal-al-quran</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/khazanah/sejarah-pesantren-nusantara</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/khazanah/fiqih-puasa-panduan-lengkap</loc><priority>0.6</priority></url>
-
-  <!-- Artikel Agenda -->
-  <url><loc>https://infopesantren.online/agenda/haul-masyayikh-2026</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/agenda/seminar-sanitasi-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/agenda/wisuda-santri-2026</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/agenda/lomba-mtq-tingkat-pesantren</loc><priority>0.6</priority></url>
-  <url><loc>https://infopesantren.online/agenda/pelatihan-guru-pesantren-2027</loc><priority>0.6</priority></url>
+  <url>
+    <loc>https://infopesantren.online/berita/menag-nasaruddin-umar-sarung-dan-peci-bukan-sekadar-busana-tetapi-identitas-bangsa</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dampingi-ponpes-al-musthafawiyah-bogor-kembangkan-integrated-farming-dan-akses-pembiayaan-syariah</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-selenggarakan-tot-phbs-bersama-pimpinan-dan-pengasuh-pesantren-di-pasuruan-sinergikan-pesantren-dengan-water-org-aqua-dan-sarihusada</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/rangkaian-hari-santri-nasional-sep-dan-danone-indonesia-luncurkan-tot-phbs-skala-nasional</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sinergi-ekosistem-pesantren-dan-mitra-gelar-tot-phbs-untuk-pimpinan-ponpes-pasuruan</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-perkokoh-jaringan-ekonomi-pesantren-di-banyuwangi-ponpes-sunan-kalijogo-srono</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-gandeng-water-org-dan-mitra-strategis-sosialisasikan-pembiayaan-air-dan-sanitasi-untuk-25-pesantren-di-mojokerto</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/serikat-ekonomi-pesantren-gelar-pelatihan-pemasaran-digital-di-banyuwangi</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/serikat-ekonomi-pesantren-mengunjungi-pabrik-aqua-banyuwangi</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-water-org-bahas-pembiayaan-air-sanitasi-di-ponpes-nurul-ummah-yogyakarta</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-water-org-jajaki-kolaborasi-pesantren-bantul-yogyakarta</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/dorong-legalitas-pasar-luas-unit-bisnis-air-ponpes-nawwir-quluubanaa-wonosobo-jawa-tengah</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-water-org-jajaki-potensi-ekonomi-sanitasi-di-ponpes-safiinatunnaja-wonosobo</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-water-org-kunjungi-ponpes-fatkhul-mu-in-ali-masykur-wonosobo-untuk-dorong-kemandirian-ekonomi</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-water-org-tutup-rangkaian-kunjungan-wonosobo-dengan-fokus-sumber-mata-air-di-ponpes-al-madina</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sinergi-strategis-sep-dan-lp2-muhammadiyah-diy-perkuat-ekonomi-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dorong-kebangkitan-ekonomi-pesantren-50-pesantren-bandung-raya-ikuti-pelatihan-bisnis</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/hari-santri-2026-kemenag-siapkan-lima-program-strategis-untuk-masa-depan-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/pesan-hari-santri-2026-prabowo-serukan-kekompakan-untuk-indonesia-yang-kuat</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/pembentukan-ditjen-pesantren-jadi-bukti-perhatian-pemerintah</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/pemerintah-dorong-santri-perluas-kiprah-tanpa-tinggalkan-tradisi-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/artikel-1792673972889</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/hari-santri-nasional-perjalanan-serikat-ekonomi-pesantren-mendorong-kemandirian-ekonomi-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dan-danone-indonesia-gelar-festival-akses-air-bersih-sanitasi-di-pasuruan</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-dorong-ponpes-ad-dzikri-kembangkan-agro-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/haul-masyayikh-2026-digelar-khidmat</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/program/pendaftaran-ppg-daljab-guru-madrasah-2026-dibuka-hingga-27-oktober-ini-syarat-dan-cara-daftarnya</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/khazanah-islam-filosofi-sarung-dan-peci-warisan-budaya-islam-nusantara</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/menelusuri-jejak-7-pesantren-tertua-di-indonesia-warisan-keilmuan-islam-yang-bertahan-berabad-abad</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/baghdad-kota-ilmu-yang-pernah-menerangi-dunia</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/keutamaan-menghafal-al-quran</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/sejarah-pesantren-nusantara</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/fiqih-puasa-panduan-lengkap</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/agenda/haul-masyayikh-2026</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/agenda/seminar-sanitasi-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/agenda/wisuda-santri-2026</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/agenda/lomba-mtq-tingkat-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/agenda/pelatihan-guru-pesantren-2027</loc>
+    <priority>0.6</priority>
+  </url>
 </urlset>
