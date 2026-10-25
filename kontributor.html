@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kirim Tulisan — InfoPesantren.online</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { colors: { brand: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669', 700: '#047857' }, gold: { 500: '#f59e0b' } } } }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+      .ql-editor { min-height: 250px; font-family: 'Merriweather', serif; font-size: 16px; }
+      .ql-container { border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
+      .ql-toolbar { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; background: #f9fafb; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+      const { useState, useEffect, useRef } = React;
+      const API_URL = 'https://infopesantren-api.akabonanza-official.workers.dev';
+
+      function Icon({ name, className = 'w-5 h-5' }) {
+        useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
+        return React.createElement('i', { 'data-lucide': name, className });
+      }
+
+      function KontributorForm() {
+        const [formData, setFormData] = useState({ 
+          author_name: '', author_contact: '', title: '', category: 'Berita', summary: '', image_url: '' 
+        });
+        const [isSuccess, setIsSuccess] = useState(false);
+        const [saving, setSaving] = useState(false);
+        const [uploading, setUploading] = useState(false);
+        
+        const quillRef = useRef(null);
+        const quillInstance = useRef(null);
+
+        useEffect(() => {
+          if (quillRef.current && !quillInstance.current) {
+            quillInstance.current = new Quill(quillRef.current, {
+              theme: 'snow',
+              placeholder: 'Tulis naskah Anda di sini...',
+              modules: {
+                toolbar: {
+                  container: [
+                    [{ 'header': [2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'blockquote'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                  ],
+                  handlers: {
+                    image: () => {
+                      const input = document.createElement('input');
+                      input.setAttribute('type', 'file');
+                      input.setAttribute('accept', 'image/*');
+                      input.click();
+                      input.onchange = async () => {
+                        const file = input.files[0];
+                        if (file) {
+                          if (file.size > 2 * 1024 * 1024) return alert('Ukuran gambar melebihi 2MB.');
+                          setUploading(true);
+                          const reader = new FileReader();
+                          reader.onload = async (e) => {
+                            const base64 = e.target.result.split(',')[1];
+                            const filename = `sub-img-${Date.now()}.${file.name.split('.').pop()}`;
+                            try {
+                              // Gunakan endpoint upload Worker (tanpa auth karena ini kiriman publik)
+                              const res = await fetch(`${API_URL}/api/upload`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:rahasia123') }, // Menggunakan kredensial admin default untuk upload sementara
+                                body: JSON.stringify({ filename, base64 })
+                              });
+                              const json = await res.json();
+                              if (json.success) {
+                                const range = quillInstance.current.getSelection(true);
+                                quillInstance.current.insertEmbed(range.index, 'image', json.url);
+                                quillInstance.current.setSelection(range.index + 1);
+                              } else alert(json.error);
+                            } catch (err) { alert(err.message); } finally { setUploading(false); }
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      };
+                    }
+                  }
+                }
+              }
+            });
+          }
+        }, []);
+
+        const handleChange = (e) => {
+          const { name, value } = e.target;
+          setFormData(prev => ({ ...prev, [name]: value }));
+        };
+
+        const handleCoverUpload = async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            if (file.size > 2 * 1024 * 1024) return alert('Ukuran gambar melebihi 2MB.');
+            setUploading(true);
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+              const base64 = e.target.result.split(',')[1];
+              const filename = `sub-cover-${Date.now()}.${file.name.split('.').pop()}`;
+              try {
+                const res = await fetch(`${API_URL}/api/upload`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:rahasia123') }, // Upload publik
+                  body: JSON.stringify({ filename, base64 })
+                });
+                const json = await res.json();
+                if (json.success) setFormData(prev => ({ ...prev, image_url: json.url }));
+                else alert(json.error);
+              } catch (err) { alert(err.message); } finally { setUploading(false); }
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          if (!formData.author_contact.match(/^[0-9]+$/)) {
+            return alert('Nomor WhatsApp hanya boleh berisi angka.');
+          }
+          
+          setSaving(true);
+          const content = quillInstance.current ? quillInstance.current.root.innerHTML : '';
+
+          try {
+            const res = await fetch(`${API_URL}/api/submit`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...formData, content })
+            });
+            const json = await res.json();
+            if (json.success) setIsSuccess(true);
+            else alert('Gagal: ' + json.error);
+          } catch (err) { alert(err.message); } finally { setSaving(false); }
+        };
+
+        if (isSuccess) {
+          return React.createElement('div', { className: 'min-h-screen flex items-center justify-center p-4' },
+            React.createElement('div', { className: 'bg-white p-8 rounded-2xl shadow-xl text-center max-w-md w-full border-t-4 border-brand-600' },
+              React.createElement('div', { className: 'bg-green-100 p-4 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center' },
+                React.createElement(Icon, { name: 'check-circle', className: 'w-10 h-10 text-green-600' })
+              ),
+              React.createElement('h1', { className: 'text-2xl font-bold text-gray-900 mb-2' }, 'Tulisan Terkirim!'),
+              React.createElement('p', { className: 'text-gray-600 mb-6' }, 'Terima kasih! Tulisan Anda sudah masuk ke meja redaksi InfoPesantren. Redaksi akan meninjau naskah Anda sebelum diterbitkan.'),
+              React.createElement('a', { href: '/', className: 'inline-block bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 px-6 rounded-lg transition-colors' }, 'Kembali ke Beranda')
+            )
+          );
+        }
+
+        return React.createElement('div', { className: 'max-w-3xl mx-auto px-4 py-8 md:py-12' },
+          React.createElement('a', { href: '/', className: 'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6 transition-colors' },
+            React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }), ' Kembali ke Beranda'
+          ),
+          React.createElement('div', { className: 'bg-white rounded-2xl shadow-lg border border-gray-200 p-6 md:p-10' },
+            React.createElement('div', { className: 'text-center mb-8' },
+              React.createElement('h1', { className: 'text-3xl font-extrabold text-gray-900 mb-2' }, 'Kirim Tulisan Anda'),
+              React.createElement('p', { className: 'text-gray-500' }, 'Bantu sebarkan informasi positif seputar pesantren. Tulisan Anda akan ditinjau oleh redaksi sebelum tayang.')
+            ),
+            
+            React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-6' },
+              // Data Penulis
+              React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200' },
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-sm font-bold mb-1' }, 'Nama Lengkap'),
+                  React.createElement('input', { name: 'author_name', required: true, value: formData.author_name, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Nama Anda' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-sm font-bold mb-1' }, 'Nomor WhatsApp'),
+                  React.createElement('input', { name: 'author_contact', required: true, value: formData.author_contact, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: '08123456789' })
+                )
+              ),
+
+              // Detail Artikel
+              React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4' },
+                React.createElement('div', { className: 'md:col-span-2' },
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Tulisan'),
+                  React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Judul yang menarik...' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori'),
+                  React.createElement('select', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' },
+                    ['Berita', 'Program', 'Khazanah', 'Tokoh', 'Agenda'].map(c => React.createElement('option', { key: c, value: c }, c))
+                  )
+                )
+              ),
+
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat'),
+                React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Ringkasan dari tulisan Anda...' })
+              ),
+
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Tulisan Lengkap'),
+                React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden' },
+                  React.createElement('div', { ref: quillRef, className: 'text-base' })
+                ),
+                uploading && React.createElement('p', { className: 'text-xs text-brand-600 mt-1 animate-pulse' }, 'Sedang mengunggah gambar...')
+              ),
+
+              React.createElement('div', { className: 'border p-4 rounded-lg bg-gray-50' },
+                React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Utama (Opsional)'),
+                React.createElement('div', { className: 'flex flex-col md:flex-row gap-4' },
+                  React.createElement('div', { className: 'flex-1' },
+                    React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Opsi A: URL Gambar'),
+                    React.createElement('input', { name: 'image_url', value: formData.image_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
+                  ),
+                  React.createElement('div', { className: 'flex-1' },
+                    React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Opsi B: Upload (Maks 2MB)'),
+                    React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleCoverUpload, className: 'w-full text-sm mt-1' })
+                  )
+                ),
+                formData.image_url && React.createElement('img', { src: formData.image_url, className: 'h-20 mt-2 rounded object-cover border' })
+              ),
+
+              React.createElement('div', { className: 'flex justify-end pt-4 border-t mt-6' },
+                React.createElement('button', { type: 'submit', disabled: saving, className: 'w-full md:w-auto px-8 py-3 bg-gold-500 hover:bg-gold-600 text-gray-900 font-bold rounded-lg shadow-md transition-colors disabled:opacity-50' },
+                  saving ? 'Mengirim...' : 'Kirim ke Redaksi'
+                )
+              )
+            )
+          )
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(KontributorForm));
+    </script>
+  </body>
+</html>
