@@ -215,7 +215,7 @@
           const finalContent = quillInstance.current ? quillInstance.current.root.innerHTML : '';
           const isoDate = new Date(formData.published_at).toISOString();
 
-          const payload = {
+                    const payload = {
             id: formData.id || 'art-' + Date.now(),
             slug: formData.slug || 'artikel-' + Date.now(),
             title: formData.title,
@@ -232,6 +232,7 @@
             published_at: isoDate,
             date_start: isoDate,
             views: formData.views,
+            _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section // TAMBAHKAN INI
           };
 
           try {
