@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /kontributor.html
+
+Sitemap: https://infopesantren.online/sitemap.xml
