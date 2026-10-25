@@ -663,5 +663,18 @@
       "featured": false
     }
   ],
-  "submissions": []
+  "submissions": [
+    {
+      "author_name": "Qilan",
+      "author_contact": "1238912648152",
+      "title": "Judul Menarik",
+      "category": "Berita",
+      "summary": "Semoag ini hanya ringkasan",
+      "image_url": "https://cdn.kemenag.go.id/storage/posts/16_9/big/1758782583.jpeg",
+      "content": "<p>isi artikel lengkap dan panjang</p>",
+      "id": "sub-1792913282844",
+      "status": "pending",
+      "submitted_at": "2026-10-25T07:28:02.844Z"
+    }
+  ]
 }
