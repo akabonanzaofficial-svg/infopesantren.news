@@ -502,18 +502,6 @@
       "featured": true
     },
     {
-      "id": "p-003",
-      "slug": "program-kajian-kitab-kuning",
-      "title": "Kajian Kitab Kuning",
-      "description": "Program khusus pendalaman kitab kuning klasik: Fathul Qarib, Alfiyah, dan Ihya Ulumuddin dengan metode sorogan & bandongan.",
-      "duration": "Berkesinambungan",
-      "schedule": "Setiap malam, ba'da Maghrib",
-      "image_url": "https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800",
-      "status": "dibuka",
-      "contact": "0812-3456-7892",
-      "featured": true
-    },
-    {
       "id": "p-004",
       "slug": "program-beasiswa-santri-berprestasi",
       "title": "Beasiswa Santri Berprestasi",
