@@ -1,6 +1,15 @@
 // api/generate-sitemap.js
 export default async function handler(req, res) {
-  // 1. Verifikasi Keamanan menggunakan header kustom (menghindari bug Vercel)
+  // 1. TANGANI PREFLIGHT REQUEST (CORS)
+  // Ini mencegah error "Redirect is not allowed for a preflight request"
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'x-cron-secret, Content-Type');
+    return res.status(200).end();
+  }
+
+  // 2. VERIFIKASI KEAMANAN
   const authHeader = req.headers['x-cron-secret'];
   const cronSecret = process.env.CRON_SECRET;
   
@@ -8,8 +17,9 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  // 3. PROSES UTAMA
   try {
-    // 2. Ambil data.json dari Worker API Anda
+    // Ambil data.json dari Worker API Anda
     const apiRes = await fetch('https://infopesantren-api.akabonanza-official.workers.dev/api/content');
     const apiJson = await apiRes.json();
     
@@ -20,7 +30,7 @@ export default async function handler(req, res) {
     const data = apiJson.data.data;
     const domain = 'https://infopesantren.online';
 
-    // 3. Susun XML Sitemap
+    // Susun XML Sitemap
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
@@ -48,7 +58,7 @@ export default async function handler(req, res) {
 
     xml += '</urlset>';
 
-    // 4. Simpan ke GitHub
+    // 4. SIMPAN KE GITHUB
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
     const GITHUB_OWNER = process.env.GITHUB_OWNER; 
     const GITHUB_REPO = process.env.GITHUB_REPO;
