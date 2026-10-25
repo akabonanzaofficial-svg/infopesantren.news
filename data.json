@@ -476,18 +476,6 @@
       "published_at": "2026-10-23T13:49:00.000Z",
       "date_start": "2026-10-23T13:49:00.000Z",
       "views": 0
-    },
-    {
-      "id": "p-005",
-      "slug": "program-pelatihan-guru-pesantren",
-      "title": "Pelatihan Guru Pesantren",
-      "description": "Pelatihan peningkatan kompetensi guru pesantren dalam bidang pedagogi, teknologi pendidikan, dan metodologi pengajaran kitab.",
-      "duration": "2 minggu",
-      "schedule": "Batch 1: Januari 2027",
-      "image_url": "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&w=800",
-      "status": "dibuka",
-      "contact": "0812-3456-7894",
-      "featured": false
     }
   ],
   "khazanah": [
