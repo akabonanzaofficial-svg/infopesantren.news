@@ -8,6 +8,25 @@
   },
   "berita": [
     {
+      "id": "art-1792941869984",
+      "slug": "tes-aja",
+      "title": "Tes aja",
+      "name": "Tes aja",
+      "summary": "Tulisan nya salah",
+      "bio": "Tulisan nya salah",
+      "description": "Tulisan nya salah",
+      "content": "<p>Kemungkinan salah</p>",
+      "category": "Umum",
+      "author": "Admin",
+      "image_url": "https://cms2025.kemenag.go.id/storage/posts/thumbnails/01M5NDRNHQXF3Z9GAE30PAYWCC.jpeg",
+      "featured": false,
+      "status": "published",
+      "published_at": "2026-10-25T15:23:00.000Z",
+      "date_start": "2026-10-25T15:23:00.000Z",
+      "views": 0,
+      "_old_section": "berita"
+    },
+    {
       "id": "art-1792898998623",
       "slug": "menag-nasaruddin-umar-sarung-dan-peci-bukan-sekadar-busana-tetapi-identitas-bangsa",
       "title": "Menag Nasaruddin Umar: Sarung dan Peci Bukan Sekadar Busana, tetapi Identitas Bangsa",
