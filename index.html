@@ -47,6 +47,33 @@
       .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
       .ornament-divider { background-image: linear-gradient(to right, transparent, #fbbf24, transparent); height: 2px; }
     </style>
+        <!-- Schema Markup untuk Website -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "InfoPesantren.online",
+      "url": "https://infopesantren.online",
+      "description": "Portal Berita dan Informasi Pesantren Indonesia. Sajian lengkap berita terkini, khazanah Islam, profil ulama, agenda, dan program pesantren, berkolaborasi dengan Serikat Ekonomi Pesantren (SEP).",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://infopesantren.online/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Schema Markup untuk Organisasi -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "InfoPesantren.online",
+      "url": "https://infopesantren.online",
+      "logo": "https://infopesantren.online/favicon.ico",
+      "sameAs": []
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
