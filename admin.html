@@ -76,14 +76,43 @@
         });
       };
 
-      function Login({ onLogin }) {
+            function Login({ onLogin }) {
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
         const [showPassword, setShowPassword] = useState(false);
+        const [errorMsg, setErrorMsg] = useState('');
+        const [isChecking, setIsChecking] = useState(false);
 
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
           e.preventDefault();
-          if (username && password) onLogin({ username, password });
+          if (!username || !password) return;
+
+          setIsChecking(true);
+          setErrorMsg('');
+
+          // Bersihkan spasi yang tidak sengaja terketik
+          const cleanUser = username.trim();
+          const cleanPass = password.trim();
+
+          try {
+            // Uji kredensial ke endpoint yang dilindungi (contoh: /api/stats)
+            const res = await fetch(`${API_URL}/api/stats?days=1`, {
+              headers: { 'Authorization': 'Basic ' + btoa(`${cleanUser}:${cleanPass}`) }
+            });
+
+            if (res.status === 401) {
+              setErrorMsg('Username atau password salah. Silakan coba lagi.');
+            } else if (res.ok) {
+              // Jika berhasil, baru izinkan masuk
+              onLogin({ username: cleanUser, password: cleanPass });
+            } else {
+              setErrorMsg('Terjadi kesalahan pada server. Coba lagi nanti.');
+            }
+          } catch (err) {
+            setErrorMsg('Gagal terhubung ke server. Periksa koneksi internet Anda.');
+          } finally {
+            setIsChecking(false);
+          }
         };
 
         return React.createElement('div', { className: 'min-h-screen flex items-center justify-center bg-gray-100 p-4' },
@@ -92,24 +121,40 @@
               React.createElement('h1', { className: 'text-2xl font-extrabold text-gray-900' }, 'Admin Panel'),
               React.createElement('p', { className: 'text-gray-500 text-sm mt-1' }, 'InfoPesantren.online')
             ),
+            
+            // Tampilkan pesan error jika ada
+            errorMsg && React.createElement('div', { className: 'bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm font-medium border border-red-200 text-center' }, errorMsg),
+
             React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-4' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-1' }, 'Username'),
-                React.createElement('input', { type: 'text', required: true, value: username, onChange: (e) => setUsername(e.target.value), className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none' })
+                React.createElement('input', { 
+                  type: 'text', required: true, value: username, onChange: (e) => setUsername(e.target.value), 
+                  className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none',
+                  autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' 
+                })
               ),
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-1' }, 'Password'),
                 React.createElement('div', { className: 'relative' },
-                  React.createElement('input', { type: showPassword ? 'text' : 'password', required: true, value: password, onChange: (e) => setPassword(e.target.value), className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none pr-10' }),
+                  React.createElement('input', { 
+                    type: showPassword ? 'text' : 'password', required: true, value: password, onChange: (e) => setPassword(e.target.value), 
+                    className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none pr-10',
+                    autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' 
+                  }),
                   React.createElement('button', { type: 'button', onClick: () => setShowPassword(!showPassword), className: 'absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600' }, React.createElement(Icon, { name: showPassword ? 'eye-off' : 'eye' }))
                 )
               ),
-              React.createElement('button', { type: 'submit', className: 'w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg mt-2' }, 'Masuk')
+              React.createElement('button', { 
+                type: 'submit', 
+                disabled: isChecking,
+                className: 'w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg mt-2 disabled:opacity-50 transition-colors flex justify-center items-center' 
+              }, isChecking ? 'Memeriksa...' : 'Masuk')
             )
           )
         );
       }
-
+      
       function ArticleForm({ auth, initialData, onCancel, onSave }) {
         const isEdit = !!initialData;
         const [formData, setFormData] = useState({ 
