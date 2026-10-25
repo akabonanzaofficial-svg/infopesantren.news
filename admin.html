@@ -118,12 +118,12 @@
           title: initialData?.title || initialData?.name || '', 
           slug: initialData?.slug || '', 
           category: initialData?.category || 'Umum', 
-          author: initialData?.author || 'Admin', 
+          author: initialData?.author || initialData?.author_name || 'Admin', 
           summary: initialData?.summary || initialData?.description || initialData?.bio || '', 
           image_url: initialData?.image_url || '', 
           featured: initialData?.featured || false, 
           status: initialData?.status || 'published',
-          published_at: formatForInput(initialData?.published_at || initialData?.date_start || new Date()),
+          published_at: formatForInput(initialData?.published_at || initialData?.submitted_at || new Date()),
           views: initialData?.views || 0,
         });
         
@@ -236,6 +236,9 @@
           };
 
           try {
+            // Jika sedang mengedit kiriman, kita tidak memanggil endpoint /api/article
+            // melainkan endpoint khusus edit kiriman (agar tidak pindah ke array berita dulu)
+            const isEditingSubmission = isEdit && initialData?.status === 'pending';
             const url = isEdit ? `${API_URL}/api/article/${formData.section}/${formData.id}` : `${API_URL}/api/article`;
             const method = isEdit ? 'PUT' : 'POST';
 
@@ -265,20 +268,20 @@
             formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-48 md:h-64 object-cover rounded-xl mb-6' }),
             React.createElement('div', { className: 'prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed overflow-x-hidden', dangerouslySetInnerHTML: { __html: previewContent } }),
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
-              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
+              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : 'Publish Sekarang')
             )
           );
         }
 
         return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 pb-20 md:pb-6' },
           React.createElement('div', { className: 'flex justify-between items-center mb-6 pb-4 border-b' },
-            React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? 'Edit Artikel' : 'Tulis Artikel Baru'),
+            React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? (initialData?.status === 'pending' ? 'Edit Kiriman' : 'Edit Artikel') : 'Tulis Artikel Baru'),
             React.createElement('button', { type: 'button', onClick: onCancel, className: 'text-sm text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1 rounded' }, 'Batal')
           ),
           React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-5' },
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-brand-50 p-4 rounded-lg border border-brand-100' },
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-bold text-brand-800 mb-1' }, 'Tipe Konten (Tampil di Halaman)'),
+                React.createElement('label', { className: 'block text-sm font-bold text-brand-800 mb-1' }, 'Tipe Konten'),
                 React.createElement('select', { name: 'section', value: formData.section, onChange: handleChange, className: 'w-full px-3 py-2 border border-brand-300 rounded-md font-semibold text-brand-700' },
                   SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, s.label))
                 )
@@ -300,20 +303,20 @@
             ),
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Tanggal Terbit / Mulai'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Tanggal Terbit'),
                 React.createElement('input', { type: 'datetime-local', name: 'published_at', required: true, value: formData.published_at, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               ),
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis / Penginput'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis'),
                 React.createElement('input', { name: 'author', value: formData.author, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               )
             ),
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat (Summary/Bio)'),
-              React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan yang akan tampil di halaman depan...' })
+              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat'),
+              React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan...' })
             ),
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap Artikel'),
+              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap'),
               React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden' },
                 React.createElement('div', { ref: quillRef, className: 'text-base' })
               ),
@@ -364,8 +367,11 @@
         const [activeSection, setActiveSection] = useState('berita');
         const [editData, setEditData] = useState(null);
         const [articles, setArticles] = useState([]);
-        const [submissions, setSubmissions] = useState([]); // State untuk kiriman masuk
+        const [submissions, setSubmissions] = useState([]); 
         const [loading, setLoading] = useState(true);
+
+        // State untuk Modal Preview Kiriman Masuk
+        const [previewSub, setPreviewSub] = useState(null);
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
@@ -377,15 +383,12 @@
             if (json.success && json.data && json.data.data) {
               const d = json.data.data;
               
-              // Ambil data untuk section yang aktif
               const sectionData = d[activeSection] || [];
               const formatted = sectionData.map(x => ({...x, _section: activeSection}));
               formatted.sort((a, b) => new Date(b.published_at || b.date_start || 0) - new Date(a.published_at || a.date_start || 0));
               setArticles(formatted);
 
-              // Ambil data kiriman masuk
-              const subs = d.submissions || [];
-              setSubmissions(subs);
+              setSubmissions(d.submissions || []);
             }
           } catch (err) { 
             console.error(err); alert('Gagal mengambil data: ' + err.message); 
@@ -417,6 +420,12 @@
         };
 
         const handleEditClick = (article) => { setEditData(article); setView('edit'); };
+        const handleEditSubmission = (sub) => { 
+          // Ubah statusnya jadi 'edit_submission' agar form tahu ini kiriman
+          setEditData({ ...sub, _section: 'berita', status: 'pending' }); 
+          setView('edit_submission'); 
+        };
+        
         const handleCreateClick = () => { setEditData(null); setView('create'); };
         const onSaveSuccess = () => { window.location.reload(); };
 
@@ -434,7 +443,6 @@
             ),
             React.createElement('nav', { className: 'flex-1 p-4 space-y-1 overflow-y-auto' },
               
-              // MENU KIRIMAN MASUK
               React.createElement('button', { 
                 onClick: () => { setView('submissions'); }, 
                 className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` 
@@ -501,15 +509,18 @@
                       ),
                       React.createElement('p', { className: 'text-sm text-gray-500 mb-4 line-clamp-3' }, sub.summary),
                       
-                      // Tombol Aksi Moderasi
+                      // Tombol Aksi Moderasi & Edit
                       React.createElement('div', { className: 'flex flex-col md:flex-row justify-end gap-2 pt-3 border-t' },
-                        // Pilih kategori tujuan publish
+                        React.createElement('button', { onClick: () => setPreviewSub(sub), className: 'flex items-center justify-center gap-1 text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 px-4 py-1.5 rounded-md mr-auto' },
+                          React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' }), ' Preview'
+                        ),
+                        React.createElement('button', { onClick: () => handleEditSubmission(sub), className: 'flex items-center justify-center gap-1 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-1.5 rounded-md' },
+                          React.createElement(Icon, { name: 'edit', className: 'w-4 h-4' }), ' Edit
+                        '),
                         React.createElement('select', { 
-                          id: `section-${sub.id}`,
-                          className: 'border rounded-md px-2 py-1.5 text-sm md:mr-2',
+                          id: `section-${sub.id}`, className: 'border rounded-md px-2 py-1.5 text-sm',
                           defaultValue: 'berita'
                         }, SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, 'Tayang di: ' + s.label))),
-                        
                         React.createElement('button', { onClick: () => handleModerate(sub.id, 'publish', document.getElementById(`section-${sub.id}`).value), className: 'flex items-center justify-center gap-1 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 px-4 py-1.5 rounded-md' },
                           React.createElement(Icon, { name: 'check', className: 'w-4 h-4' }), ' Publish'
                         ),
@@ -587,10 +598,35 @@
                   )
                 )
               : 
-                React.createElement(ArticleForm, { auth, initialData: view === 'edit' ? editData : null, onCancel: () => setView('list'), onSave: onSaveSuccess })
+                // FORM EDIT ARTIKEL / KIRIMAN
+                React.createElement(ArticleForm, { auth, initialData: (view === 'edit' || view === 'edit_submission') ? editData : null, onCancel: () => setView('list'), onSave: onSaveSuccess })
             )
           ),
           
+          // MODAL PREVIEW KIRIMAN
+          previewSub && React.createElement('div', { className: 'fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4' },
+            React.createElement('div', { className: 'bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl' },
+              React.createElement('div', { className: 'flex justify-between items-center p-4 border-b bg-gray-50' },
+                React.createElement('h3', { className: 'font-bold text-gray-800 text-lg' }, 'Preview Kiriman'),
+                React.createElement('button', { onClick: () => setPreviewSub(null), className: 'text-gray-500 hover:bg-gray-200 p-1 rounded-md' }, React.createElement(Icon, { name: 'x', className: 'w-6 h-6' }))
+              ),
+              React.createElement('div', { className: 'p-6 overflow-y-auto' },
+                React.createElement('span', { className: 'bg-brand-100 text-brand-700 px-3 py-1 rounded-full text-xs font-bold uppercase mb-4 inline-block' }, previewSub.category),
+                React.createElement('h1', { className: 'text-2xl font-bold text-gray-900 mb-2' }, previewSub.title),
+                React.createElement('div', { className: 'flex gap-4 text-sm text-gray-500 mb-6 border-b pb-4' },
+                  React.createElement('span', null, previewSub.author_name),
+                  React.createElement('span', null, displayDate(previewSub.submitted_at))
+                ),
+                previewSub.image_url && React.createElement('img', { src: previewSub.image_url, className: 'w-full h-64 object-cover rounded-xl mb-6' }),
+                React.createElement('div', { className: 'prose max-w-none text-gray-700', dangerouslySetInnerHTML: { __html: previewSub.content || previewSub.description || previewSub.bio } })
+              ),
+              React.createElement('div', { className: 'p-4 border-t bg-gray-50 flex justify-end gap-2' },
+                React.createElement('button', { onClick: () => setPreviewSub(null), className: 'px-4 py-2 border rounded-lg hover:bg-gray-100 font-medium' }, 'Tutup'),
+                React.createElement('button', { onClick: () => { setPreviewSub(null); handleEditSubmission(previewSub); }, className: 'px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium' }, 'Edit Tulisan')
+              )
+            )
+          ),
+
           // MENU BAWAH (MOBILE)
           React.createElement('nav', { className: 'md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex overflow-x-auto items-center h-16 z-50 px-2 pb-safe' },
             React.createElement('button', { onClick: () => setView('submissions'), className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'submissions' ? 'text-brand-600' : 'text-gray-500'}` },
