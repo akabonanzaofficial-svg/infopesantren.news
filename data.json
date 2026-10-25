@@ -478,18 +478,6 @@
       "views": 0
     },
     {
-      "id": "p-004",
-      "slug": "program-beasiswa-santri-berprestasi",
-      "title": "Beasiswa Santri Berprestasi",
-      "description": "Beasiswa penuh bagi santri berprestasi akademik dan non-akademik, mencakup biaya pendidikan, asrama, dan kebutuhan sehari-hari.",
-      "duration": "1 tahun ajaran",
-      "schedule": "Pendaftaran: November–Desember 2026",
-      "image_url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&w=800",
-      "status": "dibuka",
-      "contact": "0812-3456-7893",
-      "featured": true
-    },
-    {
       "id": "p-005",
       "slug": "program-pelatihan-guru-pesantren",
       "title": "Pelatihan Guru Pesantren",
