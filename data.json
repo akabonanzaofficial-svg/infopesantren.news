@@ -8,17 +8,6 @@
   },
   "berita": [
     {
-      "author_name": "qilan",
-      "author_contact": "0891919893797896",
-      "title": "Percobaan Kontnributor",
-      "category": "Berita",
-      "summary": "Percobaan",
-      "image_url": "https://cdn.kemenag.go.id/storage/posts/16_9/big/1758782583.jpeg",
-      "content": "<p>selalu kita mencoba lebih baik</p>",
-      "id": "sub-1792912694450",
-      "status": "published"
-    },
-    {
       "id": "art-1792898998623",
       "slug": "menag-nasaruddin-umar-sarung-dan-peci-bukan-sekadar-busana-tetapi-identitas-bangsa",
       "title": "Menag Nasaruddin Umar: Sarung dan Peci Bukan Sekadar Busana, tetapi Identitas Bangsa",
