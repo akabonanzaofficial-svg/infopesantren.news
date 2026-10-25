@@ -1,20 +1,31 @@
 // api/generate-sitemap.js
 export default async function handler(req, res) {
-  // 1. Verifikasi Keamanan (Opsional tapi disarankan)
-  // Vercel akan mengirim header Authorization saat menjalankan Cron
-  const authHeader = req.headers.authorization;
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  // 1. Verifikasi Keamanan (Menangani Bug Header Vercel)
+  let authHeader = req.headers.authorization;
+  
+  // Vercel terkadang menyembunyikan header Authorization di Production
+  if (!authHeader && req.headers['x-vercel-sc-headers']) {
+    try {
+      const scHeaders = JSON.parse(req.headers['x-vercel-sc-headers']);
+      authHeader = scHeaders.Authorization;
+    } catch (e) {
+      console.error('Gagal parse x-vercel-sc-headers:', e);
+    }
+  }
+
+  const cronSecret = process.env.CRON_SECRET;
+  
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   try {
-    // 2. Ambil data.json dari Worker API Anda (atau langsung dari GitHub raw)
-    // Menggunakan Worker API agar konsisten
+    // 2. Ambil data.json dari Worker API Anda
     const apiRes = await fetch('https://infopesantren-api.akabonanza-official.workers.dev/api/content');
     const apiJson = await apiRes.json();
     
     if (!apiJson.success || !apiJson.data || !apiJson.data.data) {
-      throw new Error('Gagal mengambil data dari API');
+      throw new Error('Gagal mengambil data dari API Worker');
     }
     
     const data = apiJson.data.data;
@@ -49,7 +60,6 @@ export default async function handler(req, res) {
     xml += '</urlset>';
 
     // 4. Simpan ke GitHub
-    // Kita perlu Token GitHub dan info repo. Ambil dari Environment Variables Vercel.
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
     const GITHUB_OWNER = process.env.GITHUB_OWNER; 
     const GITHUB_REPO = process.env.GITHUB_REPO;
