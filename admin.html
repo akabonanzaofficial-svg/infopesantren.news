@@ -7,7 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = { theme: { extend: { colors: { brand: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669', 700: '#047857' }, gold: { 500: '#f59e0b' } } } } }
+      tailwind.config = { theme: { extend: { colors: { brand: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669', 700: '#047857' }, gold: { 50: '#fffbeb', 500: '#f59e0b', 600: '#d97706' } } } } }
     </script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -41,6 +41,21 @@
         { id: 'agenda', label: 'Agenda', icon: 'calendar-days' }
       ];
 
+      const AD_POSITIONS = [
+        { id: 'header', label: 'Header (Billboard)' },
+        { id: 'hero', label: 'Hero (Leaderboard)' },
+        { id: 'feed-1', label: 'Feed 1 (In-Feed)' },
+        { id: 'feed-2', label: 'Feed 2 (In-Feed)' },
+        { id: 'sidebar', label: 'Sidebar (300x600)' },
+        { id: 'sidebar-grid', label: 'Sidebar Grid (Multipleks)' },
+        { id: 'in-article', label: 'In-Article (336x280)' },
+        { id: 'video-in-article', label: 'Video In-Article (16:9)' },
+        { id: 'video-sidebar', label: 'Video Sidebar (Vertikal)' },
+        { id: 'footer-rect', label: 'Footer Rect (Leaderboard)' },
+        { id: 'footer-grid', label: 'Footer Grid (Sponsor)' },
+        { id: 'mobile-sticky', label: 'Mobile Sticky (HP)' }
+      ];
+
       function Icon({ name, className = 'w-5 h-5' }) {
         useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
         return React.createElement('i', { 'data-lucide': name, className });
@@ -53,14 +68,35 @@
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
       };
 
+      // Kompresi Gambar
+      const compressImage = (file) => new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            if (width > 1200) { height *= 1200 / width; width = 1200; }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.8);
+          };
+        };
+      });
+
       const uploadImage = async (file, auth) => {
         if (file.size > 2 * 1024 * 1024) throw new Error('Ukuran gambar melebihi 2MB.');
+        const compressedBlob = await compressImage(file);
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
           reader.onload = async (e) => {
             const base64 = e.target.result.split(',')[1];
-            const ext = file.name.split('.').pop();
-            const filename = `img-${Date.now()}.${ext}`;
+            const filename = `img-${Date.now()}.jpg`;
             try {
               const res = await fetch(`${API_URL}/api/upload`, {
                 method: 'POST',
@@ -72,11 +108,11 @@
               else reject(new Error(json.error));
             } catch (err) { reject(err); }
           };
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(compressedBlob);
         });
       };
 
-            function Login({ onLogin }) {
+      function Login({ onLogin }) {
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
         const [showPassword, setShowPassword] = useState(false);
@@ -86,24 +122,18 @@
         const handleSubmit = async (e) => {
           e.preventDefault();
           if (!username || !password) return;
-
           setIsChecking(true);
           setErrorMsg('');
-
-          // Bersihkan spasi yang tidak sengaja terketik
           const cleanUser = username.trim();
           const cleanPass = password.trim();
 
           try {
-            // Uji kredensial ke endpoint yang dilindungi (contoh: /api/stats)
             const res = await fetch(`${API_URL}/api/stats?days=1`, {
               headers: { 'Authorization': 'Basic ' + btoa(`${cleanUser}:${cleanPass}`) }
             });
-
             if (res.status === 401) {
               setErrorMsg('Username atau password salah. Silakan coba lagi.');
             } else if (res.ok) {
-              // Jika berhasil, baru izinkan masuk
               onLogin({ username: cleanUser, password: cleanPass });
             } else {
               setErrorMsg('Terjadi kesalahan pada server. Coba lagi nanti.');
@@ -121,40 +151,25 @@
               React.createElement('h1', { className: 'text-2xl font-extrabold text-gray-900' }, 'Admin Panel'),
               React.createElement('p', { className: 'text-gray-500 text-sm mt-1' }, 'InfoPesantren.online')
             ),
-            
-            // Tampilkan pesan error jika ada
             errorMsg && React.createElement('div', { className: 'bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm font-medium border border-red-200 text-center' }, errorMsg),
-
             React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-4' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-1' }, 'Username'),
-                React.createElement('input', { 
-                  type: 'text', required: true, value: username, onChange: (e) => setUsername(e.target.value), 
-                  className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none',
-                  autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' 
-                })
+                React.createElement('input', { type: 'text', required: true, value: username, onChange: (e) => setUsername(e.target.value), className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none', autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' })
               ),
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-1' }, 'Password'),
                 React.createElement('div', { className: 'relative' },
-                  React.createElement('input', { 
-                    type: showPassword ? 'text' : 'password', required: true, value: password, onChange: (e) => setPassword(e.target.value), 
-                    className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none pr-10',
-                    autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' 
-                  }),
+                  React.createElement('input', { type: showPassword ? 'text' : 'password', required: true, value: password, onChange: (e) => setPassword(e.target.value), className: 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none pr-10', autoCapitalize: 'none', autoCorrect: 'off', spellCheck: 'false' }),
                   React.createElement('button', { type: 'button', onClick: () => setShowPassword(!showPassword), className: 'absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600' }, React.createElement(Icon, { name: showPassword ? 'eye-off' : 'eye' }))
                 )
               ),
-              React.createElement('button', { 
-                type: 'submit', 
-                disabled: isChecking,
-                className: 'w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg mt-2 disabled:opacity-50 transition-colors flex justify-center items-center' 
-              }, isChecking ? 'Memeriksa...' : 'Masuk')
+              React.createElement('button', { type: 'submit', disabled: isChecking, className: 'w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg mt-2 disabled:opacity-50 transition-colors flex justify-center items-center' }, isChecking ? 'Memeriksa...' : 'Masuk')
             )
           )
         );
       }
-      
+
       function ArticleForm({ auth, initialData, onCancel, onSave }) {
         const isEdit = !!initialData;
         const [formData, setFormData] = useState({ 
@@ -310,7 +325,7 @@
             formData.image_url && React.createElement('img', { src: formData.image_url, className: 'w-full h-48 md:h-64 object-cover rounded-xl mb-6' }),
             React.createElement('div', { className: 'prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed overflow-x-hidden', dangerouslySetInnerHTML: { __html: previewContent } }),
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
-              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : 'Publish Sekarang')
+              React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
             )
           );
         }
@@ -406,7 +421,6 @@
 
       function StatsView({ auth, statsData, statsLoading, statsDays, setStatsDays, fetchStats }) {
         return React.createElement('div', { className: 'space-y-6' },
-          // Header & Filter
           React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center gap-4' },
             React.createElement('div', null,
               React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, 'Statistik Website'),
@@ -415,18 +429,15 @@
             React.createElement('div', { className: 'flex gap-2 bg-white p-1 rounded-lg border shadow-sm' },
               [7, 30].map(d => 
                 React.createElement('button', {
-                  key: d,
-                  onClick: () => { setStatsDays(d); fetchStats(d); },
+                  key: d, onClick: () => { setStatsDays(d); fetchStats(d); },
                   className: `px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${statsDays === d ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`
                 }, d + ' Hari Terakhir')
               )
             )
           ),
-
           statsLoading ? React.createElement('div', { className: 'text-center py-20 text-gray-500' }, 'Memuat data statistik...') :
           !statsData ? React.createElement('div', { className: 'text-center py-20 text-gray-500 bg-white rounded-xl border' }, 'Data tidak tersedia. Pastikan beacon terpasang dan API Token valid.') :
           React.createElement(React.Fragment, null,
-            // Kartu Ringkasan
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', { className: 'bg-white p-6 rounded-xl shadow-sm border border-gray-200' },
                 React.createElement('div', { className: 'flex items-center gap-3 text-brand-600 mb-2' },
@@ -445,8 +456,6 @@
                 React.createElement('p', { className: 'text-xs text-gray-500 mt-1' }, 'Kunjungan per hari')
               )
             ),
-
-            // Grafik Harian (CSS Bars)
             React.createElement('div', { className: 'bg-white p-6 rounded-xl shadow-sm border border-gray-200' },
               React.createElement('h3', { className: 'font-bold text-gray-800 mb-6 flex items-center gap-2' }, React.createElement(Icon, { name: 'bar-chart-2', className: 'w-5 h-5 text-gray-400' }), 'Tren Kunjungan Harian'),
               React.createElement('div', { className: 'h-48 flex items-end gap-2 md:gap-4' },
@@ -455,21 +464,13 @@
                   const height = max > 0 ? (d.views / max) * 100 : 0;
                   const dateObj = new Date(d.date);
                   return React.createElement('div', { key: i, className: 'flex-1 flex flex-col items-center group relative' },
-                    // Tooltip
                     React.createElement('div', { className: 'absolute -top-8 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10' }, d.views + ' views'),
-                    // Bar
-                    React.createElement('div', { 
-                      className: 'w-full bg-brand-500 hover:bg-brand-600 rounded-t-sm transition-all',
-                      style: { height: Math.max(height, 2) + '%' } 
-                    }),
-                    // Label Tanggal
+                    React.createElement('div', { className: 'w-full bg-brand-500 hover:bg-brand-600 rounded-t-sm transition-all', style: { height: Math.max(height, 2) + '%' } }),
                     React.createElement('span', { className: 'text-[10px] text-gray-400 mt-2 block' }, dateObj.getDate() + '/' + (dateObj.getMonth() + 1))
                   );
                 })
               )
             ),
-
-            // Tabel Artikel Terpopuler
             React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden' },
               React.createElement('div', { className: 'p-4 border-b bg-gray-50' },
                 React.createElement('h3', { className: 'font-bold text-gray-800 flex items-center gap-2' }, React.createElement(Icon, { name: 'award', className: 'w-5 h-5 text-gold-500' }), '10 Halaman Terpopuler')
@@ -499,6 +500,155 @@
         );
       }
 
+      function AdsManager({ auth }) {
+        const [ads, setAds] = useState([]);
+        const [loading, setLoading] = useState(true);
+        const [formData, setFormData] = useState({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' });
+        const [isEditing, setIsEditing] = useState(false);
+        const [previewAd, setPreviewAd] = useState(null);
+
+        const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
+
+        const fetchAds = async () => {
+          setLoading(true);
+          try {
+            const res = await fetch(`${API_URL}/api/content`);
+            const json = await res.json();
+            if (json.success && json.data && json.data.data) {
+              setAds(json.data.data.ads || []);
+            }
+          } catch (err) { alert('Gagal mengambil data iklan'); } finally { setLoading(false); }
+        };
+
+        useEffect(() => { fetchAds(); }, []);
+
+        const handleChange = (e) => {
+          const { name, value } = e.target;
+          setFormData(prev => ({ ...prev, [name]: value }));
+        };
+
+        const handleImageUpload = async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            try {
+              const url = await uploadImage(file, auth);
+              setFormData(prev => ({ ...prev, image_url: url }));
+            } catch (err) { alert(err.message); }
+          }
+        };
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          const url = isEditing ? `${API_URL}/api/ads` : `${API_URL}/api/ads`;
+          const method = isEditing ? 'PUT' : 'POST';
+          const payload = { ...formData, id: formData.id || 'ad-' + Date.now() };
+
+          try {
+            const res = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json', 'Authorization': getAuthHeader() },
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json();
+            if (json.success) {
+              alert(isEditing ? 'Iklan diperbarui!' : 'Iklan ditambahkan!');
+              setFormData({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' });
+              setIsEditing(false);
+              fetchAds();
+            } else { alert('Gagal: ' + json.error); }
+          } catch (err) { alert(err.message); }
+        };
+
+        const handleEdit = (ad) => {
+          setFormData(ad);
+          setIsEditing(true);
+        };
+
+        const handleDelete = async (id) => {
+          if (!confirm('Yakin ingin menghapus iklan ini?')) return;
+          try {
+            const res = await fetch(`${API_URL}/api/ads/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
+            const json = await res.json();
+            if (json.success) { alert('Iklan dihapus'); fetchAds(); } else { alert(json.error); }
+          } catch (err) { alert(err.message); }
+        };
+
+        return React.createElement('div', { className: 'space-y-6' },
+          React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-6' },
+            React.createElement('h2', { className: 'text-xl font-bold text-gray-800 mb-4' }, isEditing ? 'Edit Iklan' : 'Tambah Iklan Baru'),
+            React.createElement('form', { onSubmit: handleSubmit, className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Nama Sponsor / Judul Iklan'),
+                React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' })
+              ),
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Posisi Iklan'),
+                React.createElement('select', { name: 'position', value: formData.position, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' },
+                  AD_POSITIONS.map(p => React.createElement('option', { key: p.id, value: p.id }, p.label))
+                )
+              ),
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'URL Link Tujuan (Klik)'),
+                React.createElement('input', { name: 'link_url', required: true, value: formData.link_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'https://...' })
+              ),
+              React.createElement('div', { className: 'flex gap-2 items-end' },
+                React.createElement('div', { className: 'flex-1' },
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'URL Gambar (Opsional)'),
+                  React.createElement('input', { name: 'image_url', value: formData.image_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Upload'),
+                  React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleImageUpload, className: 'w-full text-xs mt-2' })
+                )
+              ),
+              React.createElement('div', { className: 'md:col-span-2 flex justify-end gap-2 pt-2' },
+                isEditing && React.createElement('button', { type: 'button', onClick: () => { setIsEditing(false); setFormData({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' }); }, className: 'px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50' }, 'Batal'),
+                React.createElement('button', { type: 'submit', className: 'px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, isEditing ? 'Simpan Perubahan' : 'Tambah Iklan')
+              )
+            )
+          ),
+          React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden' },
+            React.createElement('table', { className: 'w-full text-left' },
+              React.createElement('thead', { className: 'bg-gray-50 border-b' },
+                React.createElement('tr', null,
+                  React.createElement('th', { className: 'p-4 text-sm' }, 'Judul'),
+                  React.createElement('th', { className: 'p-4 text-sm' }, 'Posisi'),
+                  React.createElement('th', { className: 'p-4 text-sm' }, 'Status'),
+                  React.createElement('th', { className: 'p-4 text-sm text-right' }, 'Aksi')
+                )
+              ),
+              React.createElement('tbody', null,
+                loading ? React.createElement('tr', null, React.createElement('td', { colSpan: 4, className: 'p-4 text-center' }, 'Memuat...')) :
+                ads.map(ad => 
+                  React.createElement('tr', { key: ad.id, className: 'border-b hover:bg-gray-50' },
+                    React.createElement('td', { className: 'p-4 text-sm font-medium' }, ad.title),
+                    React.createElement('td', { className: 'p-4 text-sm' }, AD_POSITIONS.find(p => p.id === ad.position)?.label || ad.position),
+                    React.createElement('td', { className: 'p-4 text-sm' }, React.createElement('span', { className: 'bg-green-100 text-green-700 px-2 py-1 rounded text-xs' }, ad.status)),
+                    React.createElement('td', { className: 'p-4 text-right flex justify-end gap-2' },
+                      React.createElement('button', { onClick: () => setPreviewAd(ad), className: 'text-gray-500 hover:text-gray-700 p-1' }, React.createElement(Icon, { name: 'eye', className: 'w-4 h-4' })),
+                      React.createElement('button', { onClick: () => handleEdit(ad), className: 'text-blue-600 hover:text-blue-800 p-1' }, React.createElement(Icon, { name: 'edit', className: 'w-4 h-4' })),
+                      React.createElement('button', { onClick: () => handleDelete(ad.id), className: 'text-red-500 hover:text-red-700 p-1' }, React.createElement(Icon, { name: 'trash-2', className: 'w-4 h-4' }))
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          previewAd && React.createElement('div', { className: 'fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4' },
+            React.createElement('div', { className: 'bg-white rounded-xl p-6 max-w-md w-full shadow-2xl relative' },
+              React.createElement('button', { onClick: () => setPreviewAd(null), className: 'absolute top-3 right-3 text-gray-400' }, React.createElement(Icon, { name: 'x', className: 'w-5 h-5' })),
+              React.createElement('h3', { className: 'font-bold text-center mb-4' }, 'Preview Iklan'),
+              React.createElement('div', { className: 'border p-2 rounded-lg text-center bg-gray-50' },
+                React.createElement('a', { href: previewAd.link_url, target: '_blank', className: 'block' },
+                  React.createElement('img', { src: previewAd.image_url, className: 'w-full h-auto object-cover rounded mb-2' }),
+                  React.createElement('span', { className: 'text-sm font-bold text-brand-700' }, previewAd.title)
+                )
+              )
+            )
+          )
+        );
+      }
+
       function Dashboard({ auth, onLogout }) {
         const [view, setView] = useState('list'); 
         const [activeSection, setActiveSection] = useState('berita');
@@ -508,7 +658,6 @@
         const [loading, setLoading] = useState(true);
         const [previewSub, setPreviewSub] = useState(null);
 
-        // State Statistik
         const [statsData, setStatsData] = useState(null);
         const [statsLoading, setStatsLoading] = useState(false);
         const [statsDays, setStatsDays] = useState(7);
@@ -534,9 +683,7 @@
         const fetchStats = async (days) => {
           setStatsLoading(true);
           try {
-            const res = await fetch(`${API_URL}/api/stats?days=${days}`, {
-              headers: { 'Authorization': getAuthHeader() }
-            });
+            const res = await fetch(`${API_URL}/api/stats?days=${days}`, { headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
             if (json.success) setStatsData(json.data);
             else alert('Gagal memuat statistik: ' + json.error);
@@ -585,19 +732,15 @@
             ),
             React.createElement('nav', { className: 'flex-1 p-4 space-y-1 overflow-y-auto' },
               
-              // MENU STATISTIK
-              React.createElement('button', { 
-                onClick: () => { setView('stats'); fetchStats(statsDays); }, 
-                className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'stats' ? 'text-white ring-2 ring-brand-500' : 'text-gray-300'}` 
-              },
-                React.createElement(Icon, { name: 'bar-chart-3', className: 'w-5 h-5 text-brand-400' }), 
-                React.createElement('span', { className: 'font-bold' }, 'Statistik')
+              React.createElement('button', { onClick: () => { setView('stats'); fetchStats(statsDays); }, className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'stats' ? 'text-white ring-2 ring-brand-500' : 'text-gray-300'}` },
+                React.createElement(Icon, { name: 'bar-chart-3', className: 'w-5 h-5 text-brand-400' }), React.createElement('span', { className: 'font-bold' }, 'Statistik')
               ),
 
-              React.createElement('button', { 
-                onClick: () => { setView('submissions'); }, 
-                className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` 
-              },
+              React.createElement('button', { onClick: () => setView('ads'), className: `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 ${view === 'ads' ? 'bg-brand-600 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-200'}` },
+                React.createElement(Icon, { name: 'megaphone', className: 'w-5 h-5' }), ' Kelola Iklan'
+              ),
+
+              React.createElement('button', { onClick: () => { setView('submissions'); }, className: `w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors mb-4 bg-gray-800 hover:bg-gray-700 ${view === 'submissions' ? 'text-white ring-2 ring-gold-500' : 'text-gray-300'}` },
                 React.createElement('div', { className: 'flex items-center gap-3' },
                   React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5 text-gold-400' }),
                   React.createElement('span', { className: 'font-bold' }, 'Kiriman Masuk')
@@ -634,10 +777,8 @@
             
             React.createElement('div', { className: 'flex-1 p-4 md:p-8' },
               
-              // TAMPILAN STATISTIK
               view === 'stats' ? React.createElement(StatsView, { auth, statsData, statsLoading, statsDays, setStatsDays, fetchStats }) :
-
-              // TAMPILAN KIRIMAN MASUK
+              view === 'ads' ? React.createElement(AdsManager, { auth }) :
               view === 'submissions' ? React.createElement('div', null,
                 React.createElement('h2', { className: 'text-2xl font-bold text-gray-800 mb-6' }, 'Kiriman Masuk (Perlu Ditinjau)'),
                 loading ? React.createElement('div', { className: 'text-center py-10 text-gray-500' }, 'Memuat data...') :
@@ -681,7 +822,6 @@
                 )
               ) :
               
-              // TAMPILAN LIST
               view === 'list' ? 
                 React.createElement('div', null,
                   React.createElement('div', { className: 'flex justify-between items-center mb-6' },
@@ -776,6 +916,10 @@
               React.createElement(Icon, { name: 'bar-chart-3', className: 'w-5 h-5' }),
               React.createElement('span', { className: 'text-[10px] font-medium' }, 'Statistik')
             ),
+            React.createElement('button', { onClick: () => setView('ads'), className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'ads' ? 'text-brand-600' : 'text-gray-500'}` },
+              React.createElement(Icon, { name: 'megaphone', className: 'w-5 h-5' }),
+              React.createElement('span', { className: 'text-[10px] font-medium' }, 'Iklan')
+            ),
             React.createElement('button', { onClick: () => setView('submissions'), className: `flex-shrink-0 flex flex-col items-center justify-center w-16 h-full space-y-1 ${view === 'submissions' ? 'text-brand-600' : 'text-gray-500'}` },
               React.createElement('div', { className: 'relative' },
                 React.createElement(Icon, { name: 'inbox', className: 'w-5 h-5' }),
@@ -811,7 +955,11 @@
           if (saved) setAuth(JSON.parse(saved));
         }, []);
 
-        const handleLogin = (c) => { setAuth(c); sessionStorage.setItem('admin_auth', JSON.stringify(c)); };
+        const handleLogin = (c) => { 
+          const cleanAuth = { username: c.username.trim(), password: c.password.trim() };
+          setAuth(cleanAuth); 
+          sessionStorage.setItem('admin_auth', JSON.stringify(cleanAuth)); 
+        };
         const handleLogout = () => { setAuth(null); sessionStorage.removeItem('admin_auth'); };
 
         return auth ? React.createElement(Dashboard, { auth, onLogout: handleLogout }) : React.createElement(Login, { onLogin: handleLogin });
