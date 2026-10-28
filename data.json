@@ -953,6 +953,14 @@
   ],
   "ads": [
     {
+      "id": "ad-1793200820124",
+      "title": "Sumpah Pemuda",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1793200786513.jpg",
+      "link_url": "https://wa.me/6281313062747",
+      "position": "header",
+      "status": "active"
+    },
+    {
       "id": "ad-1793199361774",
       "title": "Hotel",
       "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1793199353578.jpg",
