@@ -953,6 +953,14 @@
   ],
   "ads": [
     {
+      "id": "ad-1793201891676",
+      "title": "Hari Santri",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1793201873499.jpg",
+      "link_url": "https://wa.me/6281313062747",
+      "position": "mobile-sticky",
+      "status": "active"
+    },
+    {
       "id": "ad-1793201303937",
       "title": "Aqua",
       "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1793201295202.jpg",
