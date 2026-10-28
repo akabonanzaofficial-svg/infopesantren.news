@@ -501,7 +501,7 @@
         );
       }
 
-      function AdsManager({ auth }) {
+            function AdsManager({ auth }) {
         const [ads, setAds] = useState([]);
         const [loading, setLoading] = useState(true);
         const [formData, setFormData] = useState({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' });
@@ -574,6 +574,7 @@
           } catch (err) { alert(err.message); }
         };
 
+        // AMBIL DATA POSISI TERPILIH UNTUK PANDUAN UKURAN
         const selectedPosition = AD_POSITIONS.find(p => p.id === formData.position);
 
         return React.createElement('div', { className: 'space-y-6' },
@@ -589,7 +590,7 @@
                 React.createElement('select', { name: 'position', value: formData.position, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' },
                   AD_POSITIONS.map(p => React.createElement('option', { key: p.id, value: p.id }, p.label))
                 ),
-                // PANDUAN UKURAN IKLAN
+                // PANDUAN UKURAN IKLAN (DIPERBAIKI)
                 selectedPosition && React.createElement('div', { className: 'mt-2 bg-blue-50 border border-blue-100 p-2 rounded text-xs text-blue-700 flex items-start gap-1' },
                   React.createElement(Icon, { name: 'info', className: 'w-4 h-4 flex-shrink-0 mt-0.5' }),
                   React.createElement('span', null, 'Rekomendasi Ukuran: ', React.createElement('strong', null, selectedPosition.size))
@@ -599,14 +600,14 @@
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'URL Link Tujuan (Klik)'),
                 React.createElement('input', { name: 'link_url', required: true, value: formData.link_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'https://...' })
               ),
-              React.createElement('div', { className: 'flex gap-2 items-end' },
-                React.createElement('div', { className: 'flex-1' },
+              React.createElement('div', { className: 'flex flex-col gap-2' },
+                React.createElement('div', null,
                   React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'URL Gambar (Opsional)'),
                   React.createElement('input', { name: 'image_url', value: formData.image_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
                 ),
                 React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Upload'),
-                  React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleImageUpload, className: 'w-full text-xs mt-2' })
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Atau Upload Gambar'),
+                  React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleImageUpload, className: 'w-full text-xs mt-1' })
                 )
               ),
               React.createElement('div', { className: 'md:col-span-2 flex justify-end gap-2 pt-2' },
@@ -656,7 +657,6 @@
           )
         );
       }
-
       function Dashboard({ auth, onLogout }) {
         const [view, setView] = useState('list'); 
         const [activeSection, setActiveSection] = useState('berita');
