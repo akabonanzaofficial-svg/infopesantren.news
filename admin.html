@@ -41,19 +41,20 @@
         { id: 'agenda', label: 'Agenda', icon: 'calendar-days' }
       ];
 
+      // DATA POSISI IKLAN + PANDUAN UKURAN
       const AD_POSITIONS = [
-        { id: 'header', label: 'Header (Billboard)' },
-        { id: 'hero', label: 'Hero (Leaderboard)' },
-        { id: 'feed-1', label: 'Feed 1 (In-Feed)' },
-        { id: 'feed-2', label: 'Feed 2 (In-Feed)' },
-        { id: 'sidebar', label: 'Sidebar (300x600)' },
-        { id: 'sidebar-grid', label: 'Sidebar Grid (Multipleks)' },
-        { id: 'in-article', label: 'In-Article (336x280)' },
-        { id: 'video-in-article', label: 'Video In-Article (16:9)' },
-        { id: 'video-sidebar', label: 'Video Sidebar (Vertikal)' },
-        { id: 'footer-rect', label: 'Footer Rect (Leaderboard)' },
-        { id: 'footer-grid', label: 'Footer Grid (Sponsor)' },
-        { id: 'mobile-sticky', label: 'Mobile Sticky (HP)' }
+        { id: 'header', label: 'Header (Billboard)', size: '970x250 px atau 728x90 px' },
+        { id: 'hero', label: 'Hero (Leaderboard)', size: '970x250 px atau 728x90 px' },
+        { id: 'feed-1', label: 'Feed 1 (In-Feed)', size: '300x250 px atau responsif' },
+        { id: 'feed-2', label: 'Feed 2 (In-Feed)', size: '300x250 px atau responsif' },
+        { id: 'sidebar', label: 'Sidebar (Banner Besar)', size: '300x600 px' },
+        { id: 'sidebar-grid', label: 'Sidebar Grid (Multipleks)', size: '300x250 px (Grid 2x2)' },
+        { id: 'in-article', label: 'In-Article (Kotak)', size: '336x280 px' },
+        { id: 'video-in-article', label: 'Video In-Article (16:9)', size: '1280x720 px atau 16:9' },
+        { id: 'video-sidebar', label: 'Video Sidebar (Vertikal)', size: '300x500 px atau 9:16' },
+        { id: 'footer-rect', label: 'Footer Rect (Leaderboard)', size: '970x250 px atau 728x90 px' },
+        { id: 'footer-grid', label: 'Footer Grid (Sponsor)', size: '300x250 px (Grid 4 Kotak)' },
+        { id: 'mobile-sticky', label: 'Mobile Sticky (HP)', size: '320x50 px atau 320x100 px' }
       ];
 
       function Icon({ name, className = 'w-5 h-5' }) {
@@ -573,6 +574,8 @@
           } catch (err) { alert(err.message); }
         };
 
+        const selectedPosition = AD_POSITIONS.find(p => p.id === formData.position);
+
         return React.createElement('div', { className: 'space-y-6' },
           React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-6' },
             React.createElement('h2', { className: 'text-xl font-bold text-gray-800 mb-4' }, isEditing ? 'Edit Iklan' : 'Tambah Iklan Baru'),
@@ -585,6 +588,11 @@
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Posisi Iklan'),
                 React.createElement('select', { name: 'position', value: formData.position, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' },
                   AD_POSITIONS.map(p => React.createElement('option', { key: p.id, value: p.id }, p.label))
+                ),
+                // PANDUAN UKURAN IKLAN
+                selectedPosition && React.createElement('div', { className: 'mt-2 bg-blue-50 border border-blue-100 p-2 rounded text-xs text-blue-700 flex items-start gap-1' },
+                  React.createElement(Icon, { name: 'info', className: 'w-4 h-4 flex-shrink-0 mt-0.5' }),
+                  React.createElement('span', null, 'Rekomendasi Ukuran: ', React.createElement('strong', null, selectedPosition.size))
                 )
               ),
               React.createElement('div', null,
