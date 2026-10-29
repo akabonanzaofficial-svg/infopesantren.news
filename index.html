@@ -138,12 +138,12 @@
       function formatTanggalWaktu(iso) { return formatTanggal(iso, { hour: '2-digit', minute: '2-digit' }); }
       function sanitizeHTML(html) { if (!html) return ''; return window.DOMPurify ? window.DOMPurify.sanitize(html, { ADD_TAGS: ['iframe'], ADD_ATTR: ['target', 'allowfullscreen', 'frameborder'] }) : String(html); }
       
-      // === FITUR BACA JUGA OTOMATIS (VERSI RINGKAS) ===
+      // === FITUR BACA JUGA OTOMATIS (SETIAP 2 PARAGRAF) ===
 function injectReadAlso(htmlContent, allData, currentItem) {
   if (!htmlContent) return '';
   
   // 1. Ambil semua artikel dari semua kategori, kecuali artikel yang sedang dibaca
-  const pool = [
+  let pool = [
     ...(allData.berita || []).map(x => ({...x, _type: 'berita'})),
     ...(allData.program || []).map(x => ({...x, _type: 'program'})),
     ...(allData.khazanah || []).map(x => ({...x, _type: 'khazanah'})),
@@ -151,37 +151,49 @@ function injectReadAlso(htmlContent, allData, currentItem) {
     ...(allData.agenda || []).map(x => ({...x, _type: 'agenda'}))
   ].filter(x => x.id !== currentItem.id && x.slug);
 
+  // Jika tidak ada artikel lain, kembalikan konten asli
   if (pool.length === 0) return htmlContent;
 
-  // 2. Pilih 1 artikel secara acak
-  const randomPick = pool[Math.floor(Math.random() * pool.length)];
-  
-  // 3. Buat HTML untuk kotak "Baca Juga" (Hanya Teks)
-  const title = randomPick.title || randomPick.name || 'Artikel Lainnya';
-  const url = `/${randomPick._type}/${randomPick.slug}`;
-  
-  const readAlsoHTML = `
-    <div class="my-6 bg-brand-50 rounded-lg border-l-4 border-brand-500 p-4">
-      <span class="text-[10px] font-bold text-brand-700 uppercase tracking-widest block mb-1">Baca Juga</span>
-      <a href="${url}" class="text-base md:text-lg font-bold text-gray-900 hover:text-brand-700 leading-snug transition-colors block">
-        ${title}
-      </a>
-    </div>
-  `;
+  // Acak urutan pool agar rekomendasi selalu berubah setiap refresh
+  pool = pool.sort(() => Math.random() - 0.5);
 
-  // 4. Sisipkan setelah paragraf ke-2
+  // 2. Pecah HTML menjadi paragraf
   const parts = htmlContent.split('</p>');
-  
-  // Jika artikel terlalu pendek (kurang dari 2 paragraf), jangan sisipkan
-  if (parts.length < 2) return htmlContent;
+  if (parts.length < 3) return htmlContent; // Terlalu pendek, jangan sisipkan
 
-  // Gabungkan kembali: Paragraf 1, Paragraf 2, Kotak Baca Juga, Paragraf 3 dst.
-  return parts[0] + '</p>' + 
-         (parts[1] ? parts[1] + '</p>' : '') + 
-         readAlsoHTML + 
-         parts.slice(2).join('</p>');
+  let finalHTML = '';
+  let poolIndex = 0;
+
+  // 3. Loop melalui paragraf
+  for (let i = 0; i < parts.length; i++) {
+    finalHTML += parts[i] + '</p>';
+
+    // Jika ini adalah paragraf ke-2, ke-4, ke-6, dst (indeks ganjil), sisipkan iklan
+    // (i + 1) adalah nomor paragraf saat ini
+    if ((i + 1) % 2 === 0 && i !== parts.length - 1) {
+      // Pastikan masih ada artikel di pool
+      if (poolIndex < pool.length) {
+        const randomPick = pool[poolIndex];
+        poolIndex++;
+
+        const title = randomPick.title || randomPick.name || 'Artikel Lainnya';
+        const url = `/${randomPick._type}/${randomPick.slug}`;
+
+        const readAlsoHTML = `
+          <div class="my-6 bg-brand-50 rounded-lg border-l-4 border-brand-500 p-4">
+            <span class="text-[10px] font-bold text-brand-700 uppercase tracking-widest block mb-1">Baca Juga</span>
+            <a href="${url}" class="text-base md:text-lg font-bold text-gray-900 hover:text-brand-700 leading-snug transition-colors block">
+              ${title}
+            </a>
+          </div>
+        `;
+        finalHTML += readAlsoHTML;
+      }
+    }
+  }
+
+  return finalHTML;
 }
-
       function Icon({ name, className = 'w-5 h-5' }) {
         useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name, className]);
         return React.createElement('i', { 'data-lucide': name, className });
