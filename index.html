@@ -119,7 +119,7 @@
               khazanah: json.khazanah || [], 
               tokoh: json.tokoh || [], 
               agenda: json.agenda || [],
-              ads: json.ads || [] // AMBIL DATA IKLAN
+              ads: json.ads || []
             };
             return DATA_CACHE;
           } catch (err) {
@@ -137,7 +137,59 @@
       }
       function formatTanggalWaktu(iso) { return formatTanggal(iso, { hour: '2-digit', minute: '2-digit' }); }
       function sanitizeHTML(html) { if (!html) return ''; return window.DOMPurify ? window.DOMPurify.sanitize(html, { ADD_TAGS: ['iframe'], ADD_ATTR: ['target', 'allowfullscreen', 'frameborder'] }) : String(html); }
-      function paragraphs(html) { return html || ''; }
+      
+      // === FITUR BACA JUGA OTOMATIS ===
+      function injectReadAlso(htmlContent, allData, currentItem) {
+        if (!htmlContent) return '';
+        
+        // 1. Ambil semua artikel dari semua kategori, kecuali artikel yang sedang dibaca
+        const pool = [
+          ...(allData.berita || []).map(x => ({...x, _type: 'berita'})),
+          ...(allData.program || []).map(x => ({...x, _type: 'program'})),
+          ...(allData.khazanah || []).map(x => ({...x, _type: 'khazanah'})),
+          ...(allData.tokoh || []).map(x => ({...x, _type: 'tokoh'})),
+          ...(allData.agenda || []).map(x => ({...x, _type: 'agenda'}))
+        ].filter(x => x.id !== currentItem.id && x.slug);
+
+        if (pool.length === 0) return htmlContent;
+
+        // 2. Pilih 1 artikel secara acak
+        const randomPick = pool[Math.floor(Math.random() * pool.length)];
+        
+        // 3. Buat HTML untuk kotak "Baca Juga"
+        const title = randomPick.title || randomPick.name || 'Artikel Lainnya';
+        const img = randomPick.image_url || FALLBACK_IMG;
+        const url = `/${randomPick._type}/${randomPick.slug}`;
+        
+        const readAlsoHTML = `
+          <div class="my-8 bg-brand-50 rounded-xl border-l-4 border-brand-500 overflow-hidden shadow-sm">
+            <div class="p-4 md:p-5 flex flex-col sm:flex-row gap-4 items-center">
+              <div class="w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
+                <img src="${img}" alt="${title}" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMG}'" />
+              </div>
+              <div class="flex-1 text-center sm:text-left">
+                <span class="text-[10px] font-bold text-brand-700 uppercase tracking-widest block mb-1">Baca Juga</span>
+                <a href="${url}" class="text-base md:text-lg font-bold text-gray-900 hover:text-brand-700 leading-snug transition-colors line-clamp-2 block">
+                  ${title}
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // 4. Sisipkan setelah paragraf ke-2
+        // Kita pecah HTML berdasarkan penutup paragraf </p>
+        const parts = htmlContent.split('</p>');
+        
+        // Jika artikel terlalu pendek (kurang dari 2 paragraf), jangan sisipkan
+        if (parts.length < 2) return htmlContent;
+
+        // Gabungkan kembali: Paragraf 1, Paragraf 2, Kotak Baca Juga, Paragraf 3 dst.
+        return parts[0] + '</p>' + 
+               (parts[1] ? parts[1] + '</p>' : '') + 
+               readAlsoHTML + 
+               parts.slice(2).join('</p>');
+      }
 
       function Icon({ name, className = 'w-5 h-5' }) {
         useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name, className]);
@@ -165,15 +217,12 @@
       function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
         if (!ads || ads.length === 0) return null;
         
-        // Filter iklan berdasarkan posisi dan status aktif
         const activeAds = ads.filter(ad => ad.position === position && ad.status === 'active');
         if (activeAds.length === 0) return null;
 
-        // Rotasi acak (jika ada lebih dari 1 iklan di posisi yang sama)
         const ad = activeAds[Math.floor(Math.random() * activeAds.length)];
 
         const isVertical = layout === 'vertical';
-        const isGrid = layout === 'grid';
         const isMobileSticky = layout === 'mobile-sticky';
 
         return React.createElement('div', { className: `relative ${className} ${isMobileSticky ? 'mobile-sticky-ad' : ''}` },
@@ -201,15 +250,12 @@
         
         return React.createElement('div', { className: 'flex items-center gap-3 pt-6 mt-6 border-t border-gray-200' },
           React.createElement('span', { className: 'text-sm font-semibold text-gray-600 mr-2' }, 'Bagikan:'),
-          
           React.createElement('button', { onClick: () => window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text + ' - ' + url), '_blank'), className: 'flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#25D366] text-white hover:opacity-90 transition-opacity shadow-sm', title: 'Bagikan ke WhatsApp' }, 
             React.createElement('svg', { viewBox: '0 0 24 24', fill: 'currentColor', className: 'w-6 h-6 md:w-7 md:h-7' }, React.createElement('path', { d: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z' }))
           ),
-          
           React.createElement('button', { onClick: () => window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank'), className: 'flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#1877F2] text-white hover:opacity-90 transition-opacity shadow-sm', title: 'Bagikan ke Facebook' }, 
             React.createElement('svg', { viewBox: '0 0 24 24', fill: 'currentColor', className: 'w-6 h-6 md:w-7 md:h-7' }, React.createElement('path', { d: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' }))
           ),
-          
           React.createElement('button', { onClick: () => { navigator.clipboard.writeText(url); alert('Link berhasil disalin! Silakan paste di Instagram Story atau Bio Anda.'); window.open('https://www.instagram.com/', '_blank'); }, className: 'flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 transition-opacity shadow-sm', title: 'Bagikan ke Instagram' }, 
             React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', className: 'w-6 h-6 md:w-7 md:h-7' }, 
               React.createElement('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }),
@@ -217,7 +263,6 @@
               React.createElement('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' })
             )
           ),
-          
           React.createElement('button', { onClick: () => { navigator.clipboard.writeText(url); alert('Link disalin!'); }, className: 'flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-800 text-white hover:bg-gray-900 transition-colors shadow-sm', title: 'Salin Link' }, 
             React.createElement(Icon, { name: 'copy', className: 'w-5 h-5 md:w-6 md:h-6' })
           )
@@ -273,7 +318,6 @@
 
       function Footer({ ads }) {
         return React.createElement('footer', { className: 'bg-gray-900 text-gray-300 mt-16' },
-          // IKLAN FOOTER RECT (Di atas footer)
           React.createElement('div', { className: 'max-w-7xl mx-auto px-4 py-4' },
             React.createElement(AdBanner, { position: 'footer-rect', ads: ads, layout: 'horizontal', className: 'mb-4 rounded-lg overflow-hidden' })
           ),
@@ -460,7 +504,7 @@
       function HomeView({ data }) {
         const [activeFeatured, setActiveFeatured] = useState(0);
         const featured = data.berita.filter((b) => b.featured).slice(0, 3);
-        const latestBerita = data.berita.filter((b) => !b.featured).slice(0, 6); // Ambil 6 untuk disisipkan iklan
+        const latestBerita = data.berita.filter((b) => !b.featured).slice(0, 6);
         const trending = [...data.berita].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
         const featuredProgram = data.program.filter((p) => p.featured).slice(0, 3);
         const featuredTokoh = data.tokoh.filter((t) => t.featured).slice(0, 4);
@@ -474,11 +518,7 @@
         }, [featured.length]);
 
         return React.createElement('div', { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-          
-          // IKLAN HEADER (Billboard)
           React.createElement(AdBanner, { position: 'header', ads: data.ads, layout: 'horizontal', className: 'mb-8 rounded-lg overflow-hidden shadow-sm' }),
-
-          // HERO
           featured.length > 0 && React.createElement('div', { className: 'relative mb-4 rounded-2xl overflow-hidden bg-gray-900 h-[400px] md:h-[500px] shadow-xl' },
             featured.map((article, index) => React.createElement('div', { key: article.id, className: 'absolute inset-0 transition-opacity duration-700 ' + (index === activeFeatured ? 'opacity-100' : 'opacity-0 pointer-events-none') },
               React.createElement('img', { src: article.image_url || FALLBACK_IMG, alt: article.title, className: 'absolute inset-0 w-full h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
@@ -500,11 +540,7 @@
               )
             )
           ),
-
-          // IKLAN HERO (Leaderboard)
           React.createElement(AdBanner, { position: 'hero', ads: data.ads, layout: 'horizontal', className: 'mb-10 rounded-lg overflow-hidden shadow-sm' }),
-
-          // GRID
           React.createElement('div', { className: 'grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12' },
             React.createElement('div', { className: 'lg:col-span-2 space-y-10' },
               React.createElement('div', null,
@@ -512,7 +548,6 @@
                 latestBerita.length > 0 ? React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-6' },
                   latestBerita.map((article, index) => React.createElement(React.Fragment, { key: article.id },
                     React.createElement(BeritaCard, { item: article, onClick: () => navigate('/berita/' + article.slug) }),
-                    // SISIPKAN IKLAN DI TENGAH FEED
                     index === 1 && React.createElement('div', { className: 'md:col-span-2' }, React.createElement(AdBanner, { position: 'feed-1', ads: data.ads, layout: 'horizontal', className: 'rounded-lg overflow-hidden shadow-sm' })),
                     index === 3 && React.createElement('div', { className: 'md:col-span-2' }, React.createElement(AdBanner, { position: 'feed-2', ads: data.ads, layout: 'horizontal', className: 'rounded-lg overflow-hidden shadow-sm' }))
                   ))
@@ -526,10 +561,7 @@
               )
             ),
             React.createElement('div', { className: 'space-y-8' },
-              
-              // IKLAN SIDEBAR
               React.createElement(AdBanner, { position: 'sidebar', ads: data.ads, layout: 'vertical', className: 'rounded-lg overflow-hidden shadow-sm' }),
-
               React.createElement('div', null,
                 React.createElement(SectionTitle, { icon: 'trending-up', title: 'Trending' }),
                 React.createElement('div', { className: 'bg-white rounded-xl border border-gray-100 p-2 shadow-sm' },
@@ -615,6 +647,11 @@
           );
         }
 
+        // Proses HTML konten: sanitasi, lalu suntikkan "Baca Juga" otomatis
+        const rawContent = item.content || item.description || item.bio || '';
+        const cleanHTML = sanitizeHTML(rawContent);
+        const finalHTML = injectReadAlso(cleanHTML, data, item);
+
         if (type === 'berita' || type === 'khazanah') {
           const related = collection.filter((x) => x.id !== item.id).slice(0, 3);
           return React.createElement('div', { className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
@@ -632,21 +669,13 @@
                 item.image_url && React.createElement('div', { className: 'rounded-xl overflow-hidden mb-8 bg-gray-200 shadow' },
                   React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-auto object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) })
                 ),
-                
-                // IKLAN IN-ARTICLE (Di atas konten)
                 React.createElement(AdBanner, { position: 'in-article', ads: data.ads, layout: 'horizontal', className: 'mb-6 rounded-lg overflow-hidden' }),
-
-                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4 mb-8', dangerouslySetInnerHTML: { __html: sanitizeHTML(paragraphs(item.content || '')) } }),
-                
-                // IKLAN FOOTER-RECT (Di bawah artikel)
+                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4 mb-8', dangerouslySetInnerHTML: { __html: finalHTML } }),
                 React.createElement(AdBanner, { position: 'footer-rect', ads: data.ads, layout: 'horizontal', className: 'mb-6 rounded-lg overflow-hidden' }),
-
                 React.createElement(ShareButtons, { title: item.title })
               ),
               React.createElement('aside', { className: 'space-y-8' },
-                // IKLAN SIDEBAR
                 React.createElement(AdBanner, { position: 'sidebar', ads: data.ads, layout: 'vertical', className: 'rounded-lg overflow-hidden shadow-sm' }),
-                
                 related.length > 0 && React.createElement('div', null,
                   React.createElement(SectionTitle, { title: 'Terkait' }),
                   React.createElement('div', { className: 'space-y-4' },
@@ -658,6 +687,7 @@
           );
         }
 
+        // Program, Tokoh, Agenda (Menggunakan finalHTML yang sudah disisipi "Baca Juga")
         if (type === 'program') {
           return React.createElement('div', { className: 'max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8' },
             React.createElement('button', { onClick: () => navigate('/program'), className: 'inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 mb-6' },
@@ -682,7 +712,7 @@
                     React.createElement('p', { className: 'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1' }, React.createElement(Icon, { name: 'phone', className: 'w-4 h-4 text-brand-600' }), item.contact)
                   )
                 ),
-                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4', dangerouslySetInnerHTML: { __html: sanitizeHTML(paragraphs(item.content || item.description || '')) } }),
+                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4', dangerouslySetInnerHTML: { __html: finalHTML } }),
                 React.createElement(ShareButtons, { title: item.title })
               )
             )
@@ -706,7 +736,7 @@
                   item.expertise && React.createElement('div', { className: 'flex flex-wrap gap-1.5 mb-4' },
                     item.expertise.map((tag) => React.createElement('span', { key: tag, className: 'text-xs px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium' }, tag))
                   ),
-                  React.createElement('div', { className: 'article-body text-gray-700 leading-relaxed', dangerouslySetInnerHTML: { __html: sanitizeHTML(paragraphs(item.content || item.bio || '')) } }),
+                  React.createElement('div', { className: 'article-body text-gray-700 leading-relaxed', dangerouslySetInnerHTML: { __html: finalHTML } }),
                   React.createElement(ShareButtons, { title: item.name || item.title })
                 )
               )
@@ -742,7 +772,7 @@
                     React.createElement('p', { className: 'text-sm font-bold text-gray-900 mt-1 flex items-center gap-1' }, React.createElement(Icon, { name: 'users', className: 'w-4 h-4 text-brand-600' }), item.organizer)
                   )
                 ),
-                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4', dangerouslySetInnerHTML: { __html: sanitizeHTML(paragraphs(item.content || item.description || '')) } }),
+                React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4', dangerouslySetInnerHTML: { __html: finalHTML } }),
                 React.createElement(ShareButtons, { title: item.title })
               )
             )
@@ -859,12 +889,10 @@
           React.createElement('main', { className: 'flex-1' }, content),
           React.createElement(Footer, { ads: data ? data.ads : [] }),
           
-          // IKLAN MOBILE STICKY (Menempel di bawah)
           data && React.createElement('div', { className: 'fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] mobile-sticky-ad' },
             React.createElement(AdBanner, { position: 'mobile-sticky', ads: data.ads, layout: 'mobile-sticky', className: 'max-h-[100px] overflow-hidden' })
           ),
 
-          // CLOUDFLARE WEB ANALYTICS BEACON
           React.createElement('script', { 
             type: 'module', 
             src: 'https://static.cloudflareinsights.com/beacon.min.js', 
