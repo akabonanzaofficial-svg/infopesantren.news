@@ -1105,6 +1105,14 @@
   ],
   "ads": [
     {
+      "id": "ad-1793374617201",
+      "title": "Aqua",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/img-1793374587734.jpg",
+      "link_url": "https://wa.me/081313062747",
+      "position": "mobile-sticky",
+      "status": "active"
+    },
+    {
       "id": "ad-1793373911420",
       "title": "Aqua",
       "image_url": "https://youtu.be/Jqtigc72crw",
