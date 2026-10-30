@@ -240,35 +240,62 @@ function injectReadAlso(htmlContent, allData, currentItem) {
         window.dispatchEvent(new PopStateEvent('popstate'));
       }
 
-      // ================= KOMPONEN IKLAN =================
-      function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
-        if (!ads || ads.length === 0) return null;
-        
-        const activeAds = ads.filter(ad => ad.position === position && ad.status === 'active');
-        if (activeAds.length === 0) return null;
+      // ================= KOMPONEN IKLAN (AUTO-ROTATE) =================
+function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
+  // Filter iklan berdasarkan posisi dan status aktif
+  const activeAds = React.useMemo(() => {
+    return (ads || []).filter(ad => ad.position === position && ad.status === 'active');
+  }, [ads, position]);
 
-        const ad = activeAds[Math.floor(Math.random() * activeAds.length)];
+  // State untuk menyimpan indeks iklan yang sedang tampil
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [fade, setFade] = React.useState(true);
 
-        const isVertical = layout === 'vertical';
-        const isMobileSticky = layout === 'mobile-sticky';
+  // Efek untuk mengatur rotasi otomatis
+  React.useEffect(() => {
+    if (activeAds.length <= 1) return; // Jika hanya 1 iklan, tidak perlu rotasi
 
-        return React.createElement('div', { className: `relative ${className} ${isMobileSticky ? 'mobile-sticky-ad' : ''}` },
-          React.createElement('span', { className: 'absolute top-1 right-1 bg-black/40 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider z-10' }, 'Iklan'),
-          React.createElement('a', { 
-            href: ad.link_url, 
-            target: '_blank', 
-            rel: 'noopener noreferrer',
-            className: `block group overflow-hidden ${isVertical ? 'w-full h-full' : 'w-full'}` 
-          },
-            React.createElement('img', { 
-              src: ad.image_url, 
-              alt: ad.title || 'Iklan', 
-              className: `w-full object-cover transition-opacity hover:opacity-90 ${isVertical ? 'h-auto max-h-[600px]' : 'h-auto max-h-[250px]'}`,
-              onError: (e) => { e.target.style.display = 'none'; }
-            })
-          )
-        );
-      }
+    // Pilih titik awal secara acak saat komponen pertama kali dimuat
+    const randomStart = Math.floor(Math.random() * activeAds.length);
+    setCurrentIndex(randomStart);
+
+    const interval = setInterval(() => {
+      setFade(false); // Mulai fade out
+      setTimeout(() => {
+        setCurrentIndex(prev => (prev + 1) % activeAds.length);
+        setFade(true); // Fade in iklan baru
+      }, 500); // Waktu transisi fade (0.5 detik)
+    }, 15000); // Ganti iklan setiap 15 detik
+
+    return () => clearInterval(interval);
+  }, [activeAds.length]);
+
+  // Jika tidak ada iklan aktif, jangan tampilkan apa pun
+  if (activeAds.length === 0) return null;
+
+  const ad = activeAds[currentIndex];
+  const isVertical = layout === 'vertical';
+  const isMobileSticky = layout === 'mobile-sticky';
+
+  return React.createElement('div', { className: `relative ${className} ${isMobileSticky ? 'mobile-sticky-ad' : ''}` },
+    // Label "Iklan" transparan
+    React.createElement('span', { className: 'absolute top-1 right-1 bg-black/40 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider z-10' }, 'Iklan'),
+    
+    React.createElement('a', { 
+      href: ad.link_url, 
+      target: '_blank', 
+      rel: 'noopener noreferrer',
+      className: `block group overflow-hidden transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'} ${isVertical ? 'w-full h-full' : 'w-full'}` 
+    },
+      React.createElement('img', { 
+        src: ad.image_url, 
+        alt: ad.title || 'Iklan', 
+        className: `w-full object-cover transition-opacity hover:opacity-90 ${isVertical ? 'h-auto max-h-[600px]' : 'h-auto max-h-[250px]'}`,
+        onError: (e) => { e.target.style.display = 'none'; }
+      })
+    )
+  );
+}
 
       // ================= KOMPONEN SHARE =================
       function ShareButtons({ title }) {
