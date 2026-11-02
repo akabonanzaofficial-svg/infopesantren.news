@@ -191,7 +191,11 @@
          pendiri: initialData?.pendiri || '',
          pimpinan: initialData?.pimpinan || '',
          jumlah_santri: initialData?.jumlah_santri || '',
-         program_unggulan: initialData?.program_unggulan || ''
+         program_unggulan: initialData?.program_unggulan || '',
+         website_url: initialData?.website_url || '',
+         telepon: initialData?.telepon || '',
+         medsos_url: initialData?.medsos_url || ''
+        });
         });
         
         const [saving, setSaving] = useState(false);
@@ -307,7 +311,10 @@
           pendiri: formData.pendiri,
           pimpinan: formData.pimpinan,
           jumlah_santri: formData.jumlah_santri,
-          program_unggulan: formData.program_unggulan
+          program_unggulan: formData.program_unggulan,
+          website_url: formData.website_url,
+          telepon: formData.telepon,
+          medsos_url: formData.medsos_url
           };
 
           try {
@@ -387,8 +394,20 @@
                   React.createElement('input', { name: 'program_unggulan', value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })
                 )
               )
-            ),                  
-              React.createElement('div', null,
+            ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Website Resmi'),
+                  React.createElement('input', { name: 'website_url', value: formData.website_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'No. WhatsApp / Telepon'),
+                  React.createElement('input', { name: 'telepon', value: formData.telepon, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: '08123456789' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Link Media Sosial (IG/FB)'),
+                  React.createElement('input', { name: 'medsos_url', value: formData.medsos_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://instagram.com/...' })
+                )
+                React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori / Label'),
                 React.createElement('input', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Misal: Prestasi, Fiqih, dll' })
               )
