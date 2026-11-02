@@ -47,7 +47,7 @@
       "category": "Umum",
       "author": "Admin",
       "image_url": "https://cms2025.kemenag.go.id/storage/ckeditor/1793596574_6ae81c9eea151.jpeg",
-      "featured": false,
+      "featured": true,
       "status": "published",
       "published_at": "2026-11-02T06:31:00.000Z",
       "date_start": "2026-11-02T06:31:00.000Z",
