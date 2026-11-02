@@ -38,6 +38,7 @@
         { id: 'program', label: 'Program', icon: 'graduation-cap' },
         { id: 'khazanah', label: 'Khazanah', icon: 'book-marked' },
         { id: 'tokoh', label: 'Tokoh', icon: 'user-round' },
+        { id: 'pesantren', label: 'Pesantren', icon: 'building-2' },
         { id: 'agenda', label: 'Agenda', icon: 'calendar-days' }
       ];
 
@@ -184,6 +185,13 @@
           status: initialData?.status || 'published',
           published_at: formatForInput(initialData?.published_at || initialData?.submitted_at || new Date()),
           views: initialData?.views || 0,
+          // TAMBAHKAN 6 BARIS INI
+         alamat: initialData?.alamat || '',
+         tahun_berdiri: initialData?.tahun_berdiri || '',
+         pendiri: initialData?.pendiri || '',
+         pimpinan: initialData?.pimpinan || '',
+         jumlah_santri: initialData?.jumlah_santri || '',
+         program_unggulan: initialData?.program_unggulan || ''
         });
         
         const [saving, setSaving] = useState(false);
@@ -291,7 +299,15 @@
             published_at: isoDate,
             date_start: isoDate,
             views: formData.views,
-            _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section
+            _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section,
+  
+          // TAMBAHKAN 6 BARIS INI
+          alamat: formData.alamat,
+          tahun_berdiri: formData.tahun_berdiri,
+          pendiri: formData.pendiri,
+          pimpinan: formData.pimpinan,
+          jumlah_santri: formData.jumlah_santri,
+          program_unggulan: formData.program_unggulan
           };
 
           try {
@@ -342,6 +358,36 @@
                   SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, s.label))
                 )
               ),
+                          // FORM KHUSUS PESANTREN (Hanya Muncul Jika Memilih Pesantren)
+            formData.section === 'pesantren' && React.createElement('div', { className: 'bg-yellow-50 p-4 rounded-lg border border-yellow-200 space-y-4' },
+              React.createElement('h3', { className: 'font-bold text-yellow-800 text-sm mb-2' }, 'Kartu Data Pesantren'),
+              React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Alamat Lengkap'),
+                  React.createElement('input', { name: 'alamat', value: formData.alamat, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tahun Berdiri'),
+                  React.createElement('input', { name: 'tahun_berdiri', value: formData.tahun_berdiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 1975' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tokoh Pendiri'),
+                  React.createElement('input', { name: 'pendiri', value: formData.pendiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Pimpinan Saat Ini'),
+                  React.createElement('input', { name: 'pimpinan', value: formData.pimpinan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Jumlah Santri'),
+                  React.createElement('input', { name: 'jumlah_santri', value: formData.jumlah_santri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 3000+' })
+                ),
+                React.createElement('div', null,
+                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Program Unggulan'),
+                  React.createElement('input', { name: 'program_unggulan', value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })
+                )
+              )
+            ),                  
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori / Label'),
                 React.createElement('input', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Misal: Prestasi, Fiqih, dll' })
