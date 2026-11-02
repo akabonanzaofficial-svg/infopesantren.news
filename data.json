@@ -1467,5 +1467,32 @@
       "position": "header",
       "status": "active"
     }
+  ],
+  "pesantren": [
+    {
+      "id": "art-1793584525108",
+      "slug": "at-tazkiyyah",
+      "title": "At TAzkiyyah",
+      "name": "At TAzkiyyah",
+      "summary": "Ringkasan",
+      "bio": "Ringkasan",
+      "description": "Ringkasan",
+      "content": "<p>Pesantren percobaan</p>",
+      "category": "Umum",
+      "author": "Admin",
+      "image_url": "",
+      "featured": false,
+      "status": "published",
+      "published_at": "2026-11-02T01:54:00.000Z",
+      "date_start": "2026-11-02T01:54:00.000Z",
+      "views": 0,
+      "_old_section": "pesantren",
+      "alamat": "Cihanjuang",
+      "tahun_berdiri": "1989",
+      "pendiri": "A TAzakka",
+      "pimpinan": "A. Tazakka",
+      "jumlah_santri": "2700",
+      "program_unggulan": "Tahfidz"
+    }
   ]
 }
