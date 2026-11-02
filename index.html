@@ -557,7 +557,7 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
       // ================= HOME VIEW =================
       function HomeView({ data }) {
         const [activeFeatured, setActiveFeatured] = useState(0);
-        const featured = data.berita.filter((b) => b.featured).slice(0, 3);
+        const featured = data.berita.filter((b) => b.featured).slice(0, 7);
         const latestBerita = data.berita.filter((b) => !b.featured).slice(0, 6);
         const trending = [...data.berita].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
         const featuredProgram = data.program.filter((p) => p.featured).slice(0, 3);
