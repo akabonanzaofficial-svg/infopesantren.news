@@ -40,7 +40,10 @@
 
       function KontributorForm() {
         const [formData, setFormData] = useState({ 
-          author_name: '', author_contact: '', title: '', category: 'Berita', summary: '', image_url: '' 
+          author_name: '', author_contact: '', title: '', category: 'Berita', summary: '', image_url: '',
+          // FIELD PESANTREN
+          alamat: '', tahun_berdiri: '', pendiri: '', pimpinan: '', jumlah_santri: '', program_unggulan: '',
+          website_url: '', telepon: '', medsos_url: ''
         });
         const [isSuccess, setIsSuccess] = useState(false);
         const [saving, setSaving] = useState(false);
@@ -145,7 +148,19 @@
             const res = await fetch(`${API_URL}/api/submit`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ ...formData, content })
+              body: JSON.stringify({ 
+                ...formData, 
+                content,
+                alamat: formData.alamat,
+                tahun_berdiri: formData.tahun_berdiri,
+                pendiri: formData.pendiri,
+                pimpinan: formData.pimpinan,
+                jumlah_santri: formData.jumlah_santri,
+                program_unggulan: formData.program_unggulan,
+                website_url: formData.website_url,
+                telepon: formData.telepon,
+                medsos_url: formData.medsos_url
+              })
             });
             const json = await res.json();
             if (json.success) setIsSuccess(true);
@@ -177,6 +192,7 @@
             ),
             
             React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-6' },
+              // Data Penulis
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200' },
                 React.createElement('div', null,
                   React.createElement('label', { className: 'block text-sm font-bold mb-1' }, 'Nama Lengkap'),
@@ -188,15 +204,59 @@
                 )
               ),
 
+              // Detail Artikel
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4' },
                 React.createElement('div', { className: 'md:col-span-2' },
-                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Tulisan'),
+                  React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul Tulisan / Nama Pesantren'),
                   React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Judul yang menarik...' })
                 ),
                 React.createElement('div', null,
                   React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori'),
                   React.createElement('select', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md' },
-                    ['Berita', 'Program', 'Khazanah', 'Tokoh', 'Agenda'].map(c => React.createElement('option', { key: c, value: c }, c))
+                    ['Berita', 'Program', 'Khazanah', 'Tokoh', 'Pesantren', 'Agenda'].map(c => React.createElement('option', { key: c, value: c }, c))
+                  )
+                )
+              ),
+
+              // FORM KHUSUS PESANTREN (MUNCUL JIKA KATEGORI PESANTREN)
+              formData.category === 'Pesantren' && React.createElement('div', { className: 'bg-yellow-50 p-4 rounded-lg border border-yellow-200 space-y-4' },
+                React.createElement('h3', { className: 'font-bold text-yellow-800 text-sm mb-2' }, 'Informasi Data Pesantren (Wajib Diisi)'),
+                React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Alamat Lengkap'),
+                    React.createElement('input', { name: 'alamat', required: true, value: formData.alamat, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tahun Berdiri'),
+                    React.createElement('input', { name: 'tahun_berdiri', required: true, value: formData.tahun_berdiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 1975' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tokoh Pendiri'),
+                    React.createElement('input', { name: 'pendiri', required: true, value: formData.pendiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Pimpinan Saat Ini'),
+                    React.createElement('input', { name: 'pimpinan', required: true, value: formData.pimpinan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Jumlah Santri'),
+                    React.createElement('input', { name: 'jumlah_santri', required: true, value: formData.jumlah_santri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 3000+' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Program Unggulan'),
+                    React.createElement('input', { name: 'program_unggulan', required: true, value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Website Resmi (Opsional)'),
+                    React.createElement('input', { name: 'website_url', value: formData.website_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'No. WhatsApp (Opsional)'),
+                    React.createElement('input', { name: 'telepon', value: formData.telepon, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: '08123456789' })
+                  ),
+                  React.createElement('div', null,
+                    React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Link Media Sosial (Opsional)'),
+                    React.createElement('input', { name: 'medsos_url', value: formData.medsos_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://instagram.com/...' })
                   )
                 )
               ),
@@ -215,7 +275,7 @@
               ),
 
               React.createElement('div', { className: 'border p-4 rounded-lg bg-gray-50' },
-                React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Utama (Opsional)'),
+                React.createElement('label', { className: 'block text-sm font-bold mb-2' }, 'Gambar Utama / Banner'),
                 React.createElement('div', { className: 'flex flex-col md:flex-row gap-4' },
                   React.createElement('div', { className: 'flex-1' },
                     React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Opsi A: URL Gambar'),
