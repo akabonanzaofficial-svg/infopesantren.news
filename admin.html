@@ -170,7 +170,7 @@
         );
       }
 
-      function ArticleForm({ auth, initialData, onCancel, onSave }) {
+            function ArticleForm({ auth, initialData, onCancel, onSave }) {
         const isEdit = !!initialData;
         const [formData, setFormData] = useState({ 
           id: initialData?.id || '', 
@@ -185,17 +185,17 @@
           status: initialData?.status || 'published',
           published_at: formatForInput(initialData?.published_at || initialData?.submitted_at || new Date()),
           views: initialData?.views || 0,
-          // TAMBAHKAN 6 BARIS INI
-         alamat: initialData?.alamat || '',
-         tahun_berdiri: initialData?.tahun_berdiri || '',
-         pendiri: initialData?.pendiri || '',
-         pimpinan: initialData?.pimpinan || '',
-         jumlah_santri: initialData?.jumlah_santri || '',
-         program_unggulan: initialData?.program_unggulan || '',
-         website_url: initialData?.website_url || '',
-         telepon: initialData?.telepon || '',
-         medsos_url: initialData?.medsos_url || ''
-        });
+          
+          // FIELD KHUSUS PESANTREN
+          alamat: initialData?.alamat || '',
+          tahun_berdiri: initialData?.tahun_berdiri || '',
+          pendiri: initialData?.pendiri || '',
+          pimpinan: initialData?.pimpinan || '',
+          jumlah_santri: initialData?.jumlah_santri || '',
+          program_unggulan: initialData?.program_unggulan || '',
+          website_url: initialData?.website_url || '',
+          telepon: initialData?.telepon || '',
+          medsos_url: initialData?.medsos_url || ''
         });
         
         const [saving, setSaving] = useState(false);
@@ -304,17 +304,17 @@
             date_start: isoDate,
             views: formData.views,
             _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section,
-  
-          // TAMBAHKAN 6 BARIS INI
-          alamat: formData.alamat,
-          tahun_berdiri: formData.tahun_berdiri,
-          pendiri: formData.pendiri,
-          pimpinan: formData.pimpinan,
-          jumlah_santri: formData.jumlah_santri,
-          program_unggulan: formData.program_unggulan,
-          website_url: formData.website_url,
-          telepon: formData.telepon,
-          medsos_url: formData.medsos_url
+            
+            // FIELD KHUSUS PESANTREN
+            alamat: formData.alamat,
+            tahun_berdiri: formData.tahun_berdiri,
+            pendiri: formData.pendiri,
+            pimpinan: formData.pimpinan,
+            jumlah_santri: formData.jumlah_santri,
+            program_unggulan: formData.program_unggulan,
+            website_url: formData.website_url,
+            telepon: formData.telepon,
+            medsos_url: formData.medsos_url
           };
 
           try {
@@ -358,6 +358,8 @@
             React.createElement('button', { type: 'button', onClick: onCancel, className: 'text-sm text-gray-500 hover:text-gray-800 bg-gray-100 px-3 py-1 rounded' }, 'Batal')
           ),
           React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-5' },
+            
+            // TIPE KONTEN
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-brand-50 p-4 rounded-lg border border-brand-100' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-bold text-brand-800 mb-1' }, 'Tipe Konten'),
@@ -365,7 +367,13 @@
                   SECTIONS.map(s => React.createElement('option', { key: s.id, value: s.id }, s.label))
                 )
               ),
-                          // FORM KHUSUS PESANTREN (Hanya Muncul Jika Memilih Pesantren)
+              React.createElement('div', null,
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori / Label'),
+                React.createElement('input', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Misal: Prestasi, Fiqih, dll' })
+              )
+            ),
+
+            // FORM KHUSUS PESANTREN
             formData.section === 'pesantren' && React.createElement('div', { className: 'bg-yellow-50 p-4 rounded-lg border border-yellow-200 space-y-4' },
               React.createElement('h3', { className: 'font-bold text-yellow-800 text-sm mb-2' }, 'Kartu Data Pesantren'),
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
@@ -392,9 +400,7 @@
                 React.createElement('div', null,
                   React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Program Unggulan'),
                   React.createElement('input', { name: 'program_unggulan', value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })
-                )
-              )
-            ),
+                ),
                 React.createElement('div', null,
                   React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Website Resmi'),
                   React.createElement('input', { name: 'website_url', value: formData.website_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
@@ -407,37 +413,37 @@
                   React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Link Media Sosial (IG/FB)'),
                   React.createElement('input', { name: 'medsos_url', value: formData.medsos_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://instagram.com/...' })
                 )
-                React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Kategori / Label'),
-                React.createElement('input', { name: 'category', value: formData.category, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Misal: Prestasi, Fiqih, dll' })
               )
             ),
+
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Judul / Nama'),
-                React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Masukkan judul...' })
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Nama Pesantren / Judul'),
+                React.createElement('input', { name: 'title', required: true, value: formData.title, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Masukkan nama pesantren...' })
               ),
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1 flex justify-between' }, 'Slug URL', React.createElement('button', { type: 'button', onClick: generateSlug, className: 'text-brand-600 text-xs' }, 'Generate otomatis')),
-                React.createElement('input', { name: 'slug', required: true, value: formData.slug, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md bg-gray-50', placeholder: 'judul-artikel' })
+                React.createElement('input', { name: 'slug', required: true, value: formData.slug, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md bg-gray-50', placeholder: 'nama-pesantren' })
               )
             ),
+
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Tanggal Terbit'),
                 React.createElement('input', { type: 'datetime-local', name: 'published_at', required: true, value: formData.published_at, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               ),
               React.createElement('div', null,
-                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis'),
+                React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Penulis / Admin'),
                 React.createElement('input', { name: 'author', value: formData.author, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
               )
             ),
+
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat'),
+              React.createElement('label', { className: 'block text-sm font-medium mb-1' }, 'Ringkasan Singkat (Summary)'),
               React.createElement('textarea', { name: 'summary', required: true, rows: 2, value: formData.summary, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md', placeholder: 'Tulis ringkasan...' })
             ),
             React.createElement('div', null,
-              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap'),
+              React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap / Profil'),
               React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden w-full' },
                 React.createElement('div', { ref: quillRef, className: 'text-base' })
               ),
@@ -482,7 +488,7 @@
           )
         );
       }
-
+      
       function StatsView({ auth, statsData, statsLoading, statsDays, setStatsDays, fetchStats }) {
         return React.createElement('div', { className: 'space-y-6 w-full' },
           React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center gap-4' },
