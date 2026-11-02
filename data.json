@@ -8,6 +8,31 @@
   },
   "berita": [
     {
+      "id": "art-1793584525108",
+      "slug": "at-tazkiyyah",
+      "title": "At TAzkiyyah",
+      "name": "At TAzkiyyah",
+      "summary": "Ringkasan",
+      "bio": "Ringkasan",
+      "description": "Ringkasan",
+      "content": "<p>Pesantren percobaan</p>",
+      "category": "Umum",
+      "author": "Admin",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxkyKtTOLaW_Bo4SZVqqDGMbxrPdspVepACKcFV0xaVQ&s=10",
+      "featured": false,
+      "status": "published",
+      "published_at": "2026-11-02T01:54:00.000Z",
+      "date_start": "2026-11-02T01:54:00.000Z",
+      "views": 0,
+      "_old_section": "pesantren",
+      "alamat": "Cihanjuang",
+      "tahun_berdiri": "1989",
+      "pendiri": "A TAzakka",
+      "pimpinan": "A. Tazakka",
+      "jumlah_santri": "2700",
+      "program_unggulan": "Tahfidz"
+    },
+    {
       "id": "art-1793580965260",
       "slug": "gus-kikin-imbau-warga-sukoharjo-tak-terprovokasi-kasus-pembakaran-warung-mi",
       "title": "Gus Kikin Imbau Warga Sukoharjo Tak Terprovokasi Kasus Pembakaran Warung Mi",
@@ -1468,31 +1493,5 @@
       "status": "active"
     }
   ],
-  "pesantren": [
-    {
-      "id": "art-1793584525108",
-      "slug": "at-tazkiyyah",
-      "title": "At TAzkiyyah",
-      "name": "At TAzkiyyah",
-      "summary": "Ringkasan",
-      "bio": "Ringkasan",
-      "description": "Ringkasan",
-      "content": "<p>Pesantren percobaan</p>",
-      "category": "Umum",
-      "author": "Admin",
-      "image_url": "",
-      "featured": false,
-      "status": "published",
-      "published_at": "2026-11-02T01:54:00.000Z",
-      "date_start": "2026-11-02T01:54:00.000Z",
-      "views": 0,
-      "_old_section": "pesantren",
-      "alamat": "Cihanjuang",
-      "tahun_berdiri": "1989",
-      "pendiri": "A TAzakka",
-      "pimpinan": "A. Tazakka",
-      "jumlah_santri": "2700",
-      "program_unggulan": "Tahfidz"
-    }
-  ]
+  "pesantren": []
 }
