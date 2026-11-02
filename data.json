@@ -19,7 +19,7 @@
       "category": "Umum",
       "author": "Admin",
       "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-BIxqufIQ8mRD3mmKH9MTN9WnmUG57v3q_CAIiF_gEw&s=10",
-      "featured": false,
+      "featured": true,
       "status": "published",
       "published_at": "2026-11-02T00:53:00.000Z",
       "date_start": "2026-11-02T00:53:00.000Z",
