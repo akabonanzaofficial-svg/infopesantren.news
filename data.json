@@ -1442,19 +1442,6 @@
   ],
   "agenda": [
     {
-      "id": "a-001",
-      "slug": "haul-masyayikh-2026",
-      "title": "Haul Masyayikh 2026",
-      "description": "Haul akbar para pendiri dan masyayikh pesantren, dilengkapi pembacaan tahlil, manaqib, dan mauidhoh hasanah dari para kiai sepuh.",
-      "date_start": "2026-11-20T08:00:00Z",
-      "date_end": "2026-11-21T17:00:00Z",
-      "location": "Pesantren Al-Hikmah, Jombang",
-      "organizer": "Yayasan Al-Hikmah",
-      "image_url": "https://images.pexels.com/photos/2233416/pexels-photo-2233416.jpeg?auto=compress&w=800",
-      "status": "akan-datang",
-      "featured": true
-    },
-    {
       "id": "a-002",
       "slug": "seminar-sanitasi-pesantren",
       "title": "Seminar Sanitasi & Kesehatan Pesantren",
