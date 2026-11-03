@@ -834,7 +834,7 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
                 item.image_url && React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
                 React.createElement('div', { className: 'absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent' }),
                 React.createElement('div', { className: 'absolute bottom-0 left-0 right-0 p-6 md:p-10' },
-                  React.createElement('h1', { className: 'text-3xl md:text-5xl font-extrabold text-white leading-tight' }, item.title),
+                  React.createElement('h1', { className: 'text-xl md:text-4xl font-extrabold text-white leading-tight line-clamp-3' }, item.title),
                   item.alamat && React.createElement('p', { className: 'text-gold-300 font-medium mt-2 flex items-center gap-1' }, React.createElement(Icon, { name: 'map-pin', className: 'w-4 h-4' }), item.alamat)
                 )
               ),
