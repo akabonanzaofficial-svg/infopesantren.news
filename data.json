@@ -1677,19 +1677,6 @@
       "image_url": "https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&w=800",
       "status": "akan-datang",
       "featured": true
-    },
-    {
-      "id": "a-003",
-      "slug": "wisuda-santri-2026",
-      "title": "Wisuda Santri Angkatan 2026",
-      "description": "Prosesi wisuda santri angkatan 2026 yang telah menyelesaikan pendidikan selama 6 tahun di pesantren.",
-      "date_start": "2026-11-10T08:00:00Z",
-      "date_end": "2026-11-10T13:00:00Z",
-      "location": "Lapangan Utama Pesantren",
-      "organizer": "Pesantren Al-Hikmah",
-      "image_url": "https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800",
-      "status": "akan-datang",
-      "featured": true
     }
   ],
   "submissions": [],
