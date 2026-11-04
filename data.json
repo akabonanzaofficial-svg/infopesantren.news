@@ -1664,19 +1664,6 @@
       "website_url": "",
       "telepon": "",
       "medsos_url": ""
-    },
-    {
-      "id": "a-002",
-      "slug": "seminar-sanitasi-pesantren",
-      "title": "Seminar Sanitasi & Kesehatan Pesantren",
-      "description": "Seminar nasional tentang pengelolaan sanitasi dan kesehatan lingkungan pesantren, menghadirkan pakar kesehatan dan pengasuh pesantren.",
-      "date_start": "2026-12-05T09:00:00Z",
-      "date_end": "2026-12-05T15:00:00Z",
-      "location": "Aula Pesantren Al-Hikmah, Jombang",
-      "organizer": "Kemenag & Yayasan Al-Hikmah",
-      "image_url": "https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&w=800",
-      "status": "akan-datang",
-      "featured": true
     }
   ],
   "submissions": [],
