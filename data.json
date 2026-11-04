@@ -1634,7 +1634,8 @@
       "featured": false
     }
   ],
-  "submissions": [
+  "submissions": [],
+  "archives": [
     {
       "author_name": "Qilan",
       "author_contact": "1238912648152",
@@ -1646,9 +1647,7 @@
       "id": "sub-1792913282844",
       "status": "pending",
       "submitted_at": "2026-10-25T07:28:02.844Z"
-    }
-  ],
-  "archives": [
+    },
     {
       "author_name": "Qina",
       "author_contact": "1242415",
