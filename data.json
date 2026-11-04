@@ -1690,19 +1690,6 @@
       "image_url": "https://images.pexels.com/photos/7222432/pexels-photo-7222432.jpeg?auto=compress&w=800",
       "status": "akan-datang",
       "featured": true
-    },
-    {
-      "id": "a-004",
-      "slug": "lomba-mtq-tingkat-pesantren",
-      "title": "Lomba MTQ Tingkat Pesantren",
-      "description": "Kompetisi tilawah Al-Quran antar santri se-Jawa Timur, memperebutkan piala bergilir pengasuh pesantren.",
-      "date_start": "2026-12-15T08:00:00Z",
-      "date_end": "2026-12-16T17:00:00Z",
-      "location": "Aula Pesantren Al-Hikmah",
-      "organizer": "Divisi Tahfidz & Qira'ah",
-      "image_url": "https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&w=800",
-      "status": "akan-datang",
-      "featured": false
     }
   ],
   "submissions": [],
