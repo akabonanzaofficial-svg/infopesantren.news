@@ -1703,19 +1703,6 @@
       "image_url": "https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&w=800",
       "status": "akan-datang",
       "featured": false
-    },
-    {
-      "id": "a-005",
-      "slug": "pelatihan-guru-pesantren-2027",
-      "title": "Pelatihan Guru Pesantren Batch 1 2027",
-      "description": "Pelatihan peningkatan kompetensi guru pesantren dalam pedagogi dan teknologi pendidikan.",
-      "date_start": "2027-01-10T08:00:00Z",
-      "date_end": "2027-01-24T16:00:00Z",
-      "location": "Gedung Serbaguna Pesantren",
-      "organizer": "Divisi Pendidikan",
-      "image_url": "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&w=800",
-      "status": "akan-datang",
-      "featured": false
     }
   ],
   "submissions": [],
