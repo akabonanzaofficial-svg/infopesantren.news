@@ -1722,7 +1722,29 @@
       "medsos_url": ""
     }
   ],
-  "submissions": [],
+  "submissions": [
+    {
+      "author_name": "Ki Mudah",
+      "author_contact": "085778885593",
+      "title": "YPI AL-HUSAEINIYAH",
+      "category": "Pesantren",
+      "summary": "PONDOK PESANTREN AL-HUSAEINIYAH",
+      "image_url": "https://raw.githubusercontent.com/akabonanzaofficial-svg/infopesantren.news/main/assets/pub-1793862037063.jpg",
+      "alamat": "Kp Sela Awi Rt 005 Rw 001 desa Pasirmuncang Kecamatan Caringin Kabupaten Bogor Provinsi Jawa Barat ",
+      "tahun_berdiri": "2021",
+      "pendiri": "KH Ruslan",
+      "pimpinan": "KH Ruslan",
+      "jumlah_santri": "250",
+      "program_unggulan": "Kitab Kuning  ",
+      "website_url": "",
+      "telepon": "085714130087",
+      "medsos_url": "https://youtube.com/@al_husaeiniyah?si=R2yTo82Wgwwi42tx",
+      "content": "<p>PONDOK PESANTREN AL-HUSAEINIYAH</p><p>Pondok Pesantren Al-Husaeiniyah merupakan lembaga pendidikan Islam yang berkomitmen mencetak generasi Qur’ani, berakhlakul karimah, berilmu, dan beriman. Dengan mengutamakan pendidikan agama serta pembentukan karakter santri, Pondok Pesantren Al-Husaeiniyah hadir sebagai tempat menimba ilmu dan memperdalam ajaran Islam.</p><p>Program Unggulan:</p><p>Kajian Kitab Kuning – Mempelajari ilmu-ilmu keislaman melalui kitab-kitab klasik (kitab turats) dengan bimbingan para ustaz dan kiai.</p><p>Tahsin dan Pembelajaran Al-Qur’an – Membimbing santri agar mampu membaca Al-Qur’an dengan baik dan benar sesuai kaidah tajwid.</p><p>Motto: Berilmu, Berakhlakul Karimah, dan Berjiwa Qur’ani.</p>",
+      "id": "sub-1793862351077",
+      "status": "pending",
+      "submitted_at": "2026-11-05T07:05:51.077Z"
+    }
+  ],
   "archives": [
     {
       "author_name": "Qilan",
