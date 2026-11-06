@@ -1,16 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  <!-- Contoh Artikel Berita -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>https://infopesantren.online/berita/judul-berita-terbaru-anda</loc>
+    <loc>https://infopesantren.online/berita/sep-gandeng-unu-cirebon-dan-kiseki-training-centre-buka-peluang-santri-kuliah-hingga-berkarier-di-jepang</loc>
     <news:news>
       <news:publication>
         <news:name>InfoPesantren.online</news:name>
         <news:language>id</news:language>
       </news:publication>
-      <news:publication_date>2026-11-06T08:00:00Z</news:publication_date>
-      <news:title>Judul Berita Terbaru Anda</news:title>
+      <news:publication_date>2026-11-06T06:40:00.000Z</news:publication_date>
+      <news:title>SEP Gandeng UNU Cirebon dan Kiseki Training Centre, Buka Peluang Santri Kuliah hingga Berkarier di Jepang</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/gus-kautsar-ajak-santri-lawan-hoaks-dengan-ilmu-nurani-dan-sikap-kritis</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-06T01:25:00.000Z</news:publication_date>
+      <news:title>Gus Kautsar Ajak Santri Lawan Hoaks dengan Ilmu, Nurani, dan Sikap Kritis</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-siapkan-bantuan-rp43-miliar-untuk-guru-pesantren-dan-santri-terdampak-banjir-di-aceh</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-06T01:20:00.000Z</news:publication_date>
+      <news:title>Kemenag Siapkan Bantuan Rp43 Miliar untuk Guru Pesantren dan Santri Terdampak Banjir di Aceh</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/wamenag-pelaku-kekerasan-di-pesantren-harus-dihukum-maksimal-dan-diblacklist</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-06T01:15:00.000Z</news:publication_date>
+      <news:title>Wamenag: Pelaku Kekerasan di Pesantren Harus Dihukum Maksimal dan Diblacklist</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-gandeng-kopergi-buka-peluang-pesantren-kembangkan-usaha-travel-umrah</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-06T00:28:00.000Z</news:publication_date>
+      <news:title>SEP Gandeng KOPERGI, Buka Peluang Pesantren Kembangkan Usaha Travel Umrah</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-targetkan-1-000-doktor-ma-had-aly-dan-perkuat-kualitas-pendidikan-tinggi-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-05T16:06:00.000Z</news:publication_date>
+      <news:title>Kemenag Targetkan 1.000 Doktor Ma’had Aly dan Perkuat Kualitas Pendidikan Tinggi Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/50-pesantren-ikuti-giat-ekosistem-pesantren-jabar-ada-pelatihan-ai-dan-literasi-syariah</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-05T13:26:00.000Z</news:publication_date>
+      <news:title>50 Pesantren Ikuti Giat Ekosistem Pesantren Jabar, Ada Pelatihan AI dan Literasi Syariah</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-gandeng-bjb-syariah-water-org-dan-aqua-dorong-digitalisasi-pesantren-di-bogor</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-05T12:52:00.000Z</news:publication_date>
+      <news:title>SEP Gandeng BJB Syariah, Water.org dan AQUA Dorong Digitalisasi Pesantren di Bogor</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/wamenag-luncurkan-program-pesantren-bebas-tb-dan-cek-kesehatan-gratis-santri-jadi-prioritas</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-04T16:22:00.000Z</news:publication_date>
+      <news:title>Wamenag Luncurkan Program Pesantren Bebas TB dan Cek Kesehatan Gratis, Santri Jadi Prioritas</news:title>
     </news:news>
   </url>
 </urlset>
