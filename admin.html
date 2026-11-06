@@ -318,7 +318,14 @@
           };
 
           try {
-            const url = isEdit ? `${API_URL}/api/article/${formData.section}/${formData.id}` : `${API_URL}/api/article`;
+                        // Cek apakah ini sedang mengedit "Kiriman Masuk"
+            const isEditingSubmission = isEdit && initialData?.status === 'pending';
+            
+            // Jika edit kiriman, arahkan ke endpoint submit/kiriman, bukan ke artikel biasa
+            const url = isEditingSubmission 
+              ? `${API_URL}/api/submission/${formData.id}` 
+              : (isEdit ? `${API_URL}/api/article/${formData.section}/${formData.id}` : `${API_URL}/api/article`);
+            
             const method = isEdit ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
