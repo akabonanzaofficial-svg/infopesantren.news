@@ -714,6 +714,42 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
       function DetailView({ type, slug, data }) {
         const collection = data[type] || [];
         const item = collection.find((x) => x.slug === slug);
+                // SUNTIKKAN SCHEMA NEWSARTICLE
+        useEffect(() => {
+          if (!item) return;
+          
+          const schema = {
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": item.title,
+            "image": [item.image_url || FALLBACK_IMG],
+            "datePublished": item.published_at,
+            "dateModified": item.published_at, // Bisa diubah jika ada fitur update
+            "author": {
+              "@type": "Person",
+              "name": item.author || "Redaksi InfoPesantren"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "InfoPesantren.online",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://infopesantren.online/favicon.ico"
+              }
+            },
+            "description": item.summary || item.description
+          };
+
+          const script = document.createElement('script');
+          script.type = 'application/ld+json';
+          script.text = JSON.stringify(schema);
+          document.head.appendChild(script);
+
+          // Bersihkan saat komponen di-unmount
+          return () => {
+            document.head.removeChild(script);
+          };
+        }, [item]);
 
         useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [slug]);
 
