@@ -79,7 +79,7 @@
       @media (min-width: 768px) {
         .mobile-sticky-ad { display: none !important; }
       }
-            /* Styling untuk Gambar & Caption di Artikel */
+       /* Styling untuk Gambar & Caption di Artikel */
       .article-body img {
         border-radius: 0.5rem;
         margin-top: 1.5rem;
@@ -88,8 +88,8 @@
         height: auto;
       }
       
-      .article-body p > em:only-child,
-      .article-body p:has(> em:only-child) {
+      /* Caption hanya berlaku untuk paragraf yang isinya 100% tag <em> dan tanpa baris baru */
+      .article-body p:has(> em:only-child):not(:has(br)) {
         display: block;
         text-align: center;
         font-size: 0.875rem;
@@ -802,9 +802,12 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
                   item.author && React.createElement('span', { className: 'font-semibold text-gray-700' }, item.author),
                   item.published_at && React.createElement('span', { className: 'flex items-center gap-1' }, React.createElement(Icon, { name: 'clock', className: 'w-4 h-4' }), formatTanggalWaktu(item.published_at))
                 ),
-                item.image_url && React.createElement('div', { className: 'rounded-xl overflow-hidden mb-8 bg-gray-200 shadow' },
-                  React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-auto object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) })
+                item.image_url && React.createElement('div', { className: 'mb-8' },
+                React.createElement('div', { className: 'rounded-xl overflow-hidden bg-gray-200 shadow' },
+                React.createElement('img', { src: item.image_url, alt: item.image_alt || item.title, className: 'w-full h-auto object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) })
                 ),
+                item.image_alt && React.createElement('p', { className: 'text-sm text-gray-500 mt-2 text-center font-sans' }, item.image_alt)
+              ),
                 React.createElement(AdBanner, { position: 'in-article', ads: data.ads, layout: 'horizontal', className: 'mb-6 rounded-lg overflow-hidden' }),
                 React.createElement('div', { className: 'article-body text-gray-700 text-lg leading-relaxed space-y-4 mb-8', dangerouslySetInnerHTML: { __html: finalHTML } }),
                 React.createElement(AdBanner, { position: 'footer-rect', ads: data.ads, layout: 'horizontal', className: 'mb-6 rounded-lg overflow-hidden' }),
@@ -830,7 +833,10 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
               React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }), ' Kembali ke Program'
             ),
             React.createElement('div', { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
-              item.image_url && React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-72 object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+              item.image_url && React.createElement('div', null,
+            React.createElement('img', { src: item.image_url, alt: item.image_alt || item.title, className: 'w-full h-72 object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+            item.image_alt && React.createElement('p', { className: 'text-sm text-gray-500 mt-2 text-center font-sans' }, item.image_alt)
+            ),
               React.createElement('div', { className: 'p-6 md:p-10' },
                 item.status && React.createElement('span', { className: 'inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-3 ' + (item.status === 'dibuka' ? 'bg-brand-600' : item.status === 'ditutup' ? 'bg-rose-600' : 'bg-gold-600') }, item.status),
                 React.createElement('h1', { className: 'text-3xl font-bold text-gray-900 mb-4' }, item.title),
@@ -862,9 +868,10 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
             ),
             React.createElement('div', { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
               React.createElement('div', { className: 'md:flex' },
-                item.image_url && React.createElement('div', { className: 'md:w-64 flex-shrink-0' },
-                  React.createElement('img', { src: item.image_url, alt: item.name, className: 'w-full h-64 md:h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) })
-                ),
+                item.image_url && React.createElement('div', { className: 'md:w-64 flex-shrink-0 flex flex-col' },
+            React.createElement('img', { src: item.image_url, alt: item.image_alt || item.name, className: 'w-full h-64 md:h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+                item.image_alt && React.createElement('p', { className: 'text-xs text-gray-500 mt-2 text-center font-sans px-2' }, item.image_alt)
+              ),
                 React.createElement('div', { className: 'p-6 md:p-8 flex-1' },
                   React.createElement('h1', { className: 'text-3xl font-extrabold text-gray-900 mb-1' }, item.name || item.title),
                   React.createElement('p', { className: 'text-gold-600 font-semibold mb-4' }, item.title),
@@ -887,8 +894,9 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
             ),
             React.createElement('div', { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
               // Header Gambar & Judul
-              React.createElement('div', { className: 'relative h-64 md:h-80' },
-                item.image_url && React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+                React.createElement('div', { className: 'relative h-64 md:h-80' },
+  item.image_url && React.createElement('img', { src: item.image_url, alt: item.image_alt || item.title, className: 'w-full h-full object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+  item.image_alt && React.createElement('div', { className: 'absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded font-sans' }, item.image_alt),                
                 React.createElement('div', { className: 'absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent' }),
                 React.createElement('div', { className: 'absolute bottom-0 left-0 right-0 p-6 md:p-10' },
                   React.createElement('h1', { className: 'text-xl md:text-4xl font-extrabold text-white leading-tight line-clamp-3' }, item.title),
@@ -965,7 +973,10 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
               React.createElement(Icon, { name: 'arrow-left', className: 'w-4 h-4' }), ' Kembali ke Agenda'
             ),
             React.createElement('div', { className: 'bg-white rounded-2xl overflow-hidden shadow-lg' },
-              item.image_url && React.createElement('img', { src: item.image_url, alt: item.title, className: 'w-full h-72 object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+              item.image_url && React.createElement('div', null,
+            React.createElement('img', { src: item.image_url, alt: item.image_alt || item.title, className: 'w-full h-72 object-cover', onError: (e) => (e.target.src = FALLBACK_IMG) }),
+              item.image_alt && React.createElement('p', { className: 'text-sm text-gray-500 mt-2 text-center font-sans' }, item.image_alt)
+            ),
               React.createElement('div', { className: 'p-6 md:p-10' },
                 item.status && React.createElement('span', { className: 'inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-3 ' + (item.status === 'akan-datang' ? 'bg-brand-600' : item.status === 'berlangsung' ? 'bg-gold-600' : 'bg-gray-500') }, item.status),
                 React.createElement('h1', { className: 'text-3xl font-bold text-gray-900 mb-4' }, item.title),
