@@ -79,7 +79,7 @@
       @media (min-width: 768px) {
         .mobile-sticky-ad { display: none !important; }
       }
-       /* Styling untuk Gambar & Caption di Artikel */
+             /* Styling untuk Gambar & Caption di Artikel */
       .article-body img {
         border-radius: 0.5rem;
         margin-top: 1.5rem;
@@ -88,7 +88,7 @@
         height: auto;
       }
       
-      /* Caption hanya berlaku untuk paragraf yang isinya 100% tag <em> dan tanpa baris baru */
+      /* Caption hanya berlaku untuk paragraf miring yang PENDEK (kurang dari 100 karakter) */
       .article-body p:has(> em:only-child):not(:has(br)) {
         display: block;
         text-align: center;
@@ -98,6 +98,14 @@
         margin-bottom: 1.5rem;
         line-height: 1.4;
         font-family: 'Inter', sans-serif;
+      }
+      
+      /* Jika teks miring terlalu panjang, kembalikan ke format paragraf biasa */
+      .article-body p:has(> em:only-child) {
+        text-align: left; /* Rata kiri */
+        font-size: 1.125rem; /* Ukuran normal */
+        color: #374151; /* Warna teks biasa */
+        font-family: 'Merriweather', serif; /* Font artikel */
       }
     </style>
   </head>
