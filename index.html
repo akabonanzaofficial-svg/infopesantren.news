@@ -395,6 +395,7 @@ function AdBanner({ position, ads, layout = 'horizontal', className = '' }) {
                 React.createElement('ul', { className: 'space-y-2' },
                   NAV_ITEMS.map((item) => React.createElement('li', { key: item.key }, React.createElement('a', { href: item.path, onClick: (e) => { e.preventDefault(); navigate(item.path); }, className: 'text-sm text-gray-400 hover:text-gold-400 transition-colors' }, item.label))),
                   React.createElement('li', null, React.createElement('a', { href: '/kontributor.html', className: 'text-sm font-bold text-gold-400 hover:text-gold-300 transition-colors' }, 'Kirim Tulisan'))
+                  React.createElement('li', null, React.createElement('a', { href: '/tentang.html', className: 'text-sm text-gray-400 hover:text-gold-400 transition-colors' }, 'Tentang Kami')) // TAMBAHKAN INI            
                 )
               ),
               React.createElement('div', null,
