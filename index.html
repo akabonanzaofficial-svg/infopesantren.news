@@ -79,6 +79,26 @@
       @media (min-width: 768px) {
         .mobile-sticky-ad { display: none !important; }
       }
+            /* Styling untuk Gambar & Caption di Artikel */
+      .article-body img {
+        border-radius: 0.5rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        max-width: 100%;
+        height: auto;
+      }
+      
+      .article-body p > em:only-child,
+      .article-body p:has(> em:only-child) {
+        display: block;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+        font-family: 'Inter', sans-serif;
+      }
     </style>
   </head>
   <body>
