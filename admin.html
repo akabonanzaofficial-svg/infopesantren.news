@@ -180,7 +180,8 @@
           category: initialData?.category || 'Umum', 
           author: initialData?.author || initialData?.author_name || 'Admin', 
           summary: initialData?.summary || initialData?.description || initialData?.bio || '', 
-          image_url: initialData?.image_url || '', 
+          image_url: initialData?.image_url || '',
+          image_alt: initialData?.image_alt || '',
           featured: initialData?.featured || false, 
           status: initialData?.status || 'published',
           published_at: formatForInput(initialData?.published_at || initialData?.submitted_at || new Date()),
@@ -298,6 +299,7 @@
             category: formData.category,
             author: formData.author,
             image_url: formData.image_url,
+            image_alt: formData.image_alt,
             featured: formData.featured,
             status: formData.status,
             published_at: isoDate,
@@ -468,6 +470,11 @@
                   React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleCoverUpload, className: 'w-full text-sm mt-1' })
                 )
               ),
+              // TAMBAHKAN INPUT ALT TEXT DI SINI
+              React.createElement('div', { className: 'mt-3' },
+                React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Teks Alt / Keterangan Gambar (Untuk SEO & Aksesibilitas)'),
+                React.createElement('input', { name: 'image_alt', value: formData.image_alt, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Foto santri sedang mengaji di Pesantren Al-Hikmah' })
+              ),                  
               formData.image_url && React.createElement('img', { src: formData.image_url, className: 'h-20 mt-2 rounded object-cover border' })
             ),
             React.createElement('div', { className: 'flex flex-col md:flex-row gap-4 md:gap-6 md:items-center pt-2' },
