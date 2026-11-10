@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/kemenag-buka-mutasi-asn-ke-ditjen-pesantren-tersedia-174-kuota-untuk-21-jabatan</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-10T01:32:00.000Z</news:publication_date>
+      <news:title>Kemenag Buka Mutasi ASN ke Ditjen Pesantren, Tersedia 174 Kuota untuk 21 Jabatan</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/angkat-inovasi-pengelolaan-sampah-pesantren-tim-uin-malang-raih-juara-1-oase-ptkin</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-10T01:21:00.000Z</news:publication_date>
+      <news:title>Angkat Inovasi Pengelolaan Sampah Pesantren, Tim UIN Malang Raih Juara 1 OASE PTKIN</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/ingin-mondok-gratis-di-jawa-barat-ini-5-cara-mendapatkan-beasiswa-dan-bantuan-pendidikan-pesantren</loc>
     <news:news>
       <news:publication>
@@ -75,39 +97,6 @@
       </news:publication>
       <news:publication_date>2026-11-08T06:18:00.000Z</news:publication_date>
       <news:title>Universitas Darunnajah dan MUI Gelar Pelatihan Diplomasi Islam Wasathiyah Tingkat Lanjut</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-perkuat-sosialisasi-pengakuan-ijazah-pdf-dan-muadalah</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-07T19:53:00.000Z</news:publication_date>
-      <news:title>Kemenag Perkuat Sosialisasi Pengakuan Ijazah PDF dan Muadalah</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/ditjen-pesantren-dorong-uin-satu-tulungagung-buka-program-studi-kepesantrenan</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-07T19:47:00.000Z</news:publication_date>
-      <news:title>Ditjen Pesantren Dorong UIN SATU Tulungagung Buka Program Studi Kepesantrenan</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-dorong-ribuan-pesantren-jadi-pelopor-pengelolaan-sampah-berkelanjutan</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-07T03:41:00.000Z</news:publication_date>
-      <news:title>Kemenag Dorong Ribuan Pesantren Jadi Pelopor Pengelolaan Sampah Berkelanjutan</news:title>
     </news:news>
   </url>
 </urlset>
