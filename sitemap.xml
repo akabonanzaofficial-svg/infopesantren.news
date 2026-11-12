@@ -29,6 +29,18 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
+    <loc>https://infopesantren.online/berita/prabowo-bicara-siratal-mustaqim-jalan-lurus-bukan-sekadar-doa-tetapi-tindakan-nyata</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-petakan-pendidikan-muadalah-dan-diniyah-formal-untuk-perkuat-mutu-pesantren</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-buka-pengajuan-bantuan-pesantren-2026-ada-empat-program-dengan-dana-hingga-rp100-juta</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/kemenag-buka-mutasi-asn-ke-ditjen-pesantren-tersedia-174-kuota-untuk-21-jabatan</loc>
     <priority>0.6</priority>
   </url>
@@ -402,6 +414,10 @@
   </url>
   <url>
     <loc>https://infopesantren.online/program/pendaftaran-ppg-daljab-guru-madrasah-2026-dibuka-hingga-27-oktober-ini-syarat-dan-cara-daftarnya</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/khazanah/al-qur-an-sumber-akhlak</loc>
     <priority>0.6</priority>
   </url>
   <url>
