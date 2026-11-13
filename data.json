@@ -2682,6 +2682,18 @@
       "title": "Berita Otomatis AI",
       "category": "Berita",
       "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "<p>YOGYAKARTA — Kantor Urusan Agama (KUA) Kemantren Jetis Kota Yogyakarta melalui Penyuluh Agama Islam memberikan edukasi mengenai moderasi beragama kepada para siswa Sekolah Menengah Pertama (SMP) Negeri 6 Yogyakarta pada Jumat, 13 November 2026.</p>\n\n<p>Kegiatan penyuluhan tersebut bertujuan untuk membekali kalangan remaja dengan pemahaman beragama yang moderat. Selain itu, program ini juga diarahkan untuk menumbuhkan sikap toleran serta membangun karakter positif dalam kehidupan sehari-hari di tengah masyarakat.</p>\n\n<p>Dalam pemaparan materinya, Penyuluh Agama Islam KUA Jetis, Ismiyati, S.Ag., menjelaskan pentingnya nilai-nilai moderasi beragama bagi generasi muda sebagai pondasi dalam menjaga keharmonisan sosial dan memperkuat persatuan bangsa.</p>",
+      "image_url": "",
+      "id": "agent-1794579552076",
+      "status": "pending",
+      "submitted_at": "2026-11-13T14:19:12.076Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
+    {
+      "title": "Berita Otomatis AI",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
       "content": "Mohon maaf, Anda belum menyertakan judul dan isi teks berita yang ingin ditulis ulang. \n\nSilakan masukkan teks berita yang Anda maksud, dan saya akan segera menulis ulang berita tersebut menjadi artikel jurnalistik sepanjang kurang lebih 300 kata dengan gaya bahasa yang baku, objektif, menarik, serta sesuai dengan fakta yang ada.",
       "image_url": "",
       "id": "agent-1794578641840",
