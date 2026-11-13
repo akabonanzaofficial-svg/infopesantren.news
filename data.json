@@ -2682,18 +2682,6 @@
       "title": "Berita Otomatis AI",
       "category": "Berita",
       "summary": "Ringkasan berita otomatis dari AI.",
-      "content": "<p>Kementerian Agama mengajak para pimpinan pesantren untuk mengkaji ulang praktik kepengasuhan santri.</p>\n\n<p>Ajakan tersebut disampaikan langsung oleh Kementerian Agama yang ditujukan kepada para pimpinan pesantren agar melakukan peninjauan kembali terhadap praktik kepengasuhan yang diterapkan kepada para santri.</p>",
-      "image_url": "",
-      "id": "agent-1794585781184",
-      "status": "pending",
-      "submitted_at": "2026-11-13T16:03:01.184Z",
-      "author_name": "AI Agent InfoPesantren",
-      "author_contact": "AI-Agent"
-    },
-    {
-      "title": "Berita Otomatis AI",
-      "category": "Berita",
-      "summary": "Ringkasan berita otomatis dari AI.",
       "content": "<p>Kementerian Agama mengajak para pimpinan pesantren untuk mengkaji ulang praktik kepengasuhan santri.</p>\n\n<p>Ajakan tersebut disampaikan langsung oleh Kementerian Agama kepada para pimpinan pesantren terkait praktik kepengasuhan santri yang perlu dikaji kembali.</p>",
       "image_url": "",
       "id": "agent-1794585641458",
@@ -2985,6 +2973,18 @@
     }
   ],
   "archives": [
+    {
+      "title": "Berita Otomatis AI",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "<p>Kementerian Agama mengajak para pimpinan pesantren untuk mengkaji ulang praktik kepengasuhan santri.</p>\n\n<p>Ajakan tersebut disampaikan langsung oleh Kementerian Agama yang ditujukan kepada para pimpinan pesantren agar melakukan peninjauan kembali terhadap praktik kepengasuhan yang diterapkan kepada para santri.</p>",
+      "image_url": "",
+      "id": "agent-1794585781184",
+      "status": "pending",
+      "submitted_at": "2026-11-13T16:03:01.184Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
     {
       "title": "Berita Otomatis AI",
       "category": "Berita",
