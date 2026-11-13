@@ -2679,6 +2679,18 @@
   ],
   "submissions": [
     {
+      "title": "Berita Otomatis AI",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "Mohon maaf, Anda belum menyertakan judul dan isi teks berita yang ingin ditulis ulang. \n\nSilakan masukkan teks berita yang Anda maksud, dan saya akan segera menulis ulang berita tersebut menjadi artikel jurnalistik sepanjang kurang lebih 300 kata dengan gaya bahasa yang baku, objektif, menarik, serta sesuai dengan fakta yang ada.",
+      "image_url": "",
+      "id": "agent-1794578641840",
+      "status": "pending",
+      "submitted_at": "2026-11-13T14:04:01.840Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
+    {
       "author_name": "Ahmad Masrul",
       "author_contact": "087871906812",
       "title": "Profil pesantren Al Qur'an Darul Khoir SAQUIN ",
