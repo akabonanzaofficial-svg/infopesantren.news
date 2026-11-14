@@ -2740,18 +2740,6 @@
   ],
   "submissions": [
     {
-      "title": "Berita Terbaru Seputar Santri",
-      "category": "Berita",
-      "summary": "Berita terbaru seputar dunia santri dan pesantren.",
-      "content": "\n\n<p>Infopesantren.online — Dua tim dari Pesantren Misbahul Ulum berhasil meraih juara pertama dalam ajang debat bahasa Arab dan Inggris, sekaligus dua santri lainnya mendapatkan penghargaan Best Speaker. Peristiwa ini menjadi kebanggaan tersendiri bagi pesantren tersebut, yang dikenal sebagai pusat pendidikan berbasis nilai-nilai keislaman dan keunggulan akademik.</p>\n\n<p>Kompetisi debat bahasa Arab dan Inggris yang diikuti oleh puluhan peserta dari berbagai pesantren di Indonesia menjadi ajang pembuktian kemampuan santri dalam berkomunikasi secara global. Tim Misbahul Ulum tampil gemilang dengan argumen yang terstruktur, penggunaan bahasa yang lancar, serta kemampuan berpikir kritis yang mumpuni, sehingga mampu mengalahkan pesaing dari pesantren lain.</p>\n\n<p>Hasil ini tidak terlepas dari pembinaan intensif yang dilakukan oleh kyai dan guru pesantren. Selain fokus pada pendidikan formal, pesantren juga menekankan pentingnya keterampilan berbicara dan berdebat sebagai bagian dari pengembangan karakter santri. Penghargaan Best Speaker yang diraih dua santri juga menunjukkan keunggulan mereka dalam menyampaikan pendapat dengan percaya diri dan persuasif.</p>\n\n<p>Kemenangan ini diharapkan menjadi motivasi bagi santri lainnya untuk terus berprestasi di berbagai bidang. Pesantren Misbahul Ulum, yang berlokasi di Jawa Tengah, terus berkomitmen untuk mencetak generasi muda yang kompeten, berakhlak tinggi, dan mampu bersaing di tingkat nasional maupun internasional.</p>\n\n<p>Penulis: Admin Infopesantren.online</p>",
-      "image_url": "",
-      "id": "agent-1794630468662",
-      "status": "pending",
-      "submitted_at": "2026-11-14T04:27:48.662Z",
-      "author_name": "AI Agent InfoPesantren",
-      "author_contact": "AI-Agent"
-    },
-    {
       "title": "Berita Terbaru Seputar Pesantren",
       "category": "Berita",
       "summary": "Ringkasan berita otomatis dari AI.",
@@ -3046,6 +3034,18 @@
     }
   ],
   "archives": [
+    {
+      "title": "Berita Terbaru Seputar Santri",
+      "category": "Berita",
+      "summary": "Berita terbaru seputar dunia santri dan pesantren.",
+      "content": "\n\n<p>Infopesantren.online — Dua tim dari Pesantren Misbahul Ulum berhasil meraih juara pertama dalam ajang debat bahasa Arab dan Inggris, sekaligus dua santri lainnya mendapatkan penghargaan Best Speaker. Peristiwa ini menjadi kebanggaan tersendiri bagi pesantren tersebut, yang dikenal sebagai pusat pendidikan berbasis nilai-nilai keislaman dan keunggulan akademik.</p>\n\n<p>Kompetisi debat bahasa Arab dan Inggris yang diikuti oleh puluhan peserta dari berbagai pesantren di Indonesia menjadi ajang pembuktian kemampuan santri dalam berkomunikasi secara global. Tim Misbahul Ulum tampil gemilang dengan argumen yang terstruktur, penggunaan bahasa yang lancar, serta kemampuan berpikir kritis yang mumpuni, sehingga mampu mengalahkan pesaing dari pesantren lain.</p>\n\n<p>Hasil ini tidak terlepas dari pembinaan intensif yang dilakukan oleh kyai dan guru pesantren. Selain fokus pada pendidikan formal, pesantren juga menekankan pentingnya keterampilan berbicara dan berdebat sebagai bagian dari pengembangan karakter santri. Penghargaan Best Speaker yang diraih dua santri juga menunjukkan keunggulan mereka dalam menyampaikan pendapat dengan percaya diri dan persuasif.</p>\n\n<p>Kemenangan ini diharapkan menjadi motivasi bagi santri lainnya untuk terus berprestasi di berbagai bidang. Pesantren Misbahul Ulum, yang berlokasi di Jawa Tengah, terus berkomitmen untuk mencetak generasi muda yang kompeten, berakhlak tinggi, dan mampu bersaing di tingkat nasional maupun internasional.</p>\n\n<p>Penulis: Admin Infopesantren.online</p>",
+      "image_url": "",
+      "id": "agent-1794630468662",
+      "status": "pending",
+      "submitted_at": "2026-11-14T04:27:48.662Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
     {
       "title": "Berita Terbaru Seputar Santri",
       "category": "Berita",
