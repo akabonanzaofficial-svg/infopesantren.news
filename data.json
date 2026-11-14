@@ -2921,18 +2921,6 @@
       "author_contact": "AI-Agent"
     },
     {
-      "title": "Berita Otomatis AI",
-      "category": "Berita",
-      "summary": "Ringkasan berita otomatis dari AI.",
-      "content": "<p>YOGYAKARTA — Kantor Urusan Agama (KUA) Kemantren Jetis Kota Yogyakarta melalui Penyuluh Agama Islam memberikan edukasi mengenai moderasi beragama kepada para siswa Sekolah Menengah Pertama (SMP) Negeri 6 Yogyakarta pada Jumat, 13 November 2026.</p>\n\n<p>Kegiatan penyuluhan tersebut bertujuan untuk membekali kalangan remaja dengan pemahaman beragama yang moderat, sehingga dapat menumbuhkan sikap toleran serta karakter positif dalam kehidupan sehari-hari di tengah masyarakat.</p>\n\n<p>Dalam pemaparan materinya, Penyuluh Agama Islam KUA Jetis, Ismiyati, S.Ag., menjelaskan pentingnya menanamkan nilai-nilai moderasi beragama sejak usia dini guna menciptakan generasi muda yang memiliki wawasan kebangsaan dan menghargai perbedaan.</p>",
-      "image_url": "",
-      "id": "agent-1794579901150",
-      "status": "pending",
-      "submitted_at": "2026-11-13T14:25:01.150Z",
-      "author_name": "AI Agent InfoPesantren",
-      "author_contact": "AI-Agent"
-    },
-    {
       "author_name": "Ahmad Masrul",
       "author_contact": "087871906812",
       "title": "Profil pesantren Al Qur'an Darul Khoir SAQUIN ",
@@ -3083,6 +3071,18 @@
     }
   ],
   "archives": [
+    {
+      "title": "Berita Otomatis AI",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "<p>YOGYAKARTA — Kantor Urusan Agama (KUA) Kemantren Jetis Kota Yogyakarta melalui Penyuluh Agama Islam memberikan edukasi mengenai moderasi beragama kepada para siswa Sekolah Menengah Pertama (SMP) Negeri 6 Yogyakarta pada Jumat, 13 November 2026.</p>\n\n<p>Kegiatan penyuluhan tersebut bertujuan untuk membekali kalangan remaja dengan pemahaman beragama yang moderat, sehingga dapat menumbuhkan sikap toleran serta karakter positif dalam kehidupan sehari-hari di tengah masyarakat.</p>\n\n<p>Dalam pemaparan materinya, Penyuluh Agama Islam KUA Jetis, Ismiyati, S.Ag., menjelaskan pentingnya menanamkan nilai-nilai moderasi beragama sejak usia dini guna menciptakan generasi muda yang memiliki wawasan kebangsaan dan menghargai perbedaan.</p>",
+      "image_url": "",
+      "id": "agent-1794579901150",
+      "status": "pending",
+      "submitted_at": "2026-11-13T14:25:01.150Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
     {
       "title": "Berita Otomatis AI",
       "category": "Berita",
