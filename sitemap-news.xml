@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/kontingen-jawa-barat-raih-juara-i-ajang-santri-championship-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-14T01:23:33.403Z</news:publication_date>
+      <news:title>Kontingen Jawa Barat Raih Juara I Ajang Santri Championship 2026 </news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/santri-jawa-barat-juara-santri-championship-2026-menag-dorong-pesantren-jadi-pusat-pembinaan-atlet-nasional</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-13T23:43:00.000Z</news:publication_date>
+      <news:title>Santri Jawa Barat Juara Santri Championship 2026, Menag Dorong Pesantren Jadi Pusat Pembinaan Atlet Nasional</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/pbnu-ajak-seluruh-lembaga-negara-jaga-persatuan-dan-kehormatan-bangsa-di-tengah-dinamika-politik-nasional</loc>
     <news:news>
       <news:publication>
@@ -86,39 +108,6 @@
       </news:publication>
       <news:publication_date>2026-11-12T02:56:00.000Z</news:publication_date>
       <news:title>Kemenag Gelar Sejuta Doa untuk Negeri, Libatkan ASN dan Tokoh Lintas Agama se-Indonesia</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/prabowo-bicara-siratal-mustaqim-jalan-lurus-bukan-sekadar-doa-tetapi-tindakan-nyata</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-12T01:17:00.000Z</news:publication_date>
-      <news:title>Prabowo Bicara Siratal Mustaqim: Jalan Lurus Bukan Sekadar Doa, tetapi Tindakan Nyata</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-petakan-pendidikan-muadalah-dan-diniyah-formal-untuk-perkuat-mutu-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-12T00:43:00.000Z</news:publication_date>
-      <news:title>Kemenag Petakan Pendidikan Muadalah dan Diniyah Formal untuk Perkuat Mutu Pesantren</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-buka-pengajuan-bantuan-pesantren-2026-ada-empat-program-dengan-dana-hingga-rp100-juta</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-12T00:34:00.000Z</news:publication_date>
-      <news:title>Kemenag Buka Pengajuan Bantuan Pesantren 2026, Ada Empat Program dengan Dana hingga Rp100 Juta</news:title>
     </news:news>
   </url>
 </urlset>
