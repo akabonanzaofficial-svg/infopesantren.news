@@ -2708,18 +2708,6 @@
   ],
   "submissions": [
     {
-      "title": "Berita Terbaru Seputar Pesantren",
-      "category": "Berita",
-      "summary": "Ringkasan berita otomatis dari AI.",
-      "content": "<p>Pemerintah Indonesia secara resmi membentuk Direktorat Jenderal Pesantren (Ditjen Pesantren) di bawah naungan Kementerian Agama Republik Indonesia untuk memperkuat kualitas serta arah pendidikan pesantren secara nasional. Langkah strategis ini diharapkan mampu memberikan dampak positif yang luas terhadap perkembangan institusi pendidikan keagamaan Islam di berbagai daerah.</p>\n\n<p>Pembentukan lembaga baru tersebut didasarkan pada Peraturan Presiden Nomor 18 Tahun 2026 yang menjadi landasan hukum resmi bagi operasional dan pengembangan kebijakan di bawah Ditjen Pesantren. Dengan adanya payung hukum yang kuat ini, pemerintah berkomitmen untuk memberikan ruang yang lebih luas bagi pesantren agar dapat terus berkembang seiring dengan dinamika zaman.</p>\n\n<p>Kehadiran Ditjen Pesantren diinisiasi dengan tujuan utama untuk memperkuat posisi pesantren di tengah masyarakat, mempromosikan nilai-nilai moderasi beragama, serta mendorong peningkatan kemandirian institusi pesantren secara menyeluruh. Pemerintah memandang bahwa kemandirian pesantren merupakan kunci utama dalam menjaga keberlanjutan tradisi pendidikan keilmuan Islam yang mandiri dan berdaya saing.</p>\n\n<p>Selain berfokus pada aspek kelembagaan dan kemandirian, pembentukan direktorat jenderal ini juga diarahkan untuk mencetak generasi muda yang memiliki akhlak mulia sekaligus kompetensi di berbagai bidang ilmu pengetahuan. Hal ini penting agar para santri tidak hanya menguasai ilmu agama secara mendalam, tetapi juga siap menghadapi tantangan global di era modern.</p>\n\n<p>Secara keseluruhan, langkah pembentukan Ditjen Pesantren ini menandai babak baru dalam integrasi pendidikan pesantren ke dalam sistem pendidikan nasional secara lebih optimal. Diharapkan ke depannya kontribusi pesantren terhadap pembangunan sumber daya manusia Indonesia yang berkualitas dan berkarakter dapat semakin meningkat.</p>",
-      "image_url": "",
-      "id": "agent-1794618140961",
-      "status": "pending",
-      "submitted_at": "2026-11-14T01:02:20.961Z",
-      "author_name": "AI Agent InfoPesantren",
-      "author_contact": "AI-Agent"
-    },
-    {
       "title": "Kontingen Jawa Barat Raih Juara I Ajang Santri Championship 2026 ",
       "category": "Berita",
       "summary": "Kontingen Jawa Barat sukses keluar sebagai juara dalam ajang Santri Championship 2026 setelah melalui persaingan yang ketat dalam kompetisi olahraga tersebut. Atas prestasi gemilang ini, Menteri Agama (Menag) Nasaruddin Umar langsung menyatakan kesiapan kementeriannya untuk menggelar ajang serupa dengan skala yang jauh lebih besar pada tahun depan.",
@@ -3023,6 +3011,18 @@
     }
   ],
   "archives": [
+    {
+      "title": "Berita Terbaru Seputar Pesantren",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "<p>Pemerintah Indonesia secara resmi membentuk Direktorat Jenderal Pesantren (Ditjen Pesantren) di bawah naungan Kementerian Agama Republik Indonesia untuk memperkuat kualitas serta arah pendidikan pesantren secara nasional. Langkah strategis ini diharapkan mampu memberikan dampak positif yang luas terhadap perkembangan institusi pendidikan keagamaan Islam di berbagai daerah.</p>\n\n<p>Pembentukan lembaga baru tersebut didasarkan pada Peraturan Presiden Nomor 18 Tahun 2026 yang menjadi landasan hukum resmi bagi operasional dan pengembangan kebijakan di bawah Ditjen Pesantren. Dengan adanya payung hukum yang kuat ini, pemerintah berkomitmen untuk memberikan ruang yang lebih luas bagi pesantren agar dapat terus berkembang seiring dengan dinamika zaman.</p>\n\n<p>Kehadiran Ditjen Pesantren diinisiasi dengan tujuan utama untuk memperkuat posisi pesantren di tengah masyarakat, mempromosikan nilai-nilai moderasi beragama, serta mendorong peningkatan kemandirian institusi pesantren secara menyeluruh. Pemerintah memandang bahwa kemandirian pesantren merupakan kunci utama dalam menjaga keberlanjutan tradisi pendidikan keilmuan Islam yang mandiri dan berdaya saing.</p>\n\n<p>Selain berfokus pada aspek kelembagaan dan kemandirian, pembentukan direktorat jenderal ini juga diarahkan untuk mencetak generasi muda yang memiliki akhlak mulia sekaligus kompetensi di berbagai bidang ilmu pengetahuan. Hal ini penting agar para santri tidak hanya menguasai ilmu agama secara mendalam, tetapi juga siap menghadapi tantangan global di era modern.</p>\n\n<p>Secara keseluruhan, langkah pembentukan Ditjen Pesantren ini menandai babak baru dalam integrasi pendidikan pesantren ke dalam sistem pendidikan nasional secara lebih optimal. Diharapkan ke depannya kontribusi pesantren terhadap pembangunan sumber daya manusia Indonesia yang berkualitas dan berkarakter dapat semakin meningkat.</p>",
+      "image_url": "",
+      "id": "agent-1794618140961",
+      "status": "pending",
+      "submitted_at": "2026-11-14T01:02:20.961Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
     {
       "title": "Berita Otomatis AI",
       "category": "Berita",
