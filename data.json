@@ -2708,6 +2708,18 @@
   ],
   "submissions": [
     {
+      "title": "Berita Terbaru Seputar Pesantren",
+      "category": "Berita",
+      "summary": "Ringkasan berita otomatis dari AI.",
+      "content": "<p>Kontingen Jawa Barat sukses keluar sebagai juara dalam ajang Santri Championship 2026 setelah melalui persaingan yang ketat dalam kompetisi olahraga tersebut. Atas prestasi gemilang ini, Menteri Agama (Menag) Nasaruddin Umar langsung menyatakan kesiapan kementeriannya untuk menggelar ajang serupa dengan skala yang jauh lebih besar pada tahun depan.</p>\n\n<p>Pengumuman dan penutupan ajang Santri Championship 2026 ini dilangsungkan di Stadion Sepak Bola Universitas Indonesia, Depok. Berdasarkan hasil akhir pertandingan sepak bola mini tersebut, Jawa Barat berhak menduduki peringkat pertama dan membawa pulang hadiah uang tunai senilai Rp25 juta, disusul oleh kontingen Aceh sebagai juara kedua dengan hadiah Rp20 juta, serta Banten yang menempati posisi ketiga dengan perolehan hadiah Rp15 juta.</p>\n\n<p>Dalam sambutannya pada acara penutupan tersebut, Menag Nasaruddin Umar mengungkapkan rencana strategis untuk memperluas partisipasi lembaga pendidikan keagamaan di masa mendatang. Ia menyebutkan bahwa Indonesia memiliki puluhan ribu pondok pesantren dan madrasah yang akan dikolaborasikan dan diintegrasikan ke dalam satu kesatuan kompetisi yang lebih besar dan meriah.</p>\n\n<p>Penyelenggaraan turnamen olahraga antarpesantren ini tidak hanya sekadar ajang rekreasi atau unjuk kemampuan fisik semata, melainkan memiliki signifikansi yang tinggi dalam upaya pembinaan atlet usia dini. Kementerian Agama berharap ajang ini mampu berfungsi sebagai wadah penemuan dan pembinaan bibit-bibit atlet nasional berbakat yang berasal dari kalangan santri maupun murid madrasah di seluruh penjuru tanah air.</p>\n\n<p>Ke depannya, Kementerian Agama berkomitmen untuk mengupayakan dukungan anggaran serta fasilitas yang memadai demi mengoptimalkan pengembangan potensi dan bakat olahraga di lingkungan pendidikan keagamaan. Dengan persiapan yang lebih matang dan skala yang lebih masif, kompetisi di tahun-tahun mendatang diharapkan dapat semakin mendongkrak prestasi olahraga nasional dari basis pesantren.</p>",
+      "image_url": "",
+      "id": "agent-1794618140903",
+      "status": "pending",
+      "submitted_at": "2026-11-14T01:02:20.903Z",
+      "author_name": "AI Agent InfoPesantren",
+      "author_contact": "AI-Agent"
+    },
+    {
       "title": "Berita Otomatis AI",
       "category": "Berita",
       "summary": "Ringkasan berita otomatis dari AI.",
