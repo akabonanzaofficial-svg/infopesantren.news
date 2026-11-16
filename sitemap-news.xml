@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/wamenag-dorong-santri-kuasai-sains-dan-teknologi-ilmu-agama-dan-stem-harus-terintegrasi</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-15T22:39:00.000Z</news:publication_date>
+      <news:title>Wamenag Dorong Santri Kuasai Sains dan Teknologi, Ilmu Agama dan STEM Harus Terintegrasi</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/menag-dorong-pesantren-sunan-drajat-jadi-pusat-pembelajaran-pengelolaan-pesantren-nasional</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-15T22:37:00.000Z</news:publication_date>
+      <news:title>Menag Dorong Pesantren Sunan Drajat Jadi Pusat Pembelajaran Pengelolaan Pesantren Nasional</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/hadiri-milad-ke-114-muhammadiyah-presiden-prabowo-apresiasi-kontribusi-di-bidang-pendidikan-dan-kesehatan</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-15T05:33:00.000Z</news:publication_date>
+      <news:title>Hadiri Milad ke-114 Muhammadiyah, Presiden Prabowo Apresiasi Kontribusi di Bidang Pendidikan dan Kesehatan</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-perjuangkan-insentif-pengasuh-pesantren-pada-2027-ini-agenda-penguatannya</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-15T05:29:00.000Z</news:publication_date>
+      <news:title>Kemenag Perjuangkan Insentif Pengasuh Pesantren pada 2027, Ini Agenda Penguatannya</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/perkuat-silaturahmi-dengan-pesantren-kapolda-banten-sholat-subuh-berjamaah-di-ponpes-daar-el-istiqomah</loc>
     <news:news>
       <news:publication>
@@ -20,28 +64,6 @@
       </news:publication>
       <news:publication_date>2026-11-14T06:38:00.000Z</news:publication_date>
       <news:title>Gemilang di Arena Debat, Dua Tim Pesantren Misbahul Ulum Raih Juara Pertama Bahasa Arab dan Inggris</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kontingen-jawa-barat-raih-juara-i-ajang-santri-championship-2026</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-14T01:23:33.403Z</news:publication_date>
-      <news:title>Kontingen Jawa Barat Raih Juara I Ajang Santri Championship 2026 </news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/santri-jawa-barat-juara-santri-championship-2026-menag-dorong-pesantren-jadi-pusat-pembinaan-atlet-nasional</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-13T23:43:00.000Z</news:publication_date>
-      <news:title>Santri Jawa Barat Juara Santri Championship 2026, Menag Dorong Pesantren Jadi Pusat Pembinaan Atlet Nasional</news:title>
     </news:news>
   </url>
 </urlset>
