@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/delapan-tahun-pondok-pesantren-technopreneur-as-shofa-merawat-tradisi-mengembangkan-teknologi-membangun-kemandirian-ekonomi-dan-memberikan-manfaat-bagi-negeri</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-16T02:33:00.000Z</news:publication_date>
+      <news:title>Delapan Tahun Pondok Pesantren Technopreneur As-Shofa: Merawat Tradisi, Mengembangkan Teknologi, Membangun Kemandirian Ekonomi, dan Memberikan Manfaat bagi Negeri</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-cairkan-tunjangan-profesi-rp6-3-miliar-untuk-263-ustadz-pesantren-penyaluran-tpg-2026-diharapkan-tingkatkan-kesejahteraan-pendidik-dan-mutu-pendidikan-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-16T02:23:00.000Z</news:publication_date>
+      <news:title>KEMENAG CAIRKAN TUNJANGAN PROFESI Rp6,3 MILIAR UNTUK 263 USTADZ PESANTREN Penyaluran TPG 2026 Diharapkan Tingkatkan Kesejahteraan Pendidik dan Mutu Pendidikan Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/wamenag-dorong-santri-kuasai-sains-dan-teknologi-ilmu-agama-dan-stem-harus-terintegrasi</loc>
     <news:news>
       <news:publication>
@@ -42,28 +64,6 @@
       </news:publication>
       <news:publication_date>2026-11-15T05:29:00.000Z</news:publication_date>
       <news:title>Kemenag Perjuangkan Insentif Pengasuh Pesantren pada 2027, Ini Agenda Penguatannya</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/perkuat-silaturahmi-dengan-pesantren-kapolda-banten-sholat-subuh-berjamaah-di-ponpes-daar-el-istiqomah</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-14T07:03:12.145Z</news:publication_date>
-      <news:title>Perkuat Silaturahmi dengan Pesantren, Kapolda Banten Sholat Subuh Berjamaah di Ponpes Daar El Istiqomah</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/gemilang-di-arena-debat-dua-tim-pesantren-misbahul-ulum-raih-juara-pertama-bahasa-arab-dan-inggris</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-14T06:38:00.000Z</news:publication_date>
-      <news:title>Gemilang di Arena Debat, Dua Tim Pesantren Misbahul Ulum Raih Juara Pertama Bahasa Arab dan Inggris</news:title>
     </news:news>
   </url>
 </urlset>
