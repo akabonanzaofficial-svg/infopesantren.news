@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/perkuat-perlindungan-santri-kemenag-susun-standar-kompetensi-nasional-pengasuh-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-19T01:42:00.000Z</news:publication_date>
+      <news:title>Perkuat Perlindungan Santri, Kemenag Susun Standar Kompetensi Nasional Pengasuh Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/pesantren-award-2026-jadi-momentum-perkuat-sinergi-pesantren-dan-pemerintah-daerah</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-18T02:30:00.000Z</news:publication_date>
+      <news:title>Pesantren Award 2026 Jadi Momentum Perkuat Sinergi Pesantren dan Pemerintah Daerah</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-siapkan-empat-solusi-atasi-kemandekan-usaha-dan-produk-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-18T02:22:00.000Z</news:publication_date>
+      <news:title>Kemenag Siapkan Empat Solusi Atasi Kemandekan Usaha dan Produk Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-perkuat-kolaborasi-lintas-sektor-untuk-dorong-kemandirian-ekonomi-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-18T02:16:00.000Z</news:publication_date>
+      <news:title>Kemenag Perkuat Kolaborasi Lintas Sektor untuk Dorong Kemandirian Ekonomi Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/serikat-ekonomi-pesantren-ajak-pesantren-belajar-langsung-ke-pabrik-aqua</loc>
     <news:news>
       <news:publication>
@@ -31,28 +75,6 @@
       </news:publication>
       <news:publication_date>2026-11-17T01:55:00.000Z</news:publication_date>
       <news:title>Menag Nasaruddin Umar Dorong Santriwati Berani Bermimpi Kuliah ke Luar Negeri</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/delapan-tahun-pondok-pesantren-technopreneur-as-shofa-merawat-tradisi-mengembangkan-teknologi-membangun-kemandirian-ekonomi-dan-memberikan-manfaat-bagi-negeri</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-16T02:33:00.000Z</news:publication_date>
-      <news:title>Delapan Tahun Pondok Pesantren Technopreneur As-Shofa: Merawat Tradisi, Mengembangkan Teknologi, Membangun Kemandirian Ekonomi, dan Memberikan Manfaat bagi Negeri</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-cairkan-tunjangan-profesi-rp6-3-miliar-untuk-263-ustadz-pesantren-penyaluran-tpg-2026-diharapkan-tingkatkan-kesejahteraan-pendidik-dan-mutu-pendidikan-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-16T02:23:00.000Z</news:publication_date>
-      <news:title>KEMENAG CAIRKAN TUNJANGAN PROFESI Rp6,3 MILIAR UNTUK 263 USTADZ PESANTREN Penyaluran TPG 2026 Diharapkan Tingkatkan Kesejahteraan Pendidik dan Mutu Pendidikan Pesantren</news:title>
     </news:news>
   </url>
 </urlset>
