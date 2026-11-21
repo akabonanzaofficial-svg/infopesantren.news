@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/sembilan-santri-diduga-aniaya-rekan-di-gunungpati-semarang-mediasi-berujung-kesepakatan-damai</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-20T14:13:00.169Z</news:publication_date>
+      <news:title>Sembilan Santri Diduga Aniaya Rekan di Gunungpati Semarang, Mediasi Berujung Kesepakatan Damai</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/kemenag-targetkan-seluruh-ptkin-miliki-pusat-kajian-pesantren-atau-prodi-manajemen-pesantren-pada-2027</loc>
     <news:news>
       <news:publication>
@@ -53,61 +64,6 @@
       </news:publication>
       <news:publication_date>2026-11-19T07:13:00.000Z</news:publication_date>
       <news:title>Kemenag Fasilitasi Pemeriksaan Psikologis Santri Korban Kekerasan di Pangandaran, Perlindungan Santri Jadi Prioritas</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-perkuat-pesantren-salafiyah-dan-mdt-tradisi-kitab-kuning-jadi-perhatian</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-19T01:48:00.000Z</news:publication_date>
-      <news:title>Kemenag Perkuat Pesantren Salafiyah dan MDT, Tradisi Kitab Kuning Jadi Perhatian</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/perkuat-perlindungan-santri-kemenag-susun-standar-kompetensi-nasional-pengasuh-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-19T01:42:00.000Z</news:publication_date>
-      <news:title>Perkuat Perlindungan Santri, Kemenag Susun Standar Kompetensi Nasional Pengasuh Pesantren</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/pesantren-award-2026-jadi-momentum-perkuat-sinergi-pesantren-dan-pemerintah-daerah</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-18T02:30:00.000Z</news:publication_date>
-      <news:title>Pesantren Award 2026 Jadi Momentum Perkuat Sinergi Pesantren dan Pemerintah Daerah</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-siapkan-empat-solusi-atasi-kemandekan-usaha-dan-produk-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-18T02:22:00.000Z</news:publication_date>
-      <news:title>Kemenag Siapkan Empat Solusi Atasi Kemandekan Usaha dan Produk Pesantren</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-perkuat-kolaborasi-lintas-sektor-untuk-dorong-kemandirian-ekonomi-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-18T02:16:00.000Z</news:publication_date>
-      <news:title>Kemenag Perkuat Kolaborasi Lintas Sektor untuk Dorong Kemandirian Ekonomi Pesantren</news:title>
     </news:news>
   </url>
 </urlset>
