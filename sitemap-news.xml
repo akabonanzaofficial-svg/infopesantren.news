@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/peringati-80-tahun-muslimat-nu-ribuan-kader-gelar-pengajian-dan-doa-bersama-di-istiqlal</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-22T00:18:00.000Z</news:publication_date>
+      <news:title>Peringati 80 Tahun Muslimat NU, Ribuan Kader Gelar Pengajian dan Doa Bersama di Istiqlal</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/sep-gelar-kunjungan-industri-ke-pabrik-aqua-lampung-20-pesantren-siap-belajar-manajemen-industri</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-21T02:47:00.000Z</news:publication_date>
+      <news:title>SEP Gelar Kunjungan Industri ke Pabrik AQUA Lampung, 20 Pesantren Siap Belajar Manajemen Industri</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/kemenag-siapkan-regulasi-untuk-ribuan-madrasah-dan-lembaga-pendidikan-al-qur-an</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-21T02:30:00.000Z</news:publication_date>
+      <news:title>Kemenag Siapkan Regulasi untuk Ribuan Madrasah dan Lembaga Pendidikan Al-Qur’an</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/ditjen-pesantren-finalisasi-renstra-2027-program-pembinaan-harus-berangkat-dari-kebutuhan-pesantren</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-21T02:23:00.000Z</news:publication_date>
+      <news:title>Ditjen Pesantren Finalisasi Renstra 2027, Program Pembinaan Harus Berangkat dari Kebutuhan Pesantren</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/sembilan-santri-diduga-aniaya-rekan-di-gunungpati-semarang-mediasi-berujung-kesepakatan-damai</loc>
     <news:news>
       <news:publication>
@@ -9,61 +53,6 @@
       </news:publication>
       <news:publication_date>2026-11-20T14:13:00.169Z</news:publication_date>
       <news:title>Sembilan Santri Diduga Aniaya Rekan di Gunungpati Semarang, Mediasi Berujung Kesepakatan Damai</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-targetkan-seluruh-ptkin-miliki-pusat-kajian-pesantren-atau-prodi-manajemen-pesantren-pada-2027</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-20T00:36:00.000Z</news:publication_date>
-      <news:title>Kemenag Targetkan Seluruh PTKIN Miliki Pusat Kajian Pesantren atau Prodi Manajemen Pesantren pada 2027</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/pemprov-jatim-luncurkan-pesantren-tangguh-bencana-2026-santri-didorong-siaga-hadapi-bencana</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-20T00:26:00.000Z</news:publication_date>
-      <news:title>Pemprov Jatim Luncurkan Pesantren Tangguh Bencana 2026, Santri Didorong Siaga Hadapi Bencana</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/sinergi-pesantren-dan-koperasi-menkop-bidik-penguatan-ekonomi-umat</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-20T00:18:00.000Z</news:publication_date>
-      <news:title>Sinergi Pesantren dan Koperasi, Menkop Bidik Penguatan Ekonomi Umat</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/ditjen-pesantren-perketat-seleksi-pegawai-pemahaman-dunia-pesantren-jadi-nilai-tambah</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-20T00:03:00.000Z</news:publication_date>
-      <news:title>Ditjen Pesantren Perketat Seleksi Pegawai, Pemahaman Dunia Pesantren Jadi Nilai Tambah</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-fasilitasi-pemeriksaan-psikologis-santri-korban-kekerasan-di-pangandaran-perlindungan-santri-jadi-prioritas</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-19T07:13:00.000Z</news:publication_date>
-      <news:title>Kemenag Fasilitasi Pemeriksaan Psikologis Santri Korban Kekerasan di Pangandaran, Perlindungan Santri Jadi Prioritas</news:title>
     </news:news>
   </url>
 </urlset>
