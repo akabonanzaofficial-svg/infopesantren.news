@@ -31,7 +31,28 @@
 
     <script>
       const { useState, useEffect, useRef } = React;
-      const API_URL = 'https://infopesantren-api.akabonanza-official.workers.dev'; // GANTI JIKA PERLU
+      const API_URL = 'https://infopesantren-api.akabonanza-official.workers.dev';
+
+      // --- CACHE MANAGER ---
+      const CACHE_KEY = 'infopesantren_cms_data';
+      const CACHE_TIME_KEY = 'infopesantren_cms_time';
+      const CACHE_DURATION = 5 * 60 * 1000; // 5 Menit
+
+      const getCache = () => {
+        const time = localStorage.getItem(CACHE_TIME_KEY);
+        if (!time || Date.now() - parseInt(time) > CACHE_DURATION) return null;
+        const data = localStorage.getItem(CACHE_KEY);
+        return data ? JSON.parse(data) : null;
+      };
+      const setCache = (data) => {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+      };
+      const clearCache = () => {
+        localStorage.removeItem(CACHE_KEY);
+        localStorage.removeItem(CACHE_TIME_KEY);
+      };
+      // ---------------------
 
       const SECTIONS = [
         { id: 'berita', label: 'Berita', icon: 'newspaper' },
@@ -170,7 +191,7 @@
         );
       }
 
-            function ArticleForm({ auth, initialData, onCancel, onSave }) {
+      function ArticleForm({ auth, initialData, onCancel, onSave }) {
         const isEdit = !!initialData;
         const [formData, setFormData] = useState({ 
           id: initialData?.id || '', 
@@ -187,7 +208,6 @@
           published_at: formatForInput(initialData?.published_at || initialData?.submitted_at || new Date()),
           views: initialData?.views || 0,
           
-          // FIELD KHUSUS PESANTREN
           alamat: initialData?.alamat || '',
           tahun_berdiri: initialData?.tahun_berdiri || '',
           pendiri: initialData?.pendiri || '',
@@ -203,9 +223,32 @@
         const [previewMode, setPreviewMode] = useState(false);
         const [uploading, setUploading] = useState(false);
         const [previewContent, setPreviewContent] = useState('');
+        const [isEditorReady, setIsEditorReady] = useState(false); // State untuk loading editor
         
         const quillRef = useRef(null);
         const quillInstance = useRef(null);
+
+        // FITUR DRAFT: Ambil dari localStorage jika ini artikel baru
+        useEffect(() => {
+          if (!isEdit) {
+            const savedDraft = localStorage.getItem('draft_artikel');
+            if (savedDraft) {
+              const parsed = JSON.parse(savedDraft);
+              if (window.confirm('Ada draf artikel yang belum selesai. Lanjutkan menulis?')) {
+                setFormData(prev => ({ ...prev, ...parsed }));
+              } else {
+                localStorage.removeItem('draft_artikel');
+              }
+            }
+          }
+        }, [isEdit]);
+
+        // FITUR DRAFT: Simpan otomatis setiap ada perubahan
+        useEffect(() => {
+          if (!isEdit && formData.title) {
+            localStorage.setItem('draft_artikel', JSON.stringify(formData));
+          }
+        }, [formData, isEdit]);
 
         useEffect(() => {
           if (quillRef.current && !quillInstance.current) {
@@ -251,6 +294,9 @@
               quillInstance.current.setText('');
             }
           }
+
+          // Beri jeda sedikit agar browser bisa render layar loading dulu
+          setTimeout(() => setIsEditorReady(true), 150);
         }, [auth, initialData]);
 
         const handleChange = (e) => {
@@ -306,24 +352,11 @@
             date_start: isoDate,
             views: formData.views,
             _old_section: isEdit ? (initialData?._section || initialData?.section || formData.section) : formData.section,
-            
-            // FIELD KHUSUS PESANTREN
-            alamat: formData.alamat,
-            tahun_berdiri: formData.tahun_berdiri,
-            pendiri: formData.pendiri,
-            pimpinan: formData.pimpinan,
-            jumlah_santri: formData.jumlah_santri,
-            program_unggulan: formData.program_unggulan,
-            website_url: formData.website_url,
-            telepon: formData.telepon,
-            medsos_url: formData.medsos_url
+            alamat: formData.alamat, tahun_berdiri: formData.tahun_berdiri, pendiri: formData.pendiri, pimpinan: formData.pimpinan, jumlah_santri: formData.jumlah_santri, program_unggulan: formData.program_unggulan, website_url: formData.website_url, telepon: formData.telepon, medsos_url: formData.medsos_url
           };
 
           try {
-                        // Cek apakah ini sedang mengedit "Kiriman Masuk"
             const isEditingSubmission = isEdit && initialData?.status === 'pending';
-            
-            // Jika edit kiriman, arahkan ke endpoint submit/kiriman, bukan ke artikel biasa
             const url = isEditingSubmission 
               ? `${API_URL}/api/submission/${formData.id}` 
               : (isEdit ? `${API_URL}/api/article/${formData.section}/${formData.id}` : `${API_URL}/api/article`);
@@ -336,7 +369,12 @@
               body: JSON.stringify({ ...payload, section: formData.section })
             });
             const json = await res.json();
-            if (json.success) { alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); onSave(); } 
+            
+            if (json.success) { 
+              localStorage.removeItem('draft_artikel'); // Hapus draf jika sukses
+              alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); 
+              onSave(); 
+            } 
             else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); } finally { setSaving(false); }
         };
@@ -361,6 +399,14 @@
           );
         }
 
+        // TAMPILAN LOADING SAAT EDITOR BELUM SIAP
+        if (!isEditorReady) {
+          return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-10 flex flex-col justify-center items-center h-64 w-full' },
+            React.createElement('div', { className: 'w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mb-4' }),
+            React.createElement('div', { className: 'text-brand-600 font-bold animate-pulse text-lg' }, 'Menyiapkan Editor...')
+          );
+        }
+
         return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 pb-20 md:pb-6 w-full overflow-hidden' },
           React.createElement('div', { className: 'flex justify-between items-center mb-6 pb-4 border-b' },
             React.createElement('h2', { className: 'text-lg md:text-xl font-bold text-gray-800' }, isEdit ? 'Edit Artikel' : 'Tulis Artikel Baru'),
@@ -368,7 +414,6 @@
           ),
           React.createElement('form', { onSubmit: handleSubmit, className: 'space-y-5' },
             
-            // TIPE KONTEN
             React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 bg-brand-50 p-4 rounded-lg border border-brand-100' },
               React.createElement('div', null,
                 React.createElement('label', { className: 'block text-sm font-bold text-brand-800 mb-1' }, 'Tipe Konten'),
@@ -382,46 +427,18 @@
               )
             ),
 
-            // FORM KHUSUS PESANTREN
             formData.section === 'pesantren' && React.createElement('div', { className: 'bg-yellow-50 p-4 rounded-lg border border-yellow-200 space-y-4' },
               React.createElement('h3', { className: 'font-bold text-yellow-800 text-sm mb-2' }, 'Kartu Data Pesantren'),
               React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' },
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Alamat Lengkap'),
-                  React.createElement('input', { name: 'alamat', value: formData.alamat, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tahun Berdiri'),
-                  React.createElement('input', { name: 'tahun_berdiri', value: formData.tahun_berdiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 1975' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tokoh Pendiri'),
-                  React.createElement('input', { name: 'pendiri', value: formData.pendiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Pimpinan Saat Ini'),
-                  React.createElement('input', { name: 'pimpinan', value: formData.pimpinan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Jumlah Santri'),
-                  React.createElement('input', { name: 'jumlah_santri', value: formData.jumlah_santri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 3000+' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Program Unggulan'),
-                  React.createElement('input', { name: 'program_unggulan', value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Website Resmi'),
-                  React.createElement('input', { name: 'website_url', value: formData.website_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'No. WhatsApp / Telepon'),
-                  React.createElement('input', { name: 'telepon', value: formData.telepon, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: '08123456789' })
-                ),
-                React.createElement('div', null,
-                  React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Link Media Sosial (IG/FB)'),
-                  React.createElement('input', { name: 'medsos_url', value: formData.medsos_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://instagram.com/...' })
-                )
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Alamat Lengkap'), React.createElement('input', { name: 'alamat', value: formData.alamat, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tahun Berdiri'), React.createElement('input', { name: 'tahun_berdiri', value: formData.tahun_berdiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 1975' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Tokoh Pendiri'), React.createElement('input', { name: 'pendiri', value: formData.pendiri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Pimpinan Saat Ini'), React.createElement('input', { name: 'pimpinan', value: formData.pimpinan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Jumlah Santri'), React.createElement('input', { name: 'jumlah_santri', value: formData.jumlah_santri, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: 3000+' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Program Unggulan'), React.createElement('input', { name: 'program_unggulan', value: formData.program_unggulan, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Tahfidz, Bahasa Arab' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Website Resmi'), React.createElement('input', { name: 'website_url', value: formData.website_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://...' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'No. WhatsApp / Telepon'), React.createElement('input', { name: 'telepon', value: formData.telepon, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: '08123456789' })),
+                React.createElement('div', null, React.createElement('label', { className: 'block text-xs font-medium mb-1' }, 'Link Media Sosial (IG/FB)'), React.createElement('input', { name: 'medsos_url', value: formData.medsos_url, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'https://instagram.com/...' }))
               )
             ),
 
@@ -470,7 +487,6 @@
                   React.createElement('input', { type: 'file', accept: 'image/*', onChange: handleCoverUpload, className: 'w-full text-sm mt-1' })
                 )
               ),
-              // TAMBAHKAN INPUT ALT TEXT DI SINI
               React.createElement('div', { className: 'mt-3' },
                 React.createElement('label', { className: 'text-xs text-gray-500 mb-1 block' }, 'Teks Alt / Keterangan Gambar (Untuk SEO & Aksesibilitas)'),
                 React.createElement('input', { name: 'image_alt', value: formData.image_alt, onChange: handleChange, className: 'w-full px-3 py-2 border rounded-md text-sm', placeholder: 'Contoh: Foto santri sedang mengaji di Pesantren Al-Hikmah' })
@@ -598,6 +614,13 @@
         const fetchAds = async () => {
           setLoading(true);
           try {
+            // Gunakan cache jika ada
+            const cached = getCache();
+            if (cached) {
+              setAds(cached.ads || []);
+              setLoading(false);
+              return;
+            }
             const res = await fetch(`${API_URL}/api/content`);
             const json = await res.json();
             if (json.success && json.data && json.data.data) {
@@ -640,6 +663,7 @@
               alert(isEditing ? 'Iklan diperbarui!' : 'Iklan ditambahkan!');
               setFormData({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' });
               setIsEditing(false);
+              clearCache(); // Hapus cache agar data baru termuat
               fetchAds();
             } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
@@ -655,7 +679,7 @@
           try {
             const res = await fetch(`${API_URL}/api/ads/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
-            if (json.success) { alert('Iklan dihapus'); fetchAds(); } else { alert(json.error); }
+            if (json.success) { alert('Iklan dihapus'); clearCache(); fetchAds(); } else { alert(json.error); }
           } catch (err) { alert(err.message); }
         };
 
@@ -758,19 +782,32 @@
 
         const getAuthHeader = () => 'Basic ' + btoa(`${auth.username}:${auth.password}`);
 
-        const fetchData = async () => {
+        const fetchData = async (forceRefresh = false) => {
           setLoading(true);
           try {
-            const res = await fetch(`${API_URL}/api/content`);
-            const json = await res.json();
-            if (json.success && json.data && json.data.data) {
-              const d = json.data.data;
-              const sectionData = d[activeSection] || [];
-              const formatted = sectionData.map(x => ({...x, _section: activeSection}));
-              formatted.sort((a, b) => new Date(b.published_at || b.date_start || 0) - new Date(a.published_at || a.date_start || 0));
-              setArticles(formatted);
-              setSubmissions(d.submissions || []);
+            let d;
+
+            // Gunakan Cache jika ada dan tidak dipaksa refresh
+            const cached = getCache();
+            if (cached && !forceRefresh) {
+              d = cached;
+            } else {
+              const res = await fetch(`${API_URL}/api/content`);
+              const json = await res.json();
+              if (json.success && json.data && json.data.data) {
+                d = json.data.data;
+                setCache(d);
+              } else {
+                throw new Error('Format data dari API tidak sesuai');
+              }
             }
+
+            const sectionData = d[activeSection] || [];
+            const formatted = sectionData.map(x => ({...x, _section: activeSection}));
+            formatted.sort((a, b) => new Date(b.published_at || b.date_start || 0) - new Date(a.published_at || a.date_start || 0));
+            
+            setArticles(formatted);
+            setSubmissions(d.submissions || []);
           } catch (err) { console.error(err); alert('Gagal mengambil data: ' + err.message); } finally { setLoading(false); }
         };
 
@@ -791,7 +828,11 @@
           try {
             const res = await fetch(`${API_URL}/api/article/${section}/${id}`, { method: 'DELETE', headers: { 'Authorization': getAuthHeader() } });
             const json = await res.json();
-            if (json.success) { alert('Artikel dihapus'); fetchData(); } else { alert('Gagal: ' + json.error); }
+            if (json.success) { 
+              alert('Artikel dihapus'); 
+              clearCache(); // Bersihkan cache
+              fetchData(true); // Ambil data baru
+            } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
         };
 
@@ -804,14 +845,22 @@
               body: JSON.stringify({ id, action, targetSection: section })
             });
             const json = await res.json();
-            if (json.success) { alert('Berhasil!'); fetchData(); } else { alert(json.error); }
+            if (json.success) { 
+              alert('Berhasil!'); 
+              clearCache(); 
+              fetchData(true); 
+            } else { alert(json.error); }
           } catch (err) { alert(err.message); }
         };
 
         const handleEditClick = (article) => { setEditData(article); setView('edit'); };
         const handleEditSubmission = (sub) => { setEditData({ ...sub, _section: 'berita', status: 'pending' }); setView('edit_submission'); };
         const handleCreateClick = () => { setEditData(null); setView('create'); };
-        const onSaveSuccess = () => { window.location.reload(); };
+        
+        const onSaveSuccess = () => { 
+          clearCache(); // Bersihkan cache
+          window.location.reload(); 
+        };
 
         const displayDate = (isoString) => {
           if (!isoString) return '-';
