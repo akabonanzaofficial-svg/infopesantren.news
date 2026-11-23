@@ -223,12 +223,12 @@
         const [previewMode, setPreviewMode] = useState(false);
         const [uploading, setUploading] = useState(false);
         const [previewContent, setPreviewContent] = useState('');
-        const [isEditorReady, setIsEditorReady] = useState(false); // State untuk loading editor
+        const [isEditorReady, setIsEditorReady] = useState(false);
         
         const quillRef = useRef(null);
         const quillInstance = useRef(null);
 
-        // FITUR DRAFT: Ambil dari localStorage jika ini artikel baru
+        // DRAFT: Ambil draf
         useEffect(() => {
           if (!isEdit) {
             const savedDraft = localStorage.getItem('draft_artikel');
@@ -243,13 +243,14 @@
           }
         }, [isEdit]);
 
-        // FITUR DRAFT: Simpan otomatis setiap ada perubahan
+        // DRAFT: Simpan otomatis
         useEffect(() => {
           if (!isEdit && formData.title) {
             localStorage.setItem('draft_artikel', JSON.stringify(formData));
           }
         }, [formData, isEdit]);
 
+        // INISIALISASI QUILL
         useEffect(() => {
           if (quillRef.current && !quillInstance.current) {
             quillInstance.current = new Quill(quillRef.current, {
@@ -281,23 +282,19 @@
                 }
               }
             });
-          }
 
-          if (quillInstance.current) {
+            // Set konten setelah inisialisasi
             if (initialData && (initialData.content || initialData.description)) {
               setTimeout(() => {
                 if (quillInstance.current) {
                   quillInstance.current.clipboard.dangerouslyPasteHTML(initialData.content || initialData.description);
                 }
               }, 50);
-            } else {
-              quillInstance.current.setText('');
             }
+            
+            setTimeout(() => setIsEditorReady(true), 100);
           }
-
-          // Beri jeda sedikit agar browser bisa render layar loading dulu
-          setTimeout(() => setIsEditorReady(true), 150);
-        }, [auth, initialData]);
+        }, []); // Hanya jalan sekali saat mount
 
         const handleChange = (e) => {
           const { name, value, type, checked } = e.target;
@@ -371,7 +368,7 @@
             const json = await res.json();
             
             if (json.success) { 
-              localStorage.removeItem('draft_artikel'); // Hapus draf jika sukses
+              localStorage.removeItem('draft_artikel'); 
               alert(isEdit ? 'Artikel diperbarui!' : 'Artikel disimpan!'); 
               onSave(); 
             } 
@@ -396,14 +393,6 @@
             React.createElement('div', { className: 'mt-10 pt-6 border-t flex justify-end' },
               React.createElement('button', { onClick: handleSubmit, disabled: saving, className: 'w-full md:w-auto px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg' }, saving ? 'Menyimpan...' : (isEdit ? 'Update Artikel' : 'Publish Sekarang'))
             )
-          );
-        }
-
-        // TAMPILAN LOADING SAAT EDITOR BELUM SIAP
-        if (!isEditorReady) {
-          return React.createElement('div', { className: 'bg-white rounded-xl shadow-sm border border-gray-200 p-10 flex flex-col justify-center items-center h-64 w-full' },
-            React.createElement('div', { className: 'w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mb-4' }),
-            React.createElement('div', { className: 'text-brand-600 font-bold animate-pulse text-lg' }, 'Menyiapkan Editor...')
           );
         }
 
@@ -470,9 +459,13 @@
             ),
             React.createElement('div', null,
               React.createElement('label', { className: 'block text-sm font-medium mb-2' }, 'Isi Lengkap / Profil'),
-              React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden w-full' },
-                React.createElement('div', { ref: quillRef, className: 'text-base' })
+              
+              // PERBAIKAN DI SINI: Quill container tetap dirender, loading hanya muncul di atasnya
+              React.createElement('div', { className: 'bg-white rounded-lg border border-gray-300 overflow-hidden w-full relative', style: { minHeight: '250px' } },
+                !isEditorReady && React.createElement('div', { className: 'absolute inset-0 flex items-center justify-center bg-white z-10 text-gray-500 font-medium text-sm' }, 'Memuat Editor...'),
+                React.createElement('div', { ref: quillRef, className: 'text-base', style: { display: isEditorReady ? 'block' : 'none' } })
               ),
+              
               uploading && React.createElement('p', { className: 'text-xs text-brand-600 mt-1 animate-pulse' }, 'Sedang mengunggah gambar...')
             ),
             React.createElement('div', { className: 'border p-4 rounded-lg bg-gray-50' },
@@ -614,7 +607,6 @@
         const fetchAds = async () => {
           setLoading(true);
           try {
-            // Gunakan cache jika ada
             const cached = getCache();
             if (cached) {
               setAds(cached.ads || []);
@@ -663,7 +655,7 @@
               alert(isEditing ? 'Iklan diperbarui!' : 'Iklan ditambahkan!');
               setFormData({ id: '', title: '', image_url: '', link_url: '', position: 'header', status: 'active' });
               setIsEditing(false);
-              clearCache(); // Hapus cache agar data baru termuat
+              clearCache();
               fetchAds();
             } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
@@ -787,7 +779,6 @@
           try {
             let d;
 
-            // Gunakan Cache jika ada dan tidak dipaksa refresh
             const cached = getCache();
             if (cached && !forceRefresh) {
               d = cached;
@@ -830,8 +821,8 @@
             const json = await res.json();
             if (json.success) { 
               alert('Artikel dihapus'); 
-              clearCache(); // Bersihkan cache
-              fetchData(true); // Ambil data baru
+              clearCache();
+              fetchData(true);
             } else { alert('Gagal: ' + json.error); }
           } catch (err) { alert(err.message); }
         };
@@ -858,7 +849,7 @@
         const handleCreateClick = () => { setEditData(null); setView('create'); };
         
         const onSaveSuccess = () => { 
-          clearCache(); // Bersihkan cache
+          clearCache();
           window.location.reload(); 
         };
 
