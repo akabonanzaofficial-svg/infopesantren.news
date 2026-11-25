@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/sep-dan-aqua-kenalkan-ai-kepada-pesantren-se-lampung-dorong-pemasaran-usaha-naik-kelas</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-24T08:06:00.000Z</news:publication_date>
+      <news:title>SEP dan AQUA Kenalkan AI kepada Pesantren se-Lampung, Dorong Pemasaran Usaha Naik Kelas</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/belajar-langsung-dari-industri-pesantren-se-lampung-kunjungi-pabrik-aqua-bersama-sep</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-24T08:02:00.000Z</news:publication_date>
+      <news:title>Belajar Langsung dari Industri, Pesantren se-Lampung Kunjungi Pabrik AQUA Bersama SEP</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/kemenag-pulihkan-1-478-lembaga-pendidikan-islam-pascabanjir-aceh-dan-sumatra-puluhan-ribu-santri-terbantu</loc>
     <news:news>
       <news:publication>
