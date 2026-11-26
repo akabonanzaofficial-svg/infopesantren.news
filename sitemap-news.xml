@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/kemenag-dorong-perlindungan-kekayaan-intelektual-pesantren-karya-dan-inovasi-santri-perlu-mendapat-pengakuan</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-25T07:25:00.000Z</news:publication_date>
+      <news:title>Kemenag Dorong Perlindungan Kekayaan Intelektual Pesantren, Karya dan Inovasi Santri Perlu Mendapat Pengakuan</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://infopesantren.online/berita/diikuti-12-463-santri-kemenag-tetapkan-jadwal-imtihan-wathani-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-25T05:06:00.000Z</news:publication_date>
+      <news:title>Diikuti 12.463 Santri, Kemenag Tetapkan Jadwal Imtihan Wathani 2026</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/sep-dan-aqua-kenalkan-ai-kepada-pesantren-se-lampung-dorong-pemasaran-usaha-naik-kelas</loc>
     <news:news>
       <news:publication>
@@ -20,50 +42,6 @@
       </news:publication>
       <news:publication_date>2026-11-24T08:02:00.000Z</news:publication_date>
       <news:title>Belajar Langsung dari Industri, Pesantren se-Lampung Kunjungi Pabrik AQUA Bersama SEP</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-pulihkan-1-478-lembaga-pendidikan-islam-pascabanjir-aceh-dan-sumatra-puluhan-ribu-santri-terbantu</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-24T00:17:00.000Z</news:publication_date>
-      <news:title>Kemenag Pulihkan 1.478 Lembaga Pendidikan Islam Pascabanjir Aceh dan Sumatra, Puluhan Ribu Santri Terbantu</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-dan-kemenkes-luncurkan-gerakan-pesantren-sehat-sasar-1-492-pondok-di-seluruh-indonesia</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-23T23:52:00.000Z</news:publication_date>
-      <news:title>Kemenag dan Kemenkes Luncurkan Gerakan Pesantren Sehat, Sasar 1.492 Pondok di Seluruh Indonesia</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/putri-kiai-se-jawa-timur-gelar-halaqah-bahas-penguatan-sistem-pengasuhan-santri</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-23T02:37:00.000Z</news:publication_date>
-      <news:title>Putri Kiai se-Jawa Timur Gelar Halaqah, Bahas Penguatan Sistem Pengasuhan Santri</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-libatkan-kepala-daerah-se-indonesia-untuk-perkuat-dukungan-kepada-pesantren</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-23T02:26:00.000Z</news:publication_date>
-      <news:title>Kemenag Libatkan Kepala Daerah se-Indonesia untuk Perkuat Dukungan Kepada Pesantren</news:title>
     </news:news>
   </url>
 </urlset>
