@@ -29,6 +29,10 @@
     <changefreq>daily</changefreq>
   </url>
   <url>
+    <loc>https://infopesantren.online/berita/kemenag-siapkan-standar-nasional-pengasuhan-pesantren-ramah-anak</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/menag-minta-majelis-masyayikh-perketat-tata-kelola-dan-sanad-keilmuan-pesantren</loc>
     <priority>0.6</priority>
   </url>
