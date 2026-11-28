@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://infopesantren.online/berita/kemenag-siapkan-standar-nasional-pengasuhan-pesantren-ramah-anak</loc>
+    <news:news>
+      <news:publication>
+        <news:name>InfoPesantren.online</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>2026-11-27T13:04:00.000Z</news:publication_date>
+      <news:title>Kemenag Siapkan Standar Nasional Pengasuhan Pesantren Ramah Anak</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://infopesantren.online/berita/menag-minta-majelis-masyayikh-perketat-tata-kelola-dan-sanad-keilmuan-pesantren</loc>
     <news:news>
       <news:publication>
@@ -31,28 +42,6 @@
       </news:publication>
       <news:publication_date>2026-11-26T08:44:00.000Z</news:publication_date>
       <news:title>Enam Kepala Daerah Raih Pesantren Award 2026, Kemenag Apresiasi Dukungan untuk Pesantren</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/kemenag-dorong-perlindungan-kekayaan-intelektual-pesantren-karya-dan-inovasi-santri-perlu-mendapat-pengakuan</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-25T07:25:00.000Z</news:publication_date>
-      <news:title>Kemenag Dorong Perlindungan Kekayaan Intelektual Pesantren, Karya dan Inovasi Santri Perlu Mendapat Pengakuan</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://infopesantren.online/berita/diikuti-12-463-santri-kemenag-tetapkan-jadwal-imtihan-wathani-2026</loc>
-    <news:news>
-      <news:publication>
-        <news:name>InfoPesantren.online</news:name>
-        <news:language>id</news:language>
-      </news:publication>
-      <news:publication_date>2026-11-25T05:06:00.000Z</news:publication_date>
-      <news:title>Diikuti 12.463 Santri, Kemenag Tetapkan Jadwal Imtihan Wathani 2026</news:title>
     </news:news>
   </url>
 </urlset>
